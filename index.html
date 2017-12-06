@@ -219,22 +219,51 @@
           operations upon
         </li>
         <li>
-          <code>grantedKey</code>, which links to one or more keys
-          being granted authority to use this capability
-        </li>
-        <li>
           a <code>signature</code> field, which MUST sign the document with
           <a href="https://w3c-dvcg.github.io/ld-signatures/">
             Linked Data Signatures</a>
-          by one of the <code>subject</code>'s keys, or if this
-          proclamation is being delegated, by one of the keys granted
-          access to this capability through the <code>grantedKey</code>
-          property.
+          by one of the <code>subject</code>'s keys, or if this proclamation is
+          being delegated through the <code>parentProclamation</code> property,
+          by one of the keys granted access to this capability through the
+          <code>grantedKey</code> property.
           <!-- TODO: Should this be by any of the keys which have authority
                to use this capability, or only the nearest grantedKey on the
                chain? -->
         </li>
       </ul>
+
+      <p>
+        "Top-level" proclamations, which do not have a
+        <code>parentProclamation</code> property, MUST have
+        (and child proclamations MAY have):
+      </p>
+
+      <ul>
+        <li>
+          <code>grantedKey</code>, which links to one or more keys
+          being granted authority to use this capability
+        </li>
+      </ul>
+
+      <div class="note">
+        Why don't all child proclamations require a grantedKey property?
+        The reason is that it is perfectly reasonable for an entity which has
+        access to a capability to give an attenuated capability to *itself* to
+        be used in a specific context.
+        Capabilities are not structured around "who has access" to something
+        but rather holding onto a capability for a particular use, and in
+        order to avoid confused deputy and ambient authority problems,
+        in general objects should not hold on to a "bucket" of capabilities
+        which grant them authority, but hold on to them within specific
+        contexts for specific purposes.
+        In general, when an object is granted a capability, it is important
+        that it know for what specific purpose it has been granted that
+        capability so that it does not become confused and use it in the
+        wrong scenario.
+        This is not unlike how in computer programs a procedure called with
+        specific arguments understands for what the meaning of those arguments
+        are and for what they may be used.
+      </div>
 
       <!-- TODO: Insert Alyssa's example from the introduction -->
 
@@ -243,11 +272,35 @@
         <p>
           <!-- TODO: Is parentProclamation too wordy? -->
           A proclamation MAY also have a <code>parentProclamation</code>
-          property, which points at another proclamation.
-          This is how a 
-
+          property.
+          A series of proclamations chained together in this way is called a
+          "proclamation chain" and is how delegation of capabilities are
+          handled in Linked Data Capabilities.
+          New keys MAY be granted authority to use this proclamation through
+          the associated <code>grantedKey</code> property.
+          Proclamations with parents MUST NOT have a new <code>subject</code>
+          property, and MUST be signed by either the original <code>subject</code>
+          or one of the later <code>grantedKey</code> keys.
         </p>
+      </section>
 
+      <section id="caveats">
+        <h2>Caveats</h2>
+        <p>
+          Every proclamation MAY add restrictions on the way the capability
+          may be used by adding to the <code>caveat</code> property.
+          Proclamations inherit the restrictions from all <code>caveat</code>
+          properties of their parents, and MAY add new caveats in addition to
+          those of their parents.
+        </p>
+        <p>
+          The meaning of caveats are determined by their <code>type</code>
+          and whatever other properties they have.
+          Due to the way they are interpreted at invocation type by the
+          <code>subject</code>, some mutual understanding of terminology
+          must be understood between the entity adding a caveat and the
+          subject evaluating (or any other parties observing) the invocation.
+        </p>
       </section>
 
       <!-- TODO: move this to security considerations section -->
@@ -259,10 +312,6 @@
         performed.
         <!-- TODO: expand -->
       </p>
-
-      <!-- TODO: Linking to a specific key vs linking to a DID which
-         may have a key which changes over time-->
-
     </section>
 
     <section id="invocation">
