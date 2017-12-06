@@ -324,12 +324,87 @@
     <section id="invocation">
       <h2>Invocation</h2>
 
-      <!-- TODO: talk about the need to make clear the root / framing
-         of an invocation -->
+      <p>
+        A capability may be enacted through the process of invocation.
+        In the context of Linked Data Capabilities, an invocation
+        consists of a linked data object which MUST have:
+      </p>
+
+      <ul>
+        <li>
+          the <code>type</code> of <code>Invocation</code>
+          (composite types are permitted, but <code>Invocation</code>
+          must be one)
+        </li>
+        <li>
+          a <code>proclamation</code> property which links to the
+          proclamation that grants authority to invoke this capability
+        </li>
+        <li>
+          a <code>signature</code> property, which is a valid
+          <a href="https://w3c-dvcg.github.io/ld-signatures/">
+            Linked Data Signatures</a>
+          entry signed by one of the keys granted by a
+          <code>grantedKey</code> field from the proclamation chain.
+        </li>
+      </ul>
+
+      <p>
+        An invocation SHOULD have an <code>id</code> (which may also serve as a
+        nonce).
+        Any other properties are considered arguments to the invocation.
+      </p>
+
+      <p>
+        In order for an invocation to be considered valid:
+      </p>
+
+      <ul>
+        <li>
+          The toplevel proclamation in the chain must be signed by
+          one of the <code>subject</code>'s keys.
+        </li>
+        <li>
+          <!-- @@: Or should it be the "nearest" grantedKey? -->
+          All child proclamations must have a valid signature
+          signed with one of the <code>grantedKey</code> fields
+          of their parents.
+        </li>
+        <li>
+          The restrictions of all caveats in the chain must be considered
+          fulfilled.
+        </li>
+      </ul>
+
+      <p>
+        At this point, the invocation is considered valid and any relevant
+        action may be performed.
+        (This does not guarantee that a specific result will occur, merely that
+        the invocation itself is valid; a subject could in evaluating the
+        invocation encounter invalid input and return or raise an error, for
+        instance.)
+      </p>
+
+      <div class="note">
+        <p>
+          Since invocations are themselves linked data documents, it is
+          possible for an invocation to refer to an invocation as an argument.
+          For this reason it is critical that mechanisms for accepting
+          invocations be sure which invocation is being performed.
+          For example, a mechanism that accepts linked data capabilities as
+          JSON-LD documents will likely have no trouble telling which
+          invocation is being performed since that will be the "top"
+          of the framed document.
+          However, a mechanism which accepted N-Quads would need additional
+          information supplied perhaps in the headers in order to be able
+          to determine the "root" of the invocation.
+        </p>
+      </div>
 
       <section id="methods">
         <h2>Methods</h2>
       </section>
+
     </section>
 
     <!-- TODO: explore whether composition is fully supported by the
