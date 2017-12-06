@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <title>Linked Data Object Capabilities</title>
+    <script 
+        src='https://www.w3.org/Tools/respec/respec-w3c-common' 
+        class='remove'></script>
+    <script class='remove'>
+     var respecConfig = {
+         specStatus: "CG-DRAFT",
+         editors: [
+             {name: "Manu Sporny",
+              url: "http://digitalbazaar.com/",
+              company: "Digital Bazaar",
+              companyURL: "http://digitalbazaar.com/"},
+             {name: "Christopher Lemmer Webber",
+              url: "https://dustycloud.org/",
+              company: "Spec-Ops",
+              companyURL: "https://www.spec-ops.io/"}],
+         authors: [
+             {name: "Manu Sporny",
+              url: "http://digitalbazaar.com/",
+              company: "Digital Bazaar",
+              companyURL: "http://digitalbazaar.com/"},
+             {name: "Christopher Lemmer Webber",
+              url: "https://dustycloud.org/",
+              company: "Spec-Ops",
+              companyURL: "https://www.spec-ops.io/"},
+             {name: "Mark S. Miller",
+              url: "http://www.erights.org/talks/thesis/"}],
+         processVersion: 2017,
+         edDraftURI: "https://w3c-ccg.github.io/ld-ocap/",
+         shortName: "ld-ocap",
+
+         //// CCG needs to approve this as a work item first :)
+         // // name of the WG
+         // wg:           "Credentials Community Group",
+         // 
+         // // URI of the public WG page
+         // wgURI:        "https://www.w3.org/community/credentials/",
+         // 
+         // // name (with the @w3c.org) of the public mailing to which comments are due
+         // wgPublicList: "public-credentials",
+     };
+    </script>
+  </head>
+  <!-- This document follows the following rules following indentation:
+        - Indent tags appropriately according to nesting depth
+        - Newline after every sentence (this helps making reading git diffs
+          easier, as well as merging in complicated changes, because a change
+          will only affect a sentence at a time rather than a complete
+          paragraph)
+        - Wrap text at column 79 (the least critical of the three conventions
+          since this merely helps the text look nicer in many text editors)
+     -->
+  <body>
+    <section id='abstract'>
+      <p>
+        Linked Data Capabilities (<code>ld-ocap</code> for short) provide a
+        secure way for linked data systems to grant and express authority
+        utilizing the
+        <a href="https://en.wikipedia.org/wiki/Object-capability_model">
+          object capability model</a>.
+        Capabilities are expressed through "proclamation chains" which are
+        themselves linked data objects signed through
+        <a href="https://w3c-dvcg.github.io/ld-signatures/">
+          Linked Data Signatures</a>.
+        Linked Data Capabilities support delegating authority to other entities
+        on the network.
+        "Caveats" may be attached to proclamations which may be used to
+        restrict the scope of their use, for example to restrict the methods
+        which may be used or providing a mechanism by which the capability may
+        be later revoked.
+      </p>
+    </section>
+    <section id='sotd'>
+      <p>
+        This is required.
+      </p>
+    </section>
+    <section>
+      <h2>Start your spec!</h2>
+      <pre class="idl">
+      interface Foo {
+        attribute Bar bar;
+        void doTheFoo();
+      };
+      </pre>
+      <p>The <dfn>Foo</dfn> interface represents a Foo.</p>
+      <p>The <dfn>doTheFoo</dfn> method does the foo.</p>
+    </section>
+  </body>
+</html>
