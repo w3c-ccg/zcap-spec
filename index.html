@@ -90,6 +90,29 @@
         described in that paper than yet in this specification.
       </i></p>
 
+      <!--
+         - Alyssa has a car: ACL edition
+         - Alyssa has a car: ocap edition
+
+         - Alyssa wants to let her roommate/friend Ben drive, she delegates a
+           capability to him.  Alyssa trusts Ben, but decides it's her car, so
+           she wants the ability to change her mind if for example they are no
+           longer roommates, so she adds a caveat that says that Ben can drive
+           the car unless Alyssa revokes that permission
+
+         - Ben drives to an event with valet parking.  Lem E. Driveit, the
+           valet, asks for Ben's key so that he may park the car, but Ben
+           decides that it would be most responsible for him to make sure that
+           Lem can't take Alyssa's car for a joyride, so when delegating a
+           capability to drive Alyssa's car, he adds an additional caveat:
+           this valet-key capability can only be driven for five kilometers,
+           which is long enough to park a car with some buffer, but short
+           enough to not permit Lem to take a joy ride.
+
+           The ability to delegate and add caveats are wonderful features.
+           However, they aren't the only reason to choose Capabilities over ACLs...
+         -->
+
       <p>
         This document does not cover a specific method for delivering
         Linked Data Capabilities to an object, though something like
@@ -206,6 +229,12 @@
           by one of the <code>subject</code>'s keys
         </li>
       </ul>
+
+      <!-- TODO: Insert Alyssa's example from the introduction -->
+
+      <p>
+      </p>
+
 
       <p class="note">
         Unlike access control lists, the focus of capablities is about
