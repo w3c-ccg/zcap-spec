@@ -210,7 +210,7 @@
       
       <ul>
         <!-- TODO: What's the right way to say this?
-        This sounds very json-ld centric -->
+             This sounds very json-ld centric -->
         <li>an associated <code>id</code></li>
         <li>the <code>type</code> set to <code>Proclamation</code></li>
         <li>
@@ -223,19 +223,34 @@
           being granted authority to use this capability
         </li>
         <li>
-          a <code>signature</code> field, which signs the document with
+          a <code>signature</code> field, which MUST sign the document with
           <a href="https://w3c-dvcg.github.io/ld-signatures/">
             Linked Data Signatures</a>
-          by one of the <code>subject</code>'s keys
+          by one of the <code>subject</code>'s keys, or if this
+          proclamation is being delegated, by one of the keys granted
+          access to this capability through the <code>grantedKey</code>
+          property.
+          <!-- TODO: Should this be by any of the keys which have authority
+               to use this capability, or only the nearest grantedKey on the
+               chain? -->
         </li>
       </ul>
 
       <!-- TODO: Insert Alyssa's example from the introduction -->
 
-      <p>
-      </p>
+      <section id="delegation">
+        <h2>Delegation through Proclamation Chains</h2>
+        <p>
+          <!-- TODO: Is parentProclamation too wordy? -->
+          A proclamation MAY also have a <code>parentProclamation</code>
+          property, which points at another proclamation.
+          This is how a 
 
+        </p>
 
+      </section>
+
+      <!-- TODO: move this to security considerations section -->
       <p class="note">
         Unlike access control lists, the focus of capablities is about
         what action is being performed by who is "holding" a
@@ -260,6 +275,10 @@
         <h2>Methods</h2>
       </section>
     </section>
+
+    <!-- TODO: explore whether composition is fully supported by the
+         current state of this document
+       -->
 
   </body>
 </html>
