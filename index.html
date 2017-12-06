@@ -63,7 +63,7 @@
         <a href="https://en.wikipedia.org/wiki/Object-capability_model">
           object capability model</a>.
         Capabilities are expressed through "proclamation chains" which are
-        themselves linked data objects signed through
+        themselves linked data documents signed through
         <a href="https://w3c-dvcg.github.io/ld-signatures/">
           Linked Data Signatures</a>.
         Linked Data Capabilities support delegating authority to other entities
@@ -81,9 +81,93 @@
         <a href="https://w3c-ccg.github.io/">Community Credentials Group</a>.
       </p>
     </section>
-    <section id="overview">
-      <h2>Overview</h2>
-      <p>Summary / "tutorial" goes here!</p>
+    <section id="introduction">
+      <h2>Introduction</h2>
+      <p><i>Summary / "tutorial" goes here!</i></p>
+
+      <p>
+        This document does not cover a specific method for delivering
+        Linked Data Capabilities to an object, though something like
+        the inbox property and associated delivery mechanisms from
+        Linked Data Notifications and ActivityPub is one possible
+        system.
+        However there is nothing about Linked Data Capabilities that is
+        specific to HTTP; for example, both proclamations and invocations
+        could be stored on a blockchain or a distributed hash table.
+      </p>
+    </section>
+    <section id="terminology">
+      <h2>Terminology</h2>
+      <!-- TODO: Add introductory paragraph to this section -->
+      <dl>
+        <dt>capability</dt>
+        <dd>
+          Authority which may be invoked to perform some operation upon a
+          (linked data) object.
+          Represented as a proclamation chain within the context of
+          Linked Data Capabilities.
+        </dd>
+
+        <dt>caveat</dt>
+        <dd>
+          Also known as "attenuation" within object capability literature,
+          a "caveat" may be attached to a proclamation as a restriction on
+          how that capability may be used.
+          Delegated capabilities will preserve caveats and may be themselves
+          may be further restricted by adding more caveats.
+        </dd>
+
+        <dt>invocation</dt>
+        <dd>
+          The "activation" of a capability, represented as a linked data
+          document which is signed in such a way that matches authority
+          granted through a prior proclamation.
+          <!-- TODO: fix up awkward wording here -->
+          An invocation may have arguments, similar to how a procedure call
+          may have arguments.
+        </dd>
+
+        <!-- TODO: Maybe this should be removed, because it's hard not
+           to use object in other ways-->
+        <dt>object</dt>
+        <dd>
+          Though the term object has
+          <a href="http://mumble.net/~jar/articles/oo.html">many definitions</a>
+          in computer science, within the context of Linked Data Capabilities
+          a "linked data object" is an entity which is associated with a URI and
+          which is capable of having proclamation chain based capabilities
+          being invoked against it.
+        </dd>
+
+        <dt>method</dt>
+        <dd>
+          An argument of an invocation which directs what particular
+          functionality of the object is being used.
+          For example, an invocation against a file storage service
+          may specify either a write method or a read method.
+        </dd>
+
+        <dt>proclamation / proclamation chain</dt>
+        <dd>
+          A proclamation is a linked data document which represents a
+          capability to an object.
+          Proclamations may be delegated by issuing new proclamations
+          which point at previous proclamations, possibly with further
+          caveats attached.
+        </dd>
+      </dl>
+    </section>
+
+    <section id="proclamations">
+      <h2>Proclamations and Proclamation Chains</h2>
+    </section>
+
+    <section id="invocation">
+      <h2>Invocation</h2>
+
+      <section id="methods">
+        <h2>Methods</h2>
+      </section>
     </section>
 
   </body>
