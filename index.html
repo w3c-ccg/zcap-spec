@@ -403,8 +403,21 @@
 
       <section id="methods">
         <h2>Methods</h2>
-      </section>
 
+        <p>
+          Methods are a common way to direct behavior of an invocation.
+          Subjects are free to choose their own mechanisms for directing
+          behavior, but MAY support the <code>method</code> property on
+          invocations as one common bahavioral direction technique.
+          The <code>method</code> property points to a URI as a form of
+          vocabulary to determine which method is being performed.
+          For example, a capability to a file storage system may allow
+          for both reading and writing files, and a user could choose
+          to set the <code>method</code> to
+          <code>https://datastore.example/WriteFile</code>
+          as an argument on their invocation.
+        </p>
+      </section>
     </section>
 
     <!-- TODO: explore whether composition is fully supported by the
