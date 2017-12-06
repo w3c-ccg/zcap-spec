@@ -246,23 +246,27 @@
       </ul>
 
       <div class="note">
-        Why don't all child proclamations require a grantedKey property?
-        The reason is that it is perfectly reasonable for an entity which has
-        access to a capability to give an attenuated capability to *itself* to
-        be used in a specific context.
-        Capabilities are not structured around "who has access" to something
-        but rather holding onto a capability for a particular use, and in
-        order to avoid confused deputy and ambient authority problems,
-        in general objects should not hold on to a "bucket" of capabilities
-        which grant them authority, but hold on to them within specific
-        contexts for specific purposes.
-        In general, when an object is granted a capability, it is important
-        that it know for what specific purpose it has been granted that
-        capability so that it does not become confused and use it in the
-        wrong scenario.
-        This is not unlike how in computer programs a procedure called with
-        specific arguments understands for what the meaning of those arguments
-        are and for what they may be used.
+        <p>
+          Why don't all child proclamations require a grantedKey property?
+          The reason is that it is perfectly reasonable for an entity which has
+          access to a capability to give an attenuated capability to
+          <em>itself</em> to be used in a specific context.
+        </p>
+        <p>
+          Capabilities are not structured around "who has access" to something
+          but rather holding onto a capability for a particular use, and in
+          order to avoid confused deputy and ambient authority problems,
+          in general objects should not hold on to a "bucket" of capabilities
+          which grant them authority, but hold on to them within specific
+          contexts for specific purposes.
+          In general, when an object is granted a capability, it is important
+          that it know for what specific purpose it has been granted that
+          capability so that it does not become confused and use it in the
+          wrong scenario.
+          This is not unlike how in computer programs a procedure called with
+          specific arguments understands for what the meaning of those arguments
+          are and for what they may be used.
+        </p>
       </div>
 
       <!-- TODO: Insert Alyssa's example from the introduction -->
