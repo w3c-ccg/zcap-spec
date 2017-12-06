@@ -160,12 +160,65 @@
           which point at previous proclamations, possibly with further
           caveats attached.
         </dd>
+
+        <dt>subject</dt>
+        <dd>
+          TODO
+        </dd>
       </dl>
     </section>
 
     <section id="proclamations">
       <h2>Proclamations and Proclamation Chains</h2>
+
+      <p>
+        Linked Data Capabilities are encoded through "proclamation chains".
+        Proclamations are linked data documents which express a grant
+        of authority from some entity (or more commonly, an entitiy's
+        specific key) to a specific subject, possibly restricted
+        through "caveats".
+        (This includes the possibility of revocation through a caveat
+        that expresses such a mechanism.)
+      </p>
+
+      <p>
+        Every proclamation MUST have:
+      </p>
       
+      <ul>
+        <!-- TODO: What's the right way to say this?
+        This sounds very json-ld centric -->
+        <li>an associated <code>id</code></li>
+        <li>the <code>type</code> <code>Proclamation</code></li>
+        <li>
+          a <code>subject</code>, which links to a linked data object
+          to which this capability grants the authority to invoke
+          operations upon
+        </li>
+        <li>
+          <code>grantedKey</code>, which links to one or more keys
+          being granted authority to use this capability
+        </li>
+        <li>
+          a <code>signature</code> field, which signs the document with
+          <a href="https://w3c-dvcg.github.io/ld-signatures/">
+            Linked Data Signatures</a>
+          by one of the <code>subject</code>'s keys
+        </li>
+      </ul>
+
+      <p class="note">
+        Unlike traditional access control lists, the focus of
+        capablities is about what action is being performed by who is
+        "holding" a capability they have authority to use rather than
+        checking who is performing a specific action every time an
+        action is performed.
+        <!-- TODO: expand -->
+      </p>
+
+      <!-- TODO: Linking to a specific key vs linking to a DID which
+         may have a key which changes over time-->
+
     </section>
 
     <section id="invocation">
