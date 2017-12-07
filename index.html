@@ -90,29 +90,6 @@
         described in that paper than yet in this specification.
       </i></p>
 
-      <!--
-         - Alyssa has a car: ACL edition
-         - Alyssa has a car: ocap edition
-
-         - Alyssa wants to let her roommate/friend Ben drive, she delegates a
-           capability to him.  Alyssa trusts Ben, but decides it's her car, so
-           she wants the ability to change her mind if for example they are no
-           longer roommates, so she adds a caveat that says that Ben can drive
-           the car unless Alyssa revokes that permission
-
-         - Ben drives to an event with valet parking.  Lem E. Driveit, the
-           valet, asks for Ben's key so that he may park the car, but Ben
-           decides that it would be most responsible for him to make sure that
-           Lem can't take Alyssa's car for a joyride, so when delegating a
-           capability to drive Alyssa's car, he adds an additional caveat:
-           this valet-key capability can only be driven for five kilometers,
-           which is long enough to park a car with some buffer, but short
-           enough to not permit Lem to take a joy ride.
-
-           The ability to delegate and add caveats are wonderful features.
-           However, they aren't the only reason to choose Capabilities over ACLs...
-         -->
-
       <p>
         This document does not cover a specific method for delivering
         Linked Data Capabilities to an object, though something like
@@ -123,6 +100,157 @@
         specific to HTTP; for example, both proclamations and invocations
         could be stored on a blockchain or a distributed hash table.
       </p>
+
+      <section id="ocap-by-example">
+        <p>
+          Much of modern computing security infrastructure relies on "who is
+          doing something" using access control lists.
+          For example, our friend Alyssa P. Hacker has a car, and she would
+          like to drive it
+          In the access control list world, the car itself may scan Alyssa's
+          face, determine that Alyssa is the driver, and say "Welcome Alyssa,
+          you are now free to drive."
+          Talking cars are appealing and fun, but Alyssa may run into
+          challenges when she would like to allow others to drive her car.
+        </p>
+
+        <p>
+          Fortunately, there is another paradigm that is even more familiar to
+          the car scenario, but less familiar in the context of computing,
+          despite providing some superior properties and a greater degree
+          of safety: object capabilities.
+          Object capabilities focus not on "who" is peforming an action, but
+          upon "what" source of authority permits an action to occur.
+          As it turns out, Alyssa does not have a talking and face-scanning
+          car, she has a car that accepts a key.
+          The car may have no memory of Alyssa whatsoever, but as long as
+          Alyssa holds the kind of key that enables her to drive the car,
+          she can drive the car.
+          Capabilities are very similar to this car metaphor, and we can encode
+          this same idea in Linked Data Capabilities as a "proclamation":
+        </p>
+
+        <pre class="example highlight json">
+    {"@context": ["https://example.org/ocap/v1",
+                  "https://autopower.example/"],
+     "id": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
+     "type": "Proclamation",
+     
+     // The subject is who the capability operates on (in this case,
+     // Alyssa's Car)
+     "subject": "https://whatacar.example/a-fancy-car",
+
+     // We are granting access specifically to one of Alyssa's keys
+     "grantedKey": "https://social.example/alyssa/#key-for-car",
+
+     // Finally we sign this object with one of the Alyssa's Car's keys
+     "signature": {
+        "type": "RsaSignature2016",
+        "created": "2016-02-08T16:02:20Z",
+        "creator": "https://whatacar.example/a-fancy-car#key-1",
+        "signatureValue": "IOmA4R7TfhkYTYW8...CBMq2/gi25s="}}
+        </pre>
+
+        <p>
+          This proclamation signs that one of Alyssa's keys (rather than
+          Alyssa specifically) is able to drive the car.
+          Turning on this car and driving into the sunset is as easy as
+          invoking the capability to do so:
+        </p>
+
+        <pre class="example highlight json">
+    {"@context": ["https://example.org/ocap/v1",
+                  "https://autopower.example/"],
+     "id": "urn:uuid:ad86cb2c-e9db-434a-beae-71b82120a8a4",
+     "type": "Invocation",
+     "proclamation": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
+     "method": "Drive",
+     "signature": {
+        "type": "RsaSignature2016",
+        "created": "2016-02-08T17:13:48Z",
+        "creator": "https://social.example/alyssa/#key-for-car",
+        "signatureValue": "..."}}
+        </pre>
+
+        <p>
+          Alyssa lives with her roommate and long-time friend Ben Bitdiddle.
+          While they're living together, she'd like that he be able to drive
+          her car too.
+          Capabilities support delegation, so she could delegate a new
+          capability to Ben giving him full access, not unlike going to the
+          hardware store and having them copy the key.
+          But Alyssa knows that she and Ben will probably not be roommates
+          forever, and she feels no need for him to be able to drive her car
+          once they are not, so she would like to have the option to revoke
+          his access.
+          In the world of object capabilities, this is entirely possible by
+          adding a "caveat" that permits future revocation.
+          We can imagine this to be like a new key that has a remote
+          destruction mechanism: Alyssa can press a button that she has,
+          a wire burns out inside the key, and the key will not be usable
+          anymore.
+          Alyssa generates a new proclamation that points at the proclamation
+          she has, adding the caveat:
+        </p>
+
+        <pre class="example highlight json">
+    {"@context": ["https://example.org/ocap/v1",
+                  "https://autopower.example/"],
+     "id": "https://social.example/alyssa/prcmtns#79795d78",
+     "type": "Proclamation",
+
+     // Pointing up the chain at the proclamation from which Alyssa
+     // initially gained access
+     "parentProclamation": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
+
+     // Alyssa grants access specifically to one of Ben's keys
+     "grantedKey": "https://chatty.example/ben/#key-33",
+
+     // Alyssa adds a caveat: Ben can drive her car, unless she flips
+     // the bit at this url
+     "caveat": [
+       {"type": "ValidWhileTrue",
+        "uri": "https://social.example/alyssa/ben-can-still-drive"}],
+
+     // Finally Alyssa signs this object with the key she was granted
+     // access with
+     "signature": {
+        "type": "RsaSignature2016",
+        "created": "2017-03-28T06:01:25Z",
+        "creator": "https://social.example/alyssa/#key-for-car",
+        "signatureValue": "..."}}
+        </pre>
+
+        <p>
+          
+        </p>
+
+
+        <!--
+           - Alyssa has a car: ocap edition
+
+           - Alyssa wants to let her roommate/friend Ben drive, she delegates a
+             capability to him.  Alyssa trusts Ben, but decides it's her car, so
+             she wants the ability to change her mind if for example they are no
+             longer roommates, so she adds a caveat that says that Ben can drive
+             the car unless Alyssa revokes that permission
+
+           - Ben drives to an event with valet parking.  Lem E. Driveit, the
+             valet, asks for Ben's key so that he may park the car, but Ben
+             decides that it would be most responsible for him to make sure that
+             Lem can't take Alyssa's car for a joyride, so when delegating a
+             capability to drive Alyssa's car, he adds an additional caveat:
+             this valet-key capability can only be driven for five kilometers,
+             which is long enough to park a car with some buffer, but short
+             enough to not permit Lem to take a joy ride.
+
+           - Alyssa has a car: ACL edition
+
+           - The ability to delegate and add caveats are wonderful features.
+             However, they aren't the only reason to choose Capabilities over ACLs...
+           -->
+      </section>
+
     </section>
     <section id="terminology">
       <h2>Terminology</h2>
@@ -214,11 +342,6 @@
         <li>an associated <code>id</code></li>
         <li>the <code>type</code> set to <code>Proclamation</code></li>
         <li>
-          a <code>subject</code>, which links to a linked data object
-          to which this capability grants the authority to invoke
-          operations upon
-        </li>
-        <li>
           a <code>signature</code> field, which MUST sign the document with
           <a href="https://w3c-dvcg.github.io/ld-signatures/">
             Linked Data Signatures</a>
@@ -234,14 +357,19 @@
 
       <p>
         "Top-level" proclamations, which do not have a
-        <code>parentProclamation</code> property, MUST have
-        (and child proclamations MAY have):
+        <code>parentProclamation</code> property, MUST have:
       </p>
 
       <ul>
         <li>
+          a <code>subject</code>, which links to a linked data object
+          to which this capability grants the authority to invoke
+          operations upon
+        </li>
+        <li>
           <code>grantedKey</code>, which links to one or more keys
           being granted authority to use this capability
+          (child proclamations MAY also have this property)
         </li>
       </ul>
 
@@ -417,6 +545,10 @@
           <code>https://datastore.example/WriteFile</code>
           as an argument on their invocation.
         </p>
+
+        <!-- TODO: Caveats which restrict to specific methods are fairly
+             common.  Do we want to define such a caveat in this document? -->
+
       </section>
     </section>
 
