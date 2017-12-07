@@ -310,6 +310,62 @@
            -->
       </section>
 
+      <section id="capabilities-are-safer">
+        <h2>Capabilities Are Safer</h2>
+        <p>
+          We can see from the above example that by using an object capability
+          system such as Linked Data Capabilities can give us some additional
+          power around delegating and restricting the scope of capabilities.
+          But object capabilities provide improved safety characteristics
+          over Access Control Lists which may make them frequently better
+          choices (for more details, see the paper
+          <a href="http://waterken.sourceforge.net/aclsdont/current.pdf">
+            ACLs Don't</a>).
+          Object capability systems are in general more robust against:
+        </p>
+
+        <ul>
+          <li>
+            <b>Ambient authority problems:</b>
+            For example, in an access control list environment,
+            if an attacker gets you to open a message in your email client
+            which contains an image which triggers an arbitrary code execution
+            vulnerability in the image library it is using, an attacker can
+            use this to do everything that you can: read or destroy your
+            documents, they can run programs as you, and they can in general
+            do anything that you can... all from a pin-prick sized vulnerability.
+            Properly using an object capability environment, the worst an
+            attacker could do is mess with your email (or if the program is
+            itself capability aware, they may not be able to do even
+            that... they could just display some nasty imagery on your screen,
+            which they could do already anyway).
+          </li>
+          <li>
+            <b>Confused deputy attacks:</b>
+            For example, browsers and both backend and frontend software for
+            the web have frequently struggled with Cross-Site Request Forgery
+            attack issues.
+            Your browser may both allow you websites to access resources on
+            other websites and also allow you to log into various websites,
+            say a social networking site or a bank.
+            A malicious website could use this to its advantage to trick
+            your browser into performing actions as you on those other sites...
+            say to read from or spam to your social timeline, or to withdraw
+            money from your bank account.
+            While various techniques to can be used to restrict the scope
+            of these attacks, they are notoriously hard to prevent.
+          </li>
+        </ul>
+
+        <p>
+          Object capabilities are less vulnerable to these kinds of attacks
+          because capabilities are an encoding of "the principle of least
+          authority" in software development practice.
+          Linked Data Capabilities helps bring the power of capabilities
+          to the web, providing specific and directed grants of authority.
+        </p>
+      </section>
+
     </section>
     <section id="terminology">
       <h2>Terminology</h2>
