@@ -140,9 +140,9 @@
      "id": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
      "type": "Capability",
      
-     // The subject is who the capability operates on (in this case,
+     // The target is who the capability operates on (in this case,
      // Alyssa's Car)
-     "subject": "https://whatacar.example/a-fancy-car",
+     "target": "https://whatacar.example/a-fancy-car",
 
      // We are granting authority specifically to one of Alyssa's signing
      // keys (a cryptographic key, not to be confused with the car
@@ -413,7 +413,7 @@
           may specify either a write method or a read method.
         </dd>
 
-        <dt>subject</dt>
+        <dt>target</dt>
         <dd>
           TODO
         </dd>
@@ -426,7 +426,7 @@
       <p>
         Linked Data Capabilities are encoded through linked data documents
         express a grant of authority from some entity (or more precisely, some
-        entity's credentials) to a specific subject, possibly restricted
+        entity's credentials) to a specific target, possibly restricted
         through "caveats".
         (This includes the possibility of revocation through a caveat
         that expresses such a mechanism.)
@@ -445,7 +445,7 @@
           a <code>signature</code> field, which MUST sign the document with
           <a href="https://w3c-dvcg.github.io/ld-signatures/">
             Linked Data Signatures</a>
-          by one of the <code>subject</code>'s keys, or if this capability is
+          by one of the <code>target</code>'s keys, or if this capability is
           being delegated through the <code>parentCapability</code> property,
           by one of the keys granted authority to this capability through the
           <code>grantedKey</code> property.
@@ -462,7 +462,7 @@
 
       <ul>
         <li>
-          a <code>subject</code>, which links to a linked data object
+          a <code>target</code>, which links to a linked data object
           to which this capability grants the authority to invoke
           operations upon
         </li>
@@ -510,8 +510,8 @@
           handled in Linked Data Capabilities.
           New keys MAY be granted authority to use this capability through
           the associated <code>grantedKey</code> property.
-          Capability documents with parents MUST NOT have a new <code>subject</code>
-          property, and MUST be signed by either the original <code>subject</code>
+          Capability documents with parents MUST NOT have a new <code>target</code>
+          property, and MUST be signed by either the original <code>target</code>
           or one of the later <code>grantedKey</code> keys.
         </p>
       </section>
@@ -529,9 +529,9 @@
           The meaning of caveats are determined by their <code>type</code>
           and whatever other properties they have.
           Due to the way they are interpreted at invocation type by the
-          <code>subject</code>, some mutual understanding of terminology
+          <code>target</code>, some mutual understanding of terminology
           must be understood between the entity adding a caveat and the
-          subject evaluating (or any other parties observing) the invocation.
+          target evaluating (or any other parties observing) the invocation.
         </p>
       </section>
 
@@ -590,7 +590,7 @@
       <ul>
         <li>
           The toplevel capability document in the chain must be signed by
-          one of the <code>subject</code>'s keys.
+          one of the <code>target</code>'s keys.
         </li>
         <li>
           <!-- @@: Or should it be the "nearest" grantedKey? -->
@@ -608,7 +608,7 @@
         At this point, the invocation is considered valid and any relevant
         action may be performed.
         (This does not guarantee that a specific result will occur, merely that
-        the invocation itself is valid; a subject could in evaluating the
+        the invocation itself is valid; a target could in evaluating the
         invocation encounter invalid input and return or raise an error, for
         instance.)
       </p>
@@ -634,7 +634,7 @@
 
         <p>
           Methods are a common way to direct behavior of an invocation.
-          Subjects are free to choose their own mechanisms for directing
+          Targets are free to choose their own mechanisms for directing
           behavior, but MAY support the <code>method</code> property on
           invocations as one common bahavioral direction technique.
           The <code>method</code> property points to a URI as a form of
