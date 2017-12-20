@@ -730,5 +730,67 @@
         administrating the system.
       </p>
     </section>
+
+    <section class="appendix informative" id="handling-abuse">
+      <h2>Handling abuse</h2>
+
+      <p>
+        The previous section discussed cases in which correlation (particularly
+        through Verifiable Credentials) is used to grant an initial set of
+        capabilities.
+        This section discusses how correlation may be used to revoke
+        capabilities under certain circumstances, and steps that should be
+        taken to ensure this is done safely.
+      </p>
+
+      <p>
+        Capability systems focus on what authority grants that an operation may
+        be performed, not on who is performing the action.
+        In some object capability systems (such as many object capability
+        programming languages) it is not even possible to see what entity is
+        invoking a capability.
+        In the case of Linked Data Capabilities, it is always possible to
+        inspect an invocation to check which authentication material authorized
+        to invoke the capability is being used in the invocation, and this may
+        permit checking a certain amount of "who" is performing the action,
+        but to focus on the "who" rather than the source of authority would
+        <a href="capabilities-are-safer">
+          bring us back to the dangers of Access Control Lists</a>.
+      </p>
+
+      <p>
+        Nonetheless, there comes a time when correlating information about
+        usage of a resource becomes critical, and this is in migigating abuse.
+        Even traditional capability systems, in developing solutions to this
+        problem, develop techniques for correlating information about "who"
+        has performed an action.
+        (For example,
+        <a href="http://www.erights.org/elib/capability/horton/">Horton</a>
+        is one such system for E, though as previously stated,
+        such information can be cleaned already by looking at the invocation
+        and capability chain documents in Linked Data Capabilities.)
+        The key to permit detecting and mitigating abuse safely in a capability
+        based environment is to treat correlation of who is using a service
+        not as something that is used per-invocation, but as something to be
+        reasoned about to possibly revoke authority.
+        (Astute readers may observe that between the previous section and this
+        section we have defined safe ways to use correlation in conjunction
+        with capabilities: as the entry point and possible termination point,
+        with capabilities powering the machine in-between.)
+      </p>
+
+      <p>
+        For example, Alice has granted capabilities (with caveats that permit
+        revocation) to a number of users access to run programs on the systems
+        she is administrating, but someone is using their capability to abuse
+        the system.
+        The system itself permforms the invocations as the users call them,
+        but Alice, or a program Alice runs, is able to analyze a log of past
+        invocations called.
+        Having finished the analysis, Alice realizes that the abuse is coming
+        from the invocation of a capability granted to some of Mallet's
+        authentication material, and Alyssa revokes that capability.
+      </p>
+    </section>
   </body>
 </html>
