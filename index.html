@@ -69,7 +69,7 @@
         Linked Data Capabilities support delegating authority to other entities
         on the network by chaining together capability documents.
         "Caveats" may be attached to capability documents which may be used to
-        restrict the scope of their use, for example to restrict the methods
+        restrict the scope of their use, for example to restrict the actions
         which may be used or providing a mechanism by which the capability may
         be later revoked.
       </p>
@@ -171,7 +171,7 @@
      "id": "urn:uuid:ad86cb2c-e9db-434a-beae-71b82120a8a4",
      "type": "Invocation",
      "capability": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
-     "method": "Drive",
+     "action": "Drive",
      "proof": {
         "type": "RsaSignature2016",
         "created": "2016-02-08T17:13:48Z",
@@ -405,12 +405,14 @@
           may have arguments.
         </dd>
 
-        <dt>method</dt>
+        <dt>action</dt>
         <dd>
           An argument of an invocation which directs what particular
           functionality of the object is being used.
           For example, an invocation against a file storage service
-          may specify either a write method or a read method.
+          may specify either a write action or a read action.
+          (Actions are the same as what are frequently called "methods" in
+          programming.)
         </dd>
 
         <dt>target</dt>
@@ -630,24 +632,24 @@
         </p>
       </div>
 
-      <section id="methods">
-        <h2>Methods</h2>
+      <section id="actions">
+        <h2>Actions</h2>
 
         <p>
-          Methods are a common way to direct behavior of an invocation.
+          Actions are a common way to direct behavior of an invocation.
           Targets are free to choose their own mechanisms for directing
-          behavior, but MAY support the <code>method</code> property on
+          behavior, but MAY support the <code>action</code> property on
           invocations as one common bahavioral direction technique.
-          The <code>method</code> property points to a URI as a form of
-          vocabulary to determine which method is being performed.
+          The <code>action</code> property points to a URI as a form of
+          vocabulary to determine which action is being performed.
           For example, a capability to a file storage system may allow
           for both reading and writing files, and a user could choose
-          to set the <code>method</code> to
+          to set the <code>action</code> to
           <code>https://datastore.example/WriteFile</code>
           as an argument on their invocation.
         </p>
 
-        <!-- TODO: Caveats which restrict to specific methods are fairly
+        <!-- TODO: Caveats which restrict to specific actions are fairly
              common.  Do we want to define such a caveat in this document? -->
 
       </section>
