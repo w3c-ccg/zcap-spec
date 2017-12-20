@@ -147,11 +147,11 @@
      // We are granting authority specifically to one of Alyssa's signing
      // keys (a cryptographic key, not to be confused with the car
      // key metaphor!)
-     "grantedKey": "https://social.example/alyssa/#key-for-car",
+     "authenticationMaterial": "https://social.example/alyssa/#key-for-car",
 
      // Finally we sign this object with one of the Alyssa's Car's
-     // signing keys
-     "signature": {
+     // signing keys.
+     "proof": {
         "type": "RsaSignature2016",
         "created": "2016-02-08T16:02:20Z",
         "creator": "https://whatacar.example/a-fancy-car#key-1",
@@ -159,8 +159,8 @@
         </pre>
 
         <p>
-          This capability signs that one of Alyssa's keys (rather than
-          Alyssa specifically) is able to drive the car.
+          This capability signs that Alyssa is able to utilize this capability
+          using her authentication material (a cryptographic signing key).
           Turning on this car and driving into the sunset is as easy as
           invoking the capability to do so:
         </p>
@@ -172,7 +172,7 @@
      "type": "Invocation",
      "capability": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
      "method": "Drive",
-     "signature": {
+     "proof": {
         "type": "RsaSignature2016",
         "created": "2016-02-08T17:13:48Z",
         "creator": "https://social.example/alyssa/#key-for-car",
@@ -211,7 +211,7 @@
      "parentCapability": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
 
      // Alyssa grants authority specifically to one of Ben's signing keys
-     "grantedKey": "https://chatty.example/ben/#key-33",
+     "authenticationMaterial": "https://chatty.example/ben/#key-33",
 
      // Alyssa adds a caveat: Ben can drive her car, unless she flips
      // the bit at this url
@@ -221,7 +221,7 @@
 
      // Finally Alyssa signs this object with the key she was granted
      // authority with
-     "signature": {
+     "proof": {
         "type": "RsaSignature2016",
         "created": "2017-03-28T06:01:25Z",
         "creator": "https://social.example/alyssa/#key-for-car",
@@ -237,7 +237,7 @@
           Alyssa is already at the university and is getting a ride to the
           venue, so she suggests Ben drive her car and meet her there.
           Ben invokes his capability, the car performs all relevant checks on
-          the capability (including that the signature is valid and applicable,
+          the capability (including that the proof/signature is valid and applicable,
           and that the caveat is still valid), and off Ben drives.
         </p>
 
@@ -259,7 +259,7 @@
      "id": "https://chatty.example/ben/procs#2cdea8c1",
      "type": "Capability",
      "parentCapability": "https://social.example/alyssa/prcmtns#79795d78",
-     "grantedKey": "https://lem.example/#key-bf36",
+     "authenticationMaterial": "https://lem.example/#key-bf36",
 
      // Ben adds this caveat: this capability can be used to drive the
      // car, but not for more than 5 kilometers
@@ -271,7 +271,7 @@
 
      // Finally Ben signs this object with the key he was granted
      // authority with
-     "signature": {
+     "proof": {
         "type": "RsaSignature2016",
         "created": "2017-06-13T19:15:03Z",
         "creator": "https://chatty.example/ben/#key-33",
@@ -442,16 +442,17 @@
         <li>an associated <code>id</code></li>
         <li>the <code>type</code> set to <code>Capability</code></li>
         <li>
-          a <code>signature</code> field, which MUST sign the document with
+          <!-- TODO: open this up a bit more for more than just "keys" -->
+          a <code>proof</code> field, which MUST sign the document with
           <a href="https://w3c-dvcg.github.io/ld-signatures/">
             Linked Data Signatures</a>
           by one of the <code>target</code>'s keys, or if this capability is
           being delegated through the <code>parentCapability</code> property,
           by one of the keys granted authority to this capability through the
-          <code>grantedKey</code> property.
-          <!-- TODO: Should this be by any of the keys which have authority
-               to use this capability, or only the nearest grantedKey on the
-               chain? -->
+          <code>authenticationMaterial</code> property.
+          <!-- TODO: Should this be by any of the authentication material which
+               has authority to use this capability, or only the nearest
+               authorizationMaterial on the chain? -->
         </li>
       </ul>
 
@@ -467,7 +468,7 @@
           operations upon
         </li>
         <li>
-          <code>grantedKey</code>, which links to one or more keys
+          <code>authenticationMaterial</code>, which links to one or more keys
           being granted authority to use this capability
           (child capabilities MAY also have this property)
         </li>
@@ -475,7 +476,7 @@
 
       <div class="note">
         <p>
-          Why don't all child capabilities require a grantedKey property?
+          Why don't all child capabilities require a authenticationMaterial property?
           The reason is that it is perfectly reasonable for an entity which has
           authority to a capability to give an attenuated capability to
           <em>itself</em> to be used in a specific context.
@@ -509,10 +510,10 @@
           "capability chain" and is how delegation of capabilities are
           handled in Linked Data Capabilities.
           New keys MAY be granted authority to use this capability through
-          the associated <code>grantedKey</code> property.
+          the associated <code>authenticationMaterial</code> property.
           Capability documents with parents MUST NOT have a new <code>target</code>
           property, and MUST be signed by either the original <code>target</code>
-          or one of the later <code>grantedKey</code> keys.
+          or one of the later <code>authenticationMaterial</code> keys.
         </p>
       </section>
 
@@ -543,7 +544,7 @@
            is performing a specific action every time an action is
            performed.
 
-           @@: Or is this handled by the (non-)presence of grantedKeys
+           @@: Or is this handled by the (non-)presence of authenticationMaterials
              note?
          -->
       </p>
@@ -569,11 +570,11 @@
           capability document that grants authority to invoke this capability
         </li>
         <li>
-          a <code>signature</code> property, which is a valid
+          a <code>proof</code> property, which is a valid
           <a href="https://w3c-dvcg.github.io/ld-signatures/">
             Linked Data Signatures</a>
           entry signed by one of the keys granted by a
-          <code>grantedKey</code> field from the capability chain.
+          <code>authenticationMaterial</code> field from the capability chain.
         </li>
       </ul>
 
@@ -593,10 +594,10 @@
           one of the <code>target</code>'s keys.
         </li>
         <li>
-          <!-- @@: Or should it be the "nearest" grantedKey? -->
-          All child capability documents must have a valid signature
-          signed with one of the <code>grantedKey</code> fields
-          of their parents.
+          <!-- @@: Or should it be the "nearest" authenticationMaterial? -->
+          All child capability documents must have a valid <code>proof</code>
+          (generally a signature) signed with one of the
+          <code>authenticationMaterial</code> fields of their parents.
         </li>
         <li>
           The restrictions of all caveats in the chain must be considered
