@@ -659,5 +659,76 @@
          current state of this document
        -->
 
+    <section class="appendix informative" id="relationship-to-vc">
+      <h2>Relationship to Verifiable Credentials</h2>
+
+      <p>
+        The
+        <a href="https://www.w3.org/TR/verifiable-claims-data-model/">
+          Verifiable Credentials Data Model</a>
+        provides a powerful vocabulary for correlating information and
+        presenting correlated information in a secure way.
+        This can be used to make claims about some subject, to present
+        credential certifying you are qualified to do some thing, or so on.
+        This is useful for gathering and presenting information that can
+        be reasoned about.
+        Indeed, this maps nicely to "the real world", as humans tend to be
+        "correlation/reasoning machines".
+        For example, Eva Lu Ator is hoping to hire a system administrator and
+        may check for a college diploma, past work history, or recommendations
+        from known entities considered qualified to judge competency to fulfill
+        the role, and all of these can be modeled nicely with the Verifiable
+        Credentials Data Model.
+      </p>
+
+      <p>
+        Thus it may be tempting to design a system in which a credential
+        is presented in order to permit or forbid access to some resource.
+        Unfortunately, associating "who is authorized to do what" leads us back
+        to all the problems of access control lists,
+        <a href="capabilities-are-safer">which we would like to avoid</a>.
+        When returning to our hiring a system administrator example it is
+        easy to imagine how, upon hiring Alice as as a system administrator,
+        Eva would hand Alice a capability to begin administrating her systems.
+        But in considering the previous step where Eva contemplates
+        <i>whether or not to hand Alice that capability</i>
+        seems to pull us right back to correlating information about Alice's
+        identity.
+        (What is Alice's educational background?  What is Alice's prior work
+        experience?)
+      </p>
+
+      <p>
+        We seem to be in a conundrum.
+        Claims and credentials are forms of correlation that allow us to reason
+        about an entity in our squishy human world, but are unsafe when used as
+        mechanisms to authorize some event to occur within a system.
+        Capabilities are safe mechanism to model the flow of authority through
+        a system, but there are times when capabilities have not been granted
+        and we need to make a "judgement call" by correlating information about
+        that entity.
+        What should we do?
+      </p>
+
+      <p>
+        To pose the question is to see the answer: the right approach is to use
+        each system for what it does best.
+        Use correlation (Verifiable Credentials) in a reasoning system (most
+        commonly human reasoning) as a path to make judgements about whether to
+        hand an entity a specific set of initial capabilities.
+        Use capabilities (Linked Data Capabilities) as the mechanism to grant
+        and exercise authority through computing systems.
+        To return to our system adminstrator example, when Alice applies for the
+        job, she submits a series of credentials about her prior work history
+        and degree, and Eva is able to verify that it is Alice's former
+        employers and university which have made these claims.
+        Deciding that Alice is fit for the job, Eva hands Alice her initial
+        capability which grants her authority to administrate the systems in
+        question (with a caveat that allows Eva to revoke that authority at a
+        future date, if appropriate).
+        Alice uses that capability as the initial entry point into
+        administrating the system.
+      </p>
+    </section>
   </body>
 </html>
