@@ -140,9 +140,9 @@
      "id": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
      "type": "Capability",
      
-     // The target is who the capability operates on (in this case,
-     // Alyssa's Car)
-     "target": "https://whatacar.example/a-fancy-car",
+     // The invocationTarget is who the capability operates on
+     // (in this case, Alyssa's Car)
+     "invocationTarget": "https://whatacar.example/a-fancy-car",
 
      // We are granting authority specifically to one of Alyssa's signing
      // keys (a cryptographic key, not to be confused with the car
@@ -415,7 +415,7 @@
           computer programming.)
         </dd>
 
-        <dt>target</dt>
+        <dt>invocationTarget</dt>
         <dd>
           TODO
         </dd>
@@ -428,8 +428,8 @@
       <p>
         Linked Data Capabilities are encoded through linked data documents
         express a grant of authority from some entity (or more precisely, some
-        entity's credentials) to a specific target, possibly restricted
-        through "caveats".
+        entity's credentials) to a specific invocationTarget, possibly
+        restricted through "caveats".
         (This includes the possibility of revocation through a caveat
         that expresses such a mechanism.)
       </p>
@@ -448,10 +448,11 @@
           a <code>proof</code> field, which MUST sign the document with
           <a href="https://w3c-dvcg.github.io/ld-signatures/">
             Linked Data Signatures</a>
-          by one of the <code>target</code>'s keys, or if this capability is
-          being delegated through the <code>parentCapability</code> property,
-          by one of the keys granted authority to this capability through the
-          <code>invoker</code> property.
+          by one of the <code>invocationTarget</code>'s keys, or if this
+          capability is being delegated through the
+          <code>parentCapability</code> property, by one of the keys granted
+          authority to this capability through the <code>invoker</code>
+          property.
           <!-- TODO: Should this be by any of the authentication material which
                has authority to use this capability, or only the nearest
                invoker on the chain? -->
@@ -465,7 +466,7 @@
 
       <ul>
         <li>
-          a <code>target</code>, which links to a linked data object
+          a <code>invocationTarget</code>, which links to a linked data object
           to which this capability grants the authority to invoke
           operations upon
         </li>
@@ -513,9 +514,10 @@
           handled in Linked Data Capabilities.
           New keys MAY be granted authority to use this capability through
           the associated <code>invoker</code> property.
-          Capability documents with parents MUST NOT have a new <code>target</code>
-          property, and MUST be signed by either the original <code>target</code>
-          or one of the later <code>invoker</code> keys.
+          Capability documents with parents MUST NOT have a new
+          <code>invocationTarget</code> property, and MUST be signed by either
+          the original <code>invocationTarget</code> or one of the later
+          <code>invoker</code> keys.
         </p>
       </section>
 
@@ -532,9 +534,10 @@
           The meaning of caveats are determined by their <code>type</code>
           and whatever other properties they have.
           Due to the way they are interpreted at invocation type by the
-          <code>target</code>, some mutual understanding of terminology
-          must be understood between the entity adding a caveat and the
-          target evaluating (or any other parties observing) the invocation.
+          <code>invocationTarget</code>, some mutual understanding of
+          terminology must be understood between the entity adding a caveat and
+          the invocationTarget evaluating (or any other parties observing) the
+          invocation.
         </p>
       </section>
 
@@ -590,7 +593,7 @@
       <ul>
         <li>
           The toplevel capability document in the chain must be signed by
-          one of the <code>target</code>'s keys.
+          one of the <code>invocationTarget</code>'s keys.
         </li>
         <li>
           <!-- @@: Or should it be the "nearest" invoker? -->
@@ -608,9 +611,9 @@
         At this point, the invocation is considered valid and any relevant
         action may be performed.
         (This does not guarantee that a specific result will occur, merely that
-        the invocation itself is valid; a target could in evaluating the
-        invocation encounter invalid input and return or raise an error, for
-        instance.)
+        the invocation itself is valid; a invocationTarget could in evaluating
+        the invocation encounter invalid input and return or raise an error,
+        for instance.)
       </p>
 
       <div class="note">
