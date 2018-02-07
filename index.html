@@ -147,7 +147,7 @@
      // We are granting authority specifically to one of Alyssa's signing
      // keys (a cryptographic key, not to be confused with the car
      // key metaphor!)
-     "authenticationMaterial": "https://social.example/alyssa/#key-for-car",
+     "invoker": "https://social.example/alyssa/#key-for-car",
 
      // Finally we sign this object with one of the Alyssa's Car's
      // signing keys.
@@ -211,7 +211,7 @@
      "parentCapability": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
 
      // Alyssa grants authority specifically to one of Ben's signing keys
-     "authenticationMaterial": "https://chatty.example/ben/#key-33",
+     "invoker": "https://chatty.example/ben/#key-33",
 
      // Alyssa adds a caveat: Ben can drive her car, unless she flips
      // the bit at this url
@@ -259,7 +259,7 @@
      "id": "https://chatty.example/ben/procs#2cdea8c1",
      "type": "Capability",
      "parentCapability": "https://social.example/alyssa/prcmtns#79795d78",
-     "authenticationMaterial": "https://lem.example/#key-bf36",
+     "invoker": "https://lem.example/#key-bf36",
 
      // Ben adds this caveat: this capability can be used to drive the
      // car, but not for more than 5 kilometers
@@ -451,10 +451,10 @@
           by one of the <code>target</code>'s keys, or if this capability is
           being delegated through the <code>parentCapability</code> property,
           by one of the keys granted authority to this capability through the
-          <code>authenticationMaterial</code> property.
+          <code>invoker</code> property.
           <!-- TODO: Should this be by any of the authentication material which
                has authority to use this capability, or only the nearest
-               authorizationMaterial on the chain? -->
+               invoker on the chain? -->
         </li>
       </ul>
 
@@ -470,7 +470,7 @@
           operations upon
         </li>
         <li>
-          <code>authenticationMaterial</code>, which links to one or more keys
+          <code>invoker</code>, which links to one or more keys
           being granted authority to use this capability
           (child capabilities MAY also have this property)
         </li>
@@ -478,7 +478,7 @@
 
       <div class="note">
         <p>
-          Why don't all child capabilities require a authenticationMaterial property?
+          Why don't all child capabilities require a invoker property?
           The reason is that it is perfectly reasonable for an entity which has
           authority to a capability to give an attenuated capability to
           <em>itself</em> to be used in a specific context.
@@ -512,10 +512,10 @@
           "capability chain" and is how delegation of capabilities are
           handled in Linked Data Capabilities.
           New keys MAY be granted authority to use this capability through
-          the associated <code>authenticationMaterial</code> property.
+          the associated <code>invoker</code> property.
           Capability documents with parents MUST NOT have a new <code>target</code>
           property, and MUST be signed by either the original <code>target</code>
-          or one of the later <code>authenticationMaterial</code> keys.
+          or one of the later <code>invoker</code> keys.
         </p>
       </section>
 
@@ -546,7 +546,7 @@
            is performing a specific action every time an action is
            performed.
 
-           @@: Or is this handled by the (non-)presence of authenticationMaterials
+           @@: Or is this handled by the (non-)presence of invokers
              note?
          -->
       </p>
@@ -572,7 +572,7 @@
         </li>
         <li>
           the proof must validate against cryptographic material
-          granted authority by the <code>grantee</code> field from the
+          granted authority by the <code>invoker</code> field from the
           capability chain.
         </li>
       </ul>
@@ -593,10 +593,10 @@
           one of the <code>target</code>'s keys.
         </li>
         <li>
-          <!-- @@: Or should it be the "nearest" authenticationMaterial? -->
+          <!-- @@: Or should it be the "nearest" invoker? -->
           All child capability documents must have a valid <code>proof</code>
-          (generally a signature) signed with one of the
-          <code>authenticationMaterial</code> fields of their parents.
+          (generally a signature) signed with one of the <code>invoker</code>
+          fields of their parents.
         </li>
         <li>
           The restrictions of all caveats in the chain must be considered
