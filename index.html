@@ -172,6 +172,9 @@
      "action": "Drive",
      "proof": {
         "type": "RsaSignature2016",
+        // A linked data document can be an invocation if it has a
+        // proofPurpose of invokeCapability and links to the a capability
+        // chain it is invoking
         "proofPurpose": "invokeCapability",
         "capability": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
         "created": "2016-02-08T17:13:48Z",
