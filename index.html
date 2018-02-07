@@ -169,11 +169,11 @@
     {"@context": ["https://example.org/ocap/v1",
                   "https://autopower.example/"],
      "id": "urn:uuid:ad86cb2c-e9db-434a-beae-71b82120a8a4",
-     "type": "Invocation",
-     "capability": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
      "action": "Drive",
      "proof": {
         "type": "RsaSignature2016",
+        "proofPurpose": "invokeCapability",
+        "capability": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
         "created": "2016-02-08T17:13:48Z",
         "creator": "https://social.example/alyssa/#key-for-car",
         "signatureValue": "..."}}
@@ -558,25 +558,22 @@
       <p>
         A capability may be enacted through the process of invocation.
         In the context of Linked Data Capabilities, an invocation
-        consists of a linked data object which MUST have:
+        consists of a linked data object which MUST have a <code>proof</code>
+        property with a value containing:
       </p>
 
       <ul>
         <li>
-          the <code>type</code> of <code>Invocation</code>
-          (composite types are permitted, but <code>Invocation</code>
-          must be one)
+          a <code>proofPurpose</code> of <code>invokeCapability</code>
         </li>
         <li>
           a <code>capability</code> property which links to the
           capability document that grants authority to invoke this capability
         </li>
         <li>
-          a <code>proof</code> property, which is a valid
-          <a href="https://w3c-dvcg.github.io/ld-signatures/">
-            Linked Data Signatures</a>
-          entry signed by one of the keys granted by a
-          <code>authenticationMaterial</code> field from the capability chain.
+          the proof must validate against cryptographic material
+          granted authority by the <code>grantee</code> field from the
+          capability chain.
         </li>
       </ul>
 
