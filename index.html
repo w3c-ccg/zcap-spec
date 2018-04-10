@@ -2,20 +2,21 @@
 <html>
   <head>
     <meta charset='utf-8'>
-    <title>Linked Data Capabilities</title>
-    <script 
-        src='https://www.w3.org/Tools/respec/respec-w3c-common' 
+    <title>Object Capabilities for Linked Data v0.3</title>
+    <script
+        src='https://www.w3.org/Tools/respec/respec-w3c-common'
         class='remove'></script>
     <script class='remove'>
      var respecConfig = {
          specStatus: "CG-DRAFT",
+         subtitle: "Adding object capabilities to Linked Data systems",
          editors: [
              {name: "Christopher Lemmer Webber",
               url: "https://dustycloud.org/",
               company: "Spec-Ops",
               companyURL: "https://www.spec-ops.io/"},
              {name: "Manu Sporny",
-              url: "http://digitalbazaar.com/",
+              url: "http://manu.sporny.org/",
               company: "Digital Bazaar",
               companyURL: "http://digitalbazaar.com/"}],
          authors: [
@@ -24,30 +25,30 @@
               company: "Spec-Ops",
               companyURL: "https://www.spec-ops.io/"},
              {name: "Manu Sporny",
-              url: "http://digitalbazaar.com/",
+              url: "http://manu.sporny.org/",
               company: "Digital Bazaar",
               companyURL: "http://digitalbazaar.com/"},
              {name: "Mark S. Miller",
               url: "http://www.erights.org/talks/thesis/"}],
          license: "w3c-software-doc",
          processVersion: 2017,
-         edDraftURI: "https://w3c-ccg.github.io/ld-ocap/",
-         shortName: "ld-ocap",
+         edDraftURI: "https://w3c-ccg.github.io/ocap-ld/",
+         shortName: "ocap-ld",
          otherLinks: [
              {
                  "key": "Repository",
                  "data": [
                      {
                          "value": "Git repository",
-                         "href": "https://github.com/w3c-ccg/ld-ocap",
+                         "href": "https://github.com/w3c-ccg/ocap-ld",
                      },
                      {
                          "value": "Issues",
-                         "href": "https://github.com/w3c-ccg/ld-ocap/issues",
+                         "href": "https://github.com/w3c-ccg/ocap-ld/issues",
                      },
                      {
                          "value": "Commits",
-                         "href": "https://github.com/w3c-ccg/ld-ocap/commits/gh-pages",
+                         "href": "https://github.com/w3c-ccg/ocap-ld/commits/gh-pages",
                      }
                  ]
              }
@@ -85,7 +86,8 @@
   <body>
     <section id='abstract'>
       <p>
-        Linked Data Capabilities (<code>ld-ocap</code> for short) provide a
+        Object Capabilities for Linked Data (<code>OCAP-LD</code> for short)
+        provides a
         secure way for linked data systems to grant and express authority
         utilizing the
         <a href="https://en.wikipedia.org/wiki/Object-capability_model">
@@ -93,7 +95,7 @@
         Capabilities are represented as linked data objects which are signed with
         <a href="https://w3c-dvcg.github.io/ld-signatures/">
           Linked Data Signatures</a>.
-        Linked Data Capabilities support delegating authority to other entities
+        OCAP-LD supports delegating authority to other entities
         on the network by chaining together capability documents.
         "Caveats" may be attached to capability documents which may be used to
         restrict the scope of their use, for example to restrict the actions
@@ -166,7 +168,7 @@
                   "https://autopower.example/"],
      "id": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
      "type": "Capability",
-     
+
      // The invocationTarget is who the capability operates on
      // (in this case, Alyssa's Car)
      "invocationTarget": "https://whatacar.example/a-fancy-car",
@@ -443,7 +445,7 @@
       <p>
         Every capability document MUST have:
       </p>
-      
+
       <ul>
         <!-- TODO: What's the right way to say this?
              This sounds very json-ld centric -->
