@@ -130,6 +130,40 @@
         could be stored on a blockchain or a distributed hash table.
       </p>
 
+      <section>
+        <h2>Capabilities vs. Access Control Lists</h2>
+        <p>
+          One of the first questions that is usually asked about using
+          Object Capabilities for authorization is: "How are Capabilities
+          different from Access Control Lists?". Fundamentally, Access Control
+          Lists are about <em>authority by identity</em> whereas
+          Object Capabilities are about <em>authority by possession</em>.
+        </p>
+
+        <p>
+          Authority by identity is the process of giving access to a resource
+          to a specific entity based on their identity. These processes
+          typically ask the question: "Who are you?"
+        </p>
+
+        <p>
+          Authority by possession is the process of giving access to a resource
+          to any entity that possesses something, like a key. These processes
+          typically ask the question: "Do you have a key that fits this lock?"
+        </p>
+
+        <p>
+          This document doesn't explain why Access Control Lists lead to
+          a variety of security issues or why Object Capabilities provide
+          stronger security guarantees. For those that would like to
+          learn more about these topics,
+          <a href="http://srl.cs.jhu.edu/pubs/SRL2003-02.pdf">Capability Myths Demolished</a>
+          and
+          <a href="http://waterken.sourceforge.net/aclsdont/current.pdf">ACLs Don't</a>
+          provide a deeper exploration into the benefits of Object Capabilites.
+        </p>
+      </section>
+
       <section id="ocap-by-example">
         <h2>Linked Data Capabilities by Example</h2>
         <p>
