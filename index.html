@@ -207,13 +207,13 @@
      // (in this case, Alyssa's Car)
      "invocationTarget": "https://whatacar.example/a-fancy-car",
 
-     // We are granting authority specifically to one of Alyssa's signing
-     // keys (a cryptographic key, not to be confused with the car
+     // We are granting authority specifically to one of Alyssa's
+     // cryptographic keys (not to be confused with the car
      // key metaphor!)
      "invoker": "https://social.example/alyssa/#key-for-car",
 
-     // Finally we sign this object with one of the Alyssa's Car's
-     // signing keys.
+     // Finally we sign this object with cryptographic material from
+     // Alyssa's Car's grantCapability field
      "proof": {
         "type": "RsaSignature2016",
         "proofPurpose": "grantCapability",
@@ -224,7 +224,8 @@
 
         <p>
           This capability signs that Alyssa is able to utilize this capability
-          using her authentication material (a cryptographic signing key).
+          using specific cryptographic material by which she can prove that she
+          has authorized this invocation.
           Turning on this car and driving into the sunset is as easy as
           invoking the capability to do so:
         </p>
@@ -270,14 +271,15 @@
         <pre class="example highlight javascript">
     {"@context": ["https://example.org/ocap/v1",
                   "https://autopower.example/"],
-     "id": "https://social.example/alyssa/prcmtns#79795d78",
+     "id": "https://social.example/alyssa/caps#79795d78",
      "type": "Capability",
 
      // Pointing up the chain at the capability from which Alyssa was
      // initially gained authority
      "parentCapability": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
 
-     // Alyssa grants authority specifically to one of Ben's signing keys
+     // Alyssa grants authority specifically to one of Ben's
+     // cryptographic keys
      "invoker": "https://chatty.example/ben/#key-33",
 
      // Alyssa adds a caveat: Ben can drive her car, unless she flips
@@ -324,9 +326,9 @@
         <pre class="example highlight javascript">
     {"@context": ["https://example.org/ocap/v1",
                   "https://autopower.example/"],
-     "id": "https://chatty.example/ben/procs#2cdea8c1",
+     "id": "https://chatty.example/ben/caps#2cdea8c1",
      "type": "Capability",
-     "parentCapability": "https://social.example/alyssa/prcmtns#79795d78",
+     "parentCapability": "https://social.example/alyssa/caps#79795d78",
      "invoker": "https://lem.example/#key-bf36",
 
      // Ben adds this caveat: this capability can be used to drive the
@@ -638,7 +640,8 @@
       <ul>
         <li>
           The toplevel capability document in the chain must be signed by
-          one of the <code>invocationTarget</code>'s keys.
+          cryptographic material in the <code>invocationTarget</code>'s
+          <code>grantCapability</code> field.
         </li>
         <li>
           <!-- @@: Or should it be the "nearest" invoker? -->
