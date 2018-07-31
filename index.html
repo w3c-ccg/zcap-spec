@@ -213,11 +213,11 @@
      "invoker": "https://social.example/alyssa/#key-for-car",
 
      // Finally we sign this object with cryptographic material from
-     // Alyssa's Car's grantCapability field, and using the
-     // grantCapability proofPurpose.
+     // Alyssa's Car's capabilityGrant field, and using the
+     // capabilityGrant proofPurpose.
      "proof": {
         "type": "RsaSignature2016",
-        "proofPurpose": "grantCapability",
+        "proofPurpose": "capabilityGrant",
         "created": "2016-02-08T16:02:20Z",
         "creator": "https://whatacar.example/a-fancy-car#key-1",
         "signatureValue": "IOmA4R7TfhkYTYW8...CBMq2/gi25s="}}
@@ -239,9 +239,9 @@
      "proof": {
         "type": "RsaSignature2016",
         // A linked data document can be an invocation if it has a
-        // proofPurpose of invokeCapability and links to the a capability
+        // proofPurpose of capabilityInvocation and links to the a capability
         // chain it is invoking
-        "proofPurpose": "invokeCapability",
+        "proofPurpose": "capabilityInvocation",
         "capability": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
         "created": "2016-02-08T17:13:48Z",
         "creator": "https://social.example/alyssa/#key-for-car",
@@ -293,7 +293,7 @@
      // authority with
      "proof": {
         "type": "RsaSignature2016",
-        "proofPurpose": "grantCapability",
+        "proofPurpose": "capabilityGrant",
         "created": "2017-03-28T06:01:25Z",
         "creator": "https://social.example/alyssa/#key-for-car",
         "signatureValue": "..."}}
@@ -344,7 +344,7 @@
      // authority with
      "proof": {
         "type": "RsaSignature2016",
-        "proofPurpose": "grantCapability",
+        "proofPurpose": "capabilityGrant",
         "created": "2017-06-13T19:15:03Z",
         "creator": "https://chatty.example/ben/#key-33",
         "signatureValue": "..."}}
@@ -615,7 +615,7 @@
 
       <ul>
         <li>
-          a <code>proofPurpose</code> of <code>invokeCapability</code>
+          a <code>proofPurpose</code> of <code>capabilityInvocation</code>
         </li>
         <li>
           a <code>capability</code> property which links to the
@@ -642,7 +642,7 @@
         <li>
           The toplevel capability document in the chain must be signed by
           cryptographic material in the <code>invocationTarget</code>'s
-          <code>grantCapability</code> field.
+          <code>capabilityGrant</code> field.
         </li>
         <li>
           <!-- @@: Or should it be the "nearest" invoker? -->
