@@ -201,7 +201,6 @@
     {"@context": ["https://example.org/ocap/v1",
                   "https://autopower.example/"],
      "id": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
-     "type": "Capability",
 
      // The invocationTarget is who the capability operates on
      // (in this case, Alyssa's Car)
@@ -273,7 +272,6 @@
     {"@context": ["https://example.org/ocap/v1",
                   "https://autopower.example/"],
      "id": "https://social.example/alyssa/caps#79795d78",
-     "type": "Capability",
 
      // Pointing up the chain at the capability from which Alyssa was
      // initially gained authority
@@ -328,7 +326,6 @@
     {"@context": ["https://example.org/ocap/v1",
                   "https://autopower.example/"],
      "id": "https://chatty.example/ben/caps#2cdea8c1",
-     "type": "Capability",
      "parentCapability": "https://social.example/alyssa/caps#79795d78",
      "invoker": "https://lem.example/#key-bf36",
 
@@ -490,7 +487,6 @@
         <!-- TODO: What's the right way to say this?
              This sounds very json-ld centric -->
         <li>an associated <code>id</code></li>
-        <li>the <code>type</code> set to <code>Capability</code></li>
         <li>
           <!-- TODO: open this up a bit more for more than just "keys" -->
           a <code>proof</code> field, which MUST sign the document with
