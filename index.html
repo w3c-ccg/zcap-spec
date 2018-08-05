@@ -120,14 +120,13 @@
       </i></p>
 
       <p>
-        This document does not cover a specific method for delivering
-        Linked Data Capabilities to an object, though something like
-        the inbox property and associated delivery mechanisms from
-        Linked Data Notifications and ActivityPub is one possible
-        system.
-        However there is nothing about Linked Data Capabilities that is
-        specific to HTTP; for example, both capabilities and invocations
-        could be stored on a blockchain or a distributed hash table.
+        This document does not cover a specific method for delivering ocap-ld
+        invocations to an object, though something like the inbox property and
+        associated delivery mechanisms from Linked Data Notifications and
+        ActivityPub is one possible system.
+        However there is nothing about ocap-ld that is specific to HTTP; for
+        example, both capabilities and invocations could be stored on a
+        blockchain or a distributed hash table.
       </p>
 
       <section>
@@ -165,7 +164,7 @@
       </section>
 
       <section id="ocap-by-example">
-        <h2>Linked Data Capabilities by Example</h2>
+        <h2>Ocap-ld by Example</h2>
         <p>
           Much of modern computing security infrastructure relies on "who is
           doing something" using access control lists.
@@ -191,7 +190,7 @@
           Alyssa holds the kind of key that enables her to drive the car, she
           can drive the car.
           Capabilities are very similar to this car metaphor, and we can encode
-          this same idea in Linked Data Capabilities:
+          this same idea in ocap-ld:
         </p>
 
         <!-- TODO: Should we include the full embedded key?  That's better
@@ -359,7 +358,7 @@
         <h2>Capabilities Are Safer</h2>
         <p>
           We can see from the above example that by using an object capability
-          system such as Linked Data Capabilities can give us some additional
+          system such as ocap-ld can give us some additional
           power around delegating and restricting the scope of capabilities.
           But object capabilities provide improved safety characteristics
           over Access Control Lists which may make them frequently better
@@ -406,8 +405,8 @@
           Object capabilities are less vulnerable to these kinds of attacks
           because capabilities are an encoding of "the principle of least
           authority" in software development practice.
-          Linked Data Capabilities helps bring the power of capabilities
-          to the web, providing specific and directed grants of authority.
+          ocap-ld helps bring the power of capabilities to the web, providing
+          specific and directed grants of authority.
         </p>
       </section>
 
@@ -471,10 +470,10 @@
       <h2>Capabilities</h2>
 
       <p>
-        Linked Data Capabilities are encoded through linked data documents
-        express a grant of authority from some entity (or more precisely, some
-        entity's credentials) to a specific invocationTarget, possibly
-        restricted through "caveats".
+        ocap-ld capabilities are encoded through linked data documents express
+        a grant of authority from some entity (or more precisely, some entity's
+        credentials) to a specific invocationTarget, possibly restricted
+        through "caveats".
         (This includes the possibility of revocation through a caveat
         that expresses such a mechanism.)
       </p>
@@ -555,7 +554,7 @@
           property.
           A series of capability chained together in this way is called a
           "capability chain" and is how delegation of capabilities are
-          handled in Linked Data Capabilities.
+          handled in ocap-ld.
           New keys MAY be granted authority to use this capability through
           the associated <code>invoker</code> property.
           Capability documents with parents MUST NOT have a new
@@ -604,9 +603,9 @@
 
       <p>
         A capability may be enacted through the process of invocation.
-        In the context of Linked Data Capabilities, an invocation
-        consists of a linked data object which MUST have a <code>proof</code>
-        property with a value containing:
+        In the context of ocap-ld, an invocation consists of a linked data
+        object which MUST have a <code>proof</code> property with a value
+        containing:
       </p>
 
       <ul>
@@ -667,7 +666,7 @@
           possible for an invocation to refer to an invocation as an argument.
           For this reason it is critical that mechanisms for accepting
           invocations be sure which invocation is being performed.
-          For example, a mechanism that accepts linked data capabilities as
+          For example, a mechanism that accepts ocap-ld capabilities as
           JSON-LD documents will likely have no trouble telling which
           invocation is being performed since that will be the "top"
           of the framed document.
@@ -761,8 +760,8 @@
         Use correlation (Verifiable Credentials) in a reasoning system (most
         commonly human reasoning) as a path to make judgements about whether to
         hand an entity a specific set of initial capabilities.
-        Use capabilities (Linked Data Capabilities) as the mechanism to grant
-        and exercise authority through computing systems.
+        Use capabilities (ocap-ld) as the mechanism to grant and exercise
+        authority through computing systems.
         To return to our system adminstrator example, when Alice applies for the
         job, she submits a series of credentials about her prior work history
         and degree, and Eva is able to verify that it is Alice's former
@@ -794,11 +793,11 @@
         In some object capability systems (such as many object capability
         programming languages) it is not even possible to see what entity is
         invoking a capability.
-        In the case of Linked Data Capabilities, it is always possible to
-        inspect an invocation to check which authentication material authorized
-        to invoke the capability is being used in the invocation, and this may
-        permit checking a certain amount of "who" is performing the action,
-        but to focus on the "who" rather than the source of authority would
+        In the case of ocap-ld, it is always possible to inspect an invocation
+        to check which authentication material authorized to invoke the
+        capability is being used in the invocation, and this may permit
+        checking a certain amount of "who" is performing the action, but to
+        focus on the "who" rather than the source of authority would
         <a href="capabilities-are-safer">
           bring us back to the dangers of Access Control Lists</a>.
       </p>
@@ -813,7 +812,7 @@
         <a href="http://www.erights.org/elib/capability/horton/">Horton</a>
         is one such system for E, though as previously stated,
         such information can be cleaned already by looking at the invocation
-        and capability chain documents in Linked Data Capabilities.)
+        and capability chain documents in ocap-ld.)
         The key to permit detecting and mitigating abuse safely in a capability
         based environment is to treat correlation of who is using a service
         not as something that is used per-invocation, but as something to be
