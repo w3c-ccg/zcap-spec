@@ -201,9 +201,10 @@
                   "https://autopower.example/"],
      "id": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
 
-     // The invocationTarget is who the capability operates on
+     // Since this is the first delegated capability, the parentCapability
+     // points to the target this capability will operate against
      // (in this case, Alyssa's Car)
-     "invocationTarget": "https://whatacar.example/a-fancy-car",
+     "parentCapability": "https://whatacar.example/a-fancy-car",
 
      // We are granting authority specifically to one of Alyssa's
      // cryptographic keys (not to be confused with the car
@@ -211,20 +212,17 @@
      "invoker": "https://social.example/alyssa/#key-for-car",
 
      // Finally we sign this object with cryptographic material from
-     // Alyssa's Car's capabilityGrant field, and using the
-     // capabilityGrant proofPurpose.
+     // Alyssa's Car's capabilityDelegate field, and using the
+     // capabilityDelegate proofPurpose.
      "proof": {
         "type": "RsaSignature2016",
-        "proofPurpose": "capabilityGrant",
+        "proofPurpose": "capabilityDelegate",
         "created": "2016-02-08T16:02:20Z",
         "creator": "https://whatacar.example/a-fancy-car#key-1",
         "signatureValue": "IOmA4R7TfhkYTYW8...CBMq2/gi25s="}}
         </pre>
 
         <p>
-          This capability signs that Alyssa is able to utilize this capability
-          using specific cryptographic material by which she can prove that she
-          has authorized this invocation.
           Turning on this car and driving into the sunset is as easy as
           invoking the capability to do so:
         </p>
@@ -290,7 +288,7 @@
      // authority with
      "proof": {
         "type": "RsaSignature2016",
-        "proofPurpose": "capabilityGrant",
+        "proofPurpose": "capabilityDelegate",
         "created": "2017-03-28T06:01:25Z",
         "creator": "https://social.example/alyssa/#key-for-car",
         "signatureValue": "..."}}
@@ -340,7 +338,7 @@
      // authority with
      "proof": {
         "type": "RsaSignature2016",
-        "proofPurpose": "capabilityGrant",
+        "proofPurpose": "capabilityDelegate",
         "created": "2017-06-13T19:15:03Z",
         "creator": "https://chatty.example/ben/#key-33",
         "signatureValue": "..."}}
