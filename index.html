@@ -214,11 +214,11 @@
      "invoker": "https://social.example/alyssa/#key-for-car",
 
      // Finally we sign this object with cryptographic material from
-     // Alyssa's Car's capabilityDelegate field, and using the
-     // capabilityDelegate proofPurpose.
+     // Alyssa's Car's capabilityDelegation field, and using the
+     // capabilityDelegation proofPurpose.
      "proof": {
         "type": "RsaSignature2016",
-        "proofPurpose": "capabilityDelegate",
+        "proofPurpose": "capabilityDelegation",
         "created": "2016-02-08T16:02:20Z",
         "creator": "https://whatacar.example/a-fancy-car#key-1",
         "signatureValue": "IOmA4R7TfhkYTYW8...CBMq2/gi25s="}}
@@ -290,7 +290,7 @@
      // authority with
      "proof": {
         "type": "RsaSignature2016",
-        "proofPurpose": "capabilityDelegate",
+        "proofPurpose": "capabilityDelegation",
         "created": "2017-03-28T06:01:25Z",
         "creator": "https://social.example/alyssa/#key-for-car",
         "signatureValue": "..."}}
@@ -340,7 +340,7 @@
      // authority with
      "proof": {
         "type": "RsaSignature2016",
-        "proofPurpose": "capabilityDelegate",
+        "proofPurpose": "capabilityDelegation",
         "created": "2017-06-13T19:15:03Z",
         "creator": "https://chatty.example/ben/#key-33",
         "signatureValue": "..."}}
@@ -473,7 +473,7 @@
           at the target.
         </dd>
 
-        <dt>capabilityDelegate</dt>
+        <dt>capabilityDelegation</dt>
         <dd>
           This term serves two purposes:
           <ul>
@@ -554,7 +554,7 @@
           <!-- TODO: if #15 ends up with us granting to entities rather than
                specific keys, this will use the capabilityInvocation property
                on both the target and all future granted entities -->
-          <code>capabilityDelegate</code> property of the target, or from
+          <code>capabilityDelegation</code> property of the target, or from
           an <code>invoker</code> previously granted authority on the chain.
           <!-- TODO: Should this be by any of the authentication material which
                has authority to use this capability, or only the nearest
@@ -686,7 +686,7 @@
         up along the <code>previousCapability</code> document until the target is
         found (the root document that has no <code>previousCapability</code>
         property).
-        The target's <code>capabilityDelegate</code> cryptographic material is
+        The target's <code>capabilityDelegation</code> cryptographic material is
         marked in the initial set of authority.
         The capability chain is then traversed from this root target back down
         through each delegated capability all the way to the invoked capability
@@ -697,7 +697,7 @@
         <ul>
           The <code>proof</code> field of this capability document is checked for a
           valid proof with a <code>proofPurpose</code> of
-          <code>capabilityDelegate</code> where the <code>creator</code> of the
+          <code>capabilityDelegation</code> where the <code>creator</code> of the
           proof is cryptographic material in the currently authorized set.
         </ul>
         <ul>
