@@ -190,7 +190,9 @@
           Alyssa holds the kind of key that enables her to drive the car, she
           can drive the car.
           Capabilities are very similar to this car metaphor, and we can encode
-          this same idea in OCAP-LD:
+          this same idea in OCAP-LD.
+          The following document delegates authority from the car (who always
+          has authority over itself) to Alyssa so that she may drive:
         </p>
 
         <!-- TODO: Should we include the full embedded key?  That's better
@@ -201,9 +203,10 @@
                   "https://autopower.example/"],
      "id": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
 
-     // The invocationTarget is who the capability operates on
+     // Since this is the first delegated capability, the parentCapability
+     // points to the target this capability will operate against
      // (in this case, Alyssa's Car)
-     "invocationTarget": "https://whatacar.example/a-fancy-car",
+     "parentCapability": "https://whatacar.example/a-fancy-car",
 
      // We are granting authority specifically to one of Alyssa's
      // cryptographic keys (not to be confused with the car
@@ -211,20 +214,17 @@
      "invoker": "https://social.example/alyssa/#key-for-car",
 
      // Finally we sign this object with cryptographic material from
-     // Alyssa's Car's capabilityGrant field, and using the
-     // capabilityGrant proofPurpose.
+     // Alyssa's Car's capabilityDelegation field, and using the
+     // capabilityDelegation proofPurpose.
      "proof": {
         "type": "RsaSignature2016",
-        "proofPurpose": "capabilityGrant",
+        "proofPurpose": "capabilityDelegation",
         "created": "2016-02-08T16:02:20Z",
         "creator": "https://whatacar.example/a-fancy-car#key-1",
         "signatureValue": "IOmA4R7TfhkYTYW8...CBMq2/gi25s="}}
         </pre>
 
         <p>
-          This capability signs that Alyssa is able to utilize this capability
-          using specific cryptographic material by which she can prove that she
-          has authorized this invocation.
           Turning on this car and driving into the sunset is as easy as
           invoking the capability to do so:
         </p>
@@ -290,7 +290,7 @@
      // authority with
      "proof": {
         "type": "RsaSignature2016",
-        "proofPurpose": "capabilityGrant",
+        "proofPurpose": "capabilityDelegation",
         "created": "2017-03-28T06:01:25Z",
         "creator": "https://social.example/alyssa/#key-for-car",
         "signatureValue": "..."}}
@@ -340,7 +340,7 @@
      // authority with
      "proof": {
         "type": "RsaSignature2016",
-        "proofPurpose": "capabilityGrant",
+        "proofPurpose": "capabilityDelegation",
         "created": "2017-06-13T19:15:03Z",
         "creator": "https://chatty.example/ben/#key-33",
         "signatureValue": "..."}}
@@ -421,6 +421,11 @@
           (linked data) object.
         </dd>
 
+        <dt>target</dt>
+        <dd>
+          The entity that will be acted upon when the capability is invoked.
+        </dd>
+
         <dt>capability chain</dt>
         <dd>
           A chain of capability documents which may be used to delegate
@@ -459,9 +464,31 @@
           computer programming.)
         </dd>
 
-        <dt>invocationTarget</dt>
+        <dt>parentCapability</dt>
         <dd>
-          TODO
+          The previous capability document on the chain, which is granting
+          authority to this invocation document.
+          In the case of the first delegated capability document, this points
+          at the target.
+        </dd>
+
+        <dt>capabilityDelegation</dt>
+        <dd>
+          This term serves two purposes:
+          <ul>
+            <li>
+              As a property from which the target supplies the "initial source
+              of authority" on the chain.
+              This is holds cryptographic material which it may use to initially
+              delegate on the chain (and in some cases which it may use to
+              invoke itself as a capability).
+            </li>
+            <li>
+              As the value of a proof's <code>proofPurpose</code> to indicate
+              that this proof is intended to grant authority to the <code>invoker</code>
+              entities on the capability.
+            </li>
+          </ul>
         </dd>
       </dl>
     </section>
@@ -470,16 +497,41 @@
       <h2>Capabilities</h2>
 
       <p>
-        OCAP-LD capabilities are encoded through linked data documents express
-        a grant of authority from some entity (or more precisely, some entity's
-        credentials) to a specific invocationTarget, possibly restricted
-        through "caveats".
-        (This includes the possibility of revocation through a caveat
-        that expresses such a mechanism.)
+        OCAP-LD capabilities are encoded through a chain of linked data
+        documents, granting authority to a target, possibly restricted through
+        "caveats".
+        Authority starts with the target (which always has authority to invoke
+        itself) and extends to further <code>invoker</code> entities along
+        the chain.
+        Each capability document granting authority must be signed off with a
+        proof by an entity which has previously been granted authority on the
+        chain.
+        Any caveat applied by a parent in the chain applies to its descendants.
       </p>
 
+      <div class="note">
+        <p>
+          The target's json-ld document is a kind of "special" capability document
+          implicitly granting authority to itself.
+          But why?
+          Surely in most protocols, such as when objects are sending
+          invocations over HTTP POST requests, any target that wants to
+          self-modify could do so internally without an explicit invocation
+          process.
+          But in some systems such as blockchains, there is no "internal" state,
+          so explicitly doing an invocation to change behavior is still useful.
+        </p>
+        <p>
+          Another reason is that it simplifies the invocation algorithm: as we
+          delegate authority to the first non-target entity, we do so using the
+          target's cryptographic authority.
+          If this authority can be used to grant capabilities, it may as well
+          be able to be used to invoke them as well.
+        </p>
+      </div>
+
       <p>
-        Every capability document MUST have:
+        Every capability document, except for the target, MUST have:
       </p>
 
       <ul>
@@ -487,15 +539,22 @@
              This sounds very json-ld centric -->
         <li>an associated <code>id</code></li>
         <li>
+          <code>parentCapability</code>, which links to the target if this is
+          the first delegated capability on the chain, or otherwise links to
+          another capability document
+        </li>
+        <li>
           <!-- TODO: open this up a bit more for more than just "keys" -->
           a <code>proof</code> field, which MUST sign the document with
           <a href="https://w3c-dvcg.github.io/ld-signatures/">
             Linked Data Signatures</a>
-          by one of the <code>invocationTarget</code>'s keys, or if this
-          capability is being delegated through the
-          <code>parentCapability</code> property, by one of the keys granted
-          authority to this capability through the <code>invoker</code>
-          property.
+          by cryptographic material which has already been granted authority
+          on the chain (either being cryptographic material from the
+          <!-- TODO: if #15 ends up with us granting to entities rather than
+               specific keys, this will use the capabilityInvocation property
+               on both the target and all future granted entities -->
+          <code>capabilityDelegation</code> property of the target, or from
+          an <code>invoker</code> previously granted authority on the chain.
           <!-- TODO: Should this be by any of the authentication material which
                has authority to use this capability, or only the nearest
                invoker on the chain? -->
@@ -503,20 +562,14 @@
       </ul>
 
       <p>
-        "Top-level" capabilities, which do not have a
-        <code>parentCapability</code> property, MUST have:
+        Every capability document, except for the target, MAY have:
       </p>
 
       <ul>
         <li>
-          a <code>invocationTarget</code>, which links to a linked data object
-          to which this capability grants the authority to invoke
-          operations upon
-        </li>
-        <li>
-          <code>invoker</code>, which links to one or more keys
-          being granted authority to use this capability
-          (child capabilities MAY also have this property)
+          <code>invoker</code>, which links to one or more instances of
+          cryptographic material (such as public keys) being granted authority
+          to use this capability
         </li>
       </ul>
 
@@ -549,18 +602,14 @@
       <section id="delegation">
         <h2>Delegation through Capability Chains</h2>
         <p>
-          <!-- TODO: Is parentCapability too wordy? -->
-          A capability MAY also have a <code>parentCapability</code>
-          property.
+          A capability document that is not the target MUST also have a
+          <code>parentCapability</code> property which either points at the
+          target or another capability document.
           A series of capability chained together in this way is called a
           "capability chain" and is how delegation of capabilities are
           handled in OCAP-LD.
           New keys MAY be granted authority to use this capability through
           the associated <code>invoker</code> property.
-          Capability documents with parents MUST NOT have a new
-          <code>invocationTarget</code> property, and MUST be signed by either
-          the original <code>invocationTarget</code> or one of the later
-          <code>invoker</code> keys.
         </p>
       </section>
 
@@ -576,11 +625,10 @@
         <p>
           The meaning of caveats are determined by their <code>type</code>
           and whatever other properties they have.
-          Due to the way they are interpreted at invocation type by the
-          <code>invocationTarget</code>, some mutual understanding of
-          terminology must be understood between the entity adding a caveat and
-          the invocationTarget evaluating (or any other parties observing) the
-          invocation.
+          Due to the way they are interpreted at invocation type by the target,
+          some mutual understanding of terminology must be understood between
+          the entity adding a caveat and the target evaluating (or any other
+          parties observing) the invocation.
         </p>
       </section>
 
@@ -630,26 +678,39 @@
       </p>
 
       <p>
-        In order for an invocation to be considered valid:
+        Each capability document accrues granted authority in the chain, which
+        is used to both authorize further capability delegation and may be used
+        to invoke the capability chain.
+        The capability document that is invoked's chain is recursively traversed
+        up along the <code>previousCapability</code> document until the target is
+        found (the root document that has no <code>previousCapability</code>
+        property).
+        The target's <code>capabilityDelegation</code> cryptographic material is
+        marked in the initial set of authority.
+        The capability chain is then traversed from this root target back down
+        through each delegated capability all the way to the invoked capability
+        document leaf, validating and accruing authority:
       </p>
 
-      <ul>
-        <li>
-          The toplevel capability document in the chain must be signed by
-          cryptographic material in the <code>invocationTarget</code>'s
-          <code>capabilityGrant</code> field.
-        </li>
-        <li>
-          <!-- @@: Or should it be the "nearest" invoker? -->
-          All child capability documents must have a valid <code>proof</code>
-          (generally a signature) signed with one of the <code>invoker</code>
-          fields of their parents.
-        </li>
-        <li>
-          The restrictions of all caveats in the chain must be considered
-          fulfilled.
-        </li>
-      </ul>
+      <li>
+        <ul>
+          The <code>proof</code> field of this capability document is checked for a
+          valid proof with a <code>proofPurpose</code> of
+          <code>capabilityDelegation</code> where the <code>creator</code> of the
+          proof is cryptographic material in the currently authorized set.
+        </ul>
+        <ul>
+          The caveats of this capability document are checked for validity.
+        </ul>
+        <ul>
+          The cryptographic material on the <code>invoker</code> field is added
+          to the currently authorized set.
+        </ul>
+        <ul>
+          We traverse to the next document downwards towards the leaf, repeating
+          this process until we are back at the leaf again.
+        </ul>
+      </li>
 
       <p>
         At this point, the invocation is considered valid and any relevant
