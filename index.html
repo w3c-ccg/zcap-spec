@@ -159,7 +159,7 @@
           <a href="http://srl.cs.jhu.edu/pubs/SRL2003-02.pdf">Capability Myths Demolished</a>
           and
           <a href="http://waterken.sourceforge.net/aclsdont/current.pdf">ACLs Don't</a>
-          provide a deeper exploration into the benefits of Object Capabilites.
+          provide a deeper exploration into the benefits of Object Capabilities.
         </p>
       </section>
 
@@ -182,7 +182,7 @@
           the car scenario, but less familiar in the context of computing,
           despite providing some superior properties and a greater degree
           of safety: object capabilities.
-          Object capabilities focus not on "who" is peforming an action, but
+          Object capabilities focus not on "who" is performing an action, but
           upon "what" source of authority permits an action to occur.
           As it turns out, Alyssa does not have a talking and face-scanning
           car, she has a car that accepts a car key.
@@ -237,7 +237,7 @@
      "proof": {
         "type": "RsaSignature2016",
         // A linked data document can be an invocation if it has a
-        // proofPurpose of capabilityInvocation and links to the a capability
+        // proofPurpose of capabilityInvocation and links to the capability
         // chain it is invoking
         "proofPurpose": "capabilityInvocation",
         "capability": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
@@ -332,7 +332,7 @@
      // car, but not for more than 5 kilometers
      "caveat": [
        {"type": "DriveNoMoreThan",
-        // Alyssa's guage currently says 123854 kilometers driven,
+        // Alyssa's gauge currently says 123854 kilometers driven,
         // so this is only 5 km more than the current value
         "kilometers": 123859}],
 
@@ -634,7 +634,7 @@
 
       <!-- TODO: move this to security considerations section:
 
-           Unlike access control lists, the focus of capablities is about
+           Unlike access control lists, the focus of capabilities is about
            what action is being performed by who is "holding" a
            capability they have authority to use rather than checking who
            is performing a specific action every time an action is
@@ -744,7 +744,7 @@
           Actions are a common way to direct behavior of an invocation.
           Targets are free to choose their own mechanisms for directing
           behavior, but MAY support the <code>action</code> property on
-          invocations as one common bahavioral direction technique.
+          invocations as one common behavioral direction technique.
           The <code>action</code> property points to a URI as a form of
           vocabulary to determine which action is being performed.
           For example, a capability to a file storage system may allow
@@ -823,7 +823,7 @@
         hand an entity a specific set of initial capabilities.
         Use capabilities (OCAP-LD) as the mechanism to grant and exercise
         authority through computing systems.
-        To return to our system adminstrator example, when Alice applies for the
+        To return to our system administrator example, when Alice applies for the
         job, she submits a series of credentials about her prior work history
         and degree, and Eva is able to verify that it is Alice's former
         employers and university which have made these claims.
@@ -865,7 +865,7 @@
 
       <p>
         Nonetheless, there comes a time when correlating information about
-        usage of a resource becomes critical, and this is in migigating abuse.
+        usage of a resource becomes critical, and this is in mitigating abuse.
         Even traditional capability systems, in developing solutions to this
         problem, develop techniques for correlating information about "who"
         has performed an action.
@@ -889,7 +889,7 @@
         revocation) to a number of users access to run programs on the systems
         she is administrating, but someone is using their capability to abuse
         the system.
-        The system itself permforms the invocations as the users call them,
+        The system itself performs the invocations as the users call them,
         but Alice, or a program Alice runs, is able to analyze a log of past
         invocations called.
         Having finished the analysis, Alice realizes that the abuse is coming
