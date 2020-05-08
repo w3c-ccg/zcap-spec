@@ -201,29 +201,36 @@
              practice in general (outside of DIDs) but will make the example
              noisier -->
         <pre class="example highlight javascript">
-    {"@context": ["https://example.org/zcap/v1",
-                  "https://autopower.example/"],
-     "id": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
+{
+  "@context": ["https://w3id.org/security/v2",
+               "https://autopower.example/"],
 
-     // Since this is the first delegated capability, the parentCapability
-     // points to the target this capability will operate against
-     // (in this case, Alyssa's Car)
-     "parentCapability": "https://whatacar.example/a-fancy-car",
+  "id": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
 
-     // We are granting authority specifically to one of Alyssa's
-     // cryptographic keys (not to be confused with the car
-     // key metaphor!)
-     "invoker": "https://social.example/alyssa/#key-for-car",
+  // Since this is the first delegated capability, the parentCapability
+  // points to the target this capability will operate against
+  // (in this case, Alyssa's Car)
+  "parentCapability": "https://whatacar.example/a-fancy-car/caps#1",
 
-     // Finally we sign this object with cryptographic material from
-     // Alyssa's Car's capabilityDelegation field, and using the
-     // capabilityDelegation proofPurpose.
-     "proof": {
-        "type": "RsaSignature2016",
-        "proofPurpose": "capabilityDelegation",
-        "created": "2016-02-08T16:02:20Z",
-        "creator": "https://whatacar.example/a-fancy-car#key-1",
-        "signatureValue": "IOmA4R7TfhkYTYW8...CBMq2/gi25s="}}
+  // We are granting authority specifically to one of Alyssa's
+  // cryptographic keys (not to be confused with the car
+  // key metaphor!)
+  "invoker": "https://social.example/alyssa/#key-for-car",
+
+  // Finally we sign this object with cryptographic material from
+  // Alyssa's Car's capabilityDelegation field, and using the
+  // capabilityDelegation proofPurpose.
+  "proof": {
+    "type": "Ed25519Signature2018",
+    "created": "2018-02-13T21:26:08Z",
+    "capabilityChain": [
+      "https://whatacar.example/a-fancy-car/caps#1"
+    ],
+    "jws": "eyJhbGciOiJFZERTQSIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..lfAFjrWE-4RxhL0gtzSMRX72NR9SRDgaMmkjPA4if0ERbw4R2bnts5sAs8OyhAlbFzBAKOqrFk57AYqwSR2vCw",
+    "proofPurpose": "capabilityDelegation",
+    "verificationMethod": "https://example.com/i/alice/keys/1"
+  }
+}
         </pre>
 
         <p>
