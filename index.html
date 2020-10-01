@@ -359,7 +359,7 @@
       <section id="capabilities-are-safer">
         <h2>Capabilities Are Safer</h2>
         <p>
-          We can see from the above example that by using an object capability
+          We can see from the above example that using an object capability
           system such as ZCAP-LD can give us some additional
           power around delegating and restricting the scope of capabilities.
           But object capabilities provide improved safety characteristics
@@ -377,7 +377,7 @@
             if an attacker gets you to open a message in your email client
             which contains an image which triggers an arbitrary code execution
             vulnerability in the image library it is using, an attacker can
-            use this to do everything that you can: read or destroy your
+            use this to do everything that you can: they can read or destroy your
             documents, they can run programs as you, and they can in general
             do anything that you can... all from a pin-prick sized vulnerability.
             Properly using an object capability environment, the worst an
@@ -391,7 +391,7 @@
             For example, browsers and both backend and frontend software for
             the web have frequently struggled with Cross-Site Request Forgery
             attack issues.
-            Your browser may both allow you websites to access resources on
+            Your browser may both allow websites to access resources on
             other websites and also allow you to log into various websites,
             say a social networking site or a bank.
             A malicious website could use this to its advantage to trick
@@ -442,7 +442,7 @@
           Also known as "attenuation" within object capability literature,
           a "caveat" may be attached to a capability as a restriction on
           how that capability may be used.
-          Delegated capabilities will preserve caveats and may be themselves
+          Delegated capabilities will preserve caveats and themselves
           may be further restricted by adding more caveats.
         </dd>
 
@@ -481,7 +481,7 @@
             <li>
               As a property from which the target supplies the "initial source
               of authority" on the chain.
-              This is holds cryptographic material which it may use to initially
+              This  holds cryptographic material which it may use to initially
               delegate on the chain (and in some cases which it may use to
               invoke itself as a capability).
             </li>
@@ -874,7 +874,7 @@
         (For example,
         <a href="http://www.erights.org/elib/capability/horton/">Horton</a>
         is one such system for E, though as previously stated,
-        such information can be cleaned already by looking at the invocation
+        such information can be gleaned already by looking at the invocation
         and capability chain documents in ZCAP-LD.)
         The key to permit detecting and mitigating abuse safely in a capability
         based environment is to treat correlation of who is using a service
@@ -896,7 +896,7 @@
         invocations called.
         Having finished the analysis, Alice realizes that the abuse is coming
         from the invocation of a capability granted to some of Mallet's
-        authentication material, and Alyssa revokes that capability.
+        authentication material, and Alice revokes that capability.
       </p>
     </section>
   </body>
