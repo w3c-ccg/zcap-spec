@@ -1,0 +1,21 @@
+{
+  "@context": {
+    "id": "@id",
+    "type": "@type",
+    "@protected": true,
+
+    "allowedAction": "https://w3id.org/security#allowedAction",
+    "capability": "https://w3id.org/security#capability",
+    "capabilityAction": "https://w3id.org/security#capabilityAction",
+    "capabilityChain": {"@id": "https://w3id.org/security#capabilityChain", "@type": "@id", "@container": "@list"},
+    "capabilityDelegation": {"@id": "https://w3id.org/security#capabilityDelegationMethod", "@type": "@id", "@container": "@set"},
+    "capabilityInvocation": {"@id": "https://w3id.org/security#capabilityInvocationMethod", "@type": "@id", "@container": "@set"},
+    "caveat": {"@id": "https://w3id.org/security#caveat", "@type": "@id", "@container": "@set"},
+    "controller": "https://w3id.org/security#controller",
+    "delegator": "https://w3id.org/security#delegator",
+    "invocationTarget": "https://w3id.org/security#invocationTarget",
+    "invoker": "https://w3id.org/security#invoker",
+    "parentCapability": "https://w3id.org/security#parentCapability",
+    "referenceId": "https://w3id.org/security#referenceId"
+  }
+}
