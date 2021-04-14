@@ -3,14 +3,14 @@
     "id": "@id",
     "type": "@type",
     "@protected": true,
-
     "allowedAction": "https://w3id.org/security#allowedAction",
     "alsoKnownAs": {
       "@id": "https://www.w3.org/ns/activitystreams#alsoKnownAs",
       "@type": "@id"
     },
     "capability": {
-      "@id": "https://w3id.org/security#capability", "@type": "@id"
+      "@id": "https://w3id.org/security#capability",
+      "@type": "@id"
     },
     "capabilityAction": "https://w3id.org/security#capabilityAction",
     "capabilityChain": {
