@@ -426,21 +426,21 @@
         </p>
 
         <pre class="example highlight javascript">
-          {
-            "@context": [
-              "https://w3id.org/zcap/v1"
-            ],
-            "id": "urn:zcap:root:https%3A%2F%2Fexample.com%2Ffoo",
-            "controller": "did:key:example",
-            "invocationTarget": "https://example.com/foo"
-          }
+{
+  "@context": [
+    "https://w3id.org/zcap/v1"
+  ],
+  "id": "urn:zcap:root:https%3A%2F%2Fexample.com%2Ffoo",
+  "controller": "did:key:example",
+  "invocationTarget": "https://example.com/foo"
+}
         </pre>
 
         <p>
-          A root zcap MUST have an @context field that is a string with the
-          value https://w3id.org/zcap/v1. This field makes zcaps JSON-LD
+          A root zcap MUST have an `@context` field that is a string with the
+          value `https://w3id.org/zcap/v1`. This field makes zcaps JSON-LD
           compatible, but does not mean that any other JSON-LDisms are
-          permitted. In other words, zcaps are JSON-based, but the JSON has
+          permitted. In other words, zcaps are JSON-based, and the JSON has
           been chosen carefully such that it can be interpreted properly as
           JSON-LD as well. Other JSON-LD representations that deviate from the
           JSON expression of a zcap are not permitted.
@@ -449,40 +449,40 @@
         <p>
           By enabling JSON-LD compatibility, DI proofs (Data Integrity Proofs,
           formerly known as Linked Data proofs) are used instead of JOSE-based
-          signatures to keep zcap sizes small by eliminating the need to
+          signatures. This helps keep zcap sizes small by eliminating the need to
           encapsulate zcaps via base64 encoding. This is particularly important
           for expressing capability chains [TODO: link to capability chains],
           where ancestor zcaps would be base64-encoded N+1 times where N is the
           length or position in the chain. If neither of these approaches were
           used, a novel signature encapsulation mechanism would have to be
-          invented to get the same benefits. Instead, reuse of existing work is
+          invented to get the same benefits; instead, reuse of existing work is
           preferred.
         </p>
 
         <p>
-          Additionally, JSON-LD compatibility also enables CBOR-LD to be used
-          to express zcaps – further reducing size via semantic compression.
+          Additionally, JSON-LD compatibility enables CBOR-LD to be used
+          to express zcaps &mdash; further reducing size via semantic compression.
 
           [Note: [See invoking a root zcap section]. When invoking a root zcap,
-          a capability invocation proof is not added to the root zcap itself,
+          a capability invocation proof is added, not to the root zcap itself,
           but rather to another document that is acceptable to an API. This
-          means that no additional contexts (e.g., cryptosuite contexts) ever
+          means that no additional contexts (especially cryptosuite contexts) ever
           need to be added to a root zcap. Further work on the Data Integrity
-          1.0 spec could also alleviate the need for additional cryptosuite
+          1.0 spec could alleviate the need for additional cryptosuite
           contexts entirely.]
         </p>
 
         <p>
-          A root zcap MUST have an id that is a string that expresses a URN.
+          A root zcap MUST have an `id` that is a string that expresses a URN.
           This ID can always be dereferenced by the verifier system if it is a
           valid root zcap for a particular endpoint. The ID of a root zcap
           SHOULD [Note: this should become a MUST if it covers all use cases,
           to keep things simple] have the following format:
         </p>
 
-        <p>
-          urn:zcap:root:${encodeURIComponent(invocationTarget)}
-        </p>
+        <pre>
+urn:zcap:root:${encodeURIComponent(invocationTarget)}
+        </pre>
 
         <p>
           This identifier format makes it clear that the identifier for the
@@ -490,14 +490,14 @@
         </p>
 
         <p>
-          A root zcap MUST have an invocationTarget that is a string that
+          A root zcap MUST have an `invocationTarget` that is a string that
           expresses a URI. The invocation target identifies where the zcap may
-          be invoked and identifies the target object that the root zcap
-          expresses authority for.
+          be invoked, and identifies the target object for which the root zcap
+          expresses authority.
         </p>
 
         <p>
-          A root zcap MUST have a controller that is a string or an array of
+          A root zcap MUST have a `controller` that is a string or an array of
           strings that each express a URI that identifies a controller for the
           root zcap. The controller (or controllers) may take any actions with
           the invocation target (that are supported by the verifier) by
@@ -522,11 +522,8 @@
           <h2>Invoking a Root ZCAP</h2>
 
           <p>
-            There can be multiple ways to invoke a root zcap, two are defined:
-          </p>
-
-          <p>
-            Using an HTTP signature in an HTTP request or by attaching an LD
+            There can be multiple ways to invoke a root zcap; these include 1) by
+            using an HTTP signature in an HTTP request, and 2) by attaching an LD
             capability invocation proof to a document. The verifier will decide
             which of these methods is acceptable and what other information must
             be signed (in the case of an HTTP signature) or what documents may
@@ -536,27 +533,27 @@
           <p>
             When invoking a root zcap using an HTTP signature, a
             capability-invocation header must be included that identifies the
-            root zcap by ID (via an id parameter) and the capability action
-            (via an action parameter) that is being invoked. The request URL
-            identifies the intended invocation target, which either must match
-            the invocation target in the root zcap or, if the verifier allows
-            it, must have the root zcap's invocation target as a prefix. The
+            root zcap by ID (via an `id` parameter) and the capability action
+            that is being invoked (via an `action` parameter). The request URL
+            identifies the intended invocation target, which must either match
+            the invocation target in the root zcap, or, if the verifier allows
+            it, have the root zcap's invocation target as a prefix. The
             capability action must be an action that is expected (supported) by
             the verifier at the request URL. The capability action SHOULD be
-            read or write. The key used to create the HTTP signature must either
-            be the private key paired with a verification method that matches
-            the controller of the root zcap or a verification method controlled
-            by the controller of the root zcap – and that is authorized for the
-            purpose of capabilityInvocation.
+            read or write. The key used to create the HTTP signature must be either
+            1) the private key paired with a verification method that matches
+            the controller of the root zcap or 2) a verification method that is 
+            controlled by the controller of the root zcap &mdash; and authorized for the
+            purpose of `capabilityInvocation`.
           </p>
 
           <p>
             When invoking using a DI proof, a capability invocation proof must
-            be attached to a document that is acceptable by the API (this will
-            be defined by the specific API being accessed). The capability
-            invocation proof MUST include the intended invocationTarget, the
-            root zcap ID in the capability property, and the action to be taken
-            in the capabilityAction property. The same controller rules apply
+            be attached to a document that is acceptable by the API, as
+            defined by the specific API being accessed. The capability
+            invocation proof MUST include the intended `invocationTarget`, the
+            root zcap ID in the `capability` property, and the action to be taken
+            in the `capabilityAction` property. The same controller rules apply
             as in the HTTP signature case.
           </p>
         </section>
@@ -568,27 +565,27 @@
             It is expected that only verification systems will dereference root
             zcaps from their IDs. One model for new HTTP APIs is to store a
             controller value with every resource at the base of a hierarchy,
-            e.g., store controller X for the collection
-            https://foo.example/collections/123. When the root zcap for this
+            for instance, store controller `X` for the collection
+            `https://foo.example/collections/123`. When the root zcap for this
             collection is invoked or referenced via a delegated zcap invocation,
-            the verifier can look up the controller property (or receive it from
+            the verifier can look up the `controller` property (or receive it from
             another system in some kind of decentralized setup) for that
             resource and include it in a "dynamically dereferenced" root zcap.
-            In other words, the verifier sees the root zcap ID:
-            urn:zcap:root:<encodeURIComponent(https://foo.example/collections/123>
+            In other words, the verifier sees the root zcap ID
+            `urn:zcap:root:<encodeURIComponent(https://foo.example/collections/123)>`,
             and dynamically converts that (after looking up its controller) into:
           </p>
 
           <pre class="example highlight javascript">
             {
-              "@context": [
-                "https://w3id.org/zcap/v1"
-              ],
-              "id": "urn:zcap:root:https%3A%2F%2Ffoo.example%2Fcollections%2F123",
-              // populated via a database or external system call
-              "controller": "did:key:example",
-              "invocationTarget": "https://foo.example/collections/123"
-            }
+  "@context": [
+    "https://w3id.org/zcap/v1"
+  ],
+  "id": "urn:zcap:root:https%3A%2F%2Ffoo.example%2Fcollections%2F123",
+  // populated via a database or external system call
+  "controller": "did:key:example",
+  "invocationTarget": "https://foo.example/collections/123"
+}
           </pre>
 
         </section>
@@ -602,50 +599,50 @@
         </p>
 
         <pre class="example highlight javascript">
-          {
-            "@context": [
-              "https://w3id.org/zcap/v1",
-              "https://w3id.org/security/suites/ed25519-2020/v1"
-            ],
-            "id": "urn:uuid:cdc77118-6bfa-11ec-aceb-10bf48838a41",
-            "parentCapability": "urn:zcap:root:https%3A%2F%2Fexample.com%2Ffoo",
-            "controller": "did:key:example",
-            "invocationTarget": "https://example.com/foo",
-            "expires": "2021-11-03T18:33:51Z",
-            "allowedAction": [
-              "write",
-              "read"
-            ],
-            "proof": {
-              "type": "Ed25519Signature2020",
-              "created": "2021-10-27T18:33:51Z",
-              "verificationMethod": "did:key:z6MkfWKcvBiKCfNgz5UUGseNt37t4dguEvFgJ9XvX2UV6zB9#z6MkfWKcvBiKCfNgz5UUGseNt37t4dguEvFgJ9XvX2UV6zB9",
-              "proofPurpose": "capabilityDelegation",
-              "capabilityChain": [
-                "urn:zcap:root:https%3A%2F%2Fexample.com%2Ffoo"
-              ],
-              "proofValue": "z3t9BCQyF21MDVYmLKc9zbLreqx4wBtQnUsd5aqyoWS5FfhapRz7QjPNLcgKAornUVmJR4ZjbGpuxRFnffxX1ZjtF"
-            }
-          }
+{
+  "@context": [
+    "https://w3id.org/zcap/v1",
+    "https://w3id.org/security/suites/ed25519-2020/v1"
+  ],
+  "id": "urn:uuid:cdc77118-6bfa-11ec-aceb-10bf48838a41",
+  "parentCapability": "urn:zcap:root:https%3A%2F%2Fexample.com%2Ffoo",
+  "controller": "did:key:example",
+  "invocationTarget": "https://example.com/foo",
+  "expires": "2021-11-03T18:33:51Z",
+  "allowedAction": [
+    "write",
+    "read"
+  ],
+  "proof": {
+    "type": "Ed25519Signature2020",
+    "created": "2021-10-27T18:33:51Z",
+    "verificationMethod": "did:key:z6MkfWKcvBiKCfNgz5UUGseNt37t4dguEvFgJ9XvX2UV6zB9#z6MkfWKcvBiKCfNgz5UUGseNt37t4dguEvFgJ9XvX2UV6zB9",
+    "proofPurpose": "capabilityDelegation",
+    "capabilityChain": [
+      "urn:zcap:root:https%3A%2F%2Fexample.com%2Ffoo"
+    ],
+    "proofValue": "z3t9BCQyF21MDVYmLKc9zbLreqx4wBtQnUsd5aqyoWS5FfhapRz7QjPNLcgKAornUVmJR4ZjbGpuxRFnffxX1ZjtF"
+  }
+}
         </pre>
 
         <p>
           A delegated zcap is different from a root zcap primarily in that it
-          has a parentCapability, an expiration date-time, and a capability
+          has a `parentCapability`, an expiration date-time, and a capability
           delegation proof (found in proof). It is also different from a root
           zcap in that all delegated zcaps in a chain [link to capability
           chains] must be fully provided to the verifier when invoking a
-          delegated zcap so that the verifier is not required to dereference
-          them other than via the provided chain. Note: A verifier may still
-          need to query a database for delegated zcaps by ID to perform
-          revocation checks. However, a verifier MUST NOT be required to perform
+          delegated zcap, so that the verifier is not required to dereference
+          them other than via the provided chain. <i><b>Note:</b> A verifier may still
+          need to query a database for delegated zcaps to perform
+          revocation checks by ID. However, a verifier MUST NOT be required to perform
           network requests or database queries to dereference delegated zcaps
           by ID when verifying the capability chain [link to capability
-          chains], prior to inspecting it for potential revocations.
+          chains], prior to inspecting it for potential revocations.</i>
         </p>
 
         <p>
-          A delegated zcap MUST have an @context field with an array where the
+          A delegated zcap MUST have an `@context` field with an array where the
           first value is the zcapld context and any subsequent values identify
           context(s) used to define vocabulary terms used in the capability
           delegation proof. [Note: Maximum array size should be defined in the
@@ -653,22 +650,22 @@
         </p>
 
         <p>
-          A delegated zcap MUST have an id that is a string that expresses a
+          A delegated zcap MUST have an `id` that is a string that expresses a
           URI. The id SHOULD have the format:
         </p>
 
-        <p>
-          urn:uuid:<uuid>
-        </p>
+        <pre>
+urn:uuid:<uuid>
+        </pre>
 
         <p>
           Using this format enables CBOR-LD to perform compression on the ID
-          value and reduces correlation risk by making the ID semantically
+          value, and reduces correlation risk by making the ID semantically
           opaque.
         </p>
 
         <p>
-          A delegated zcap MUST have a parentCapability that is a string that
+          A delegated zcap MUST have a `parentCapability` that is a string that
           expresses the ID of the parent zcap. The parent zcap may be another
           delegated zcap or the root zcap. A verifier MUST ensure that a
           delegated zcap was created by a controller of its parent capability
@@ -677,7 +674,7 @@
 
         <p>
           A delegated zcap can only be invoked by submitting the entire zcap. A
-          delegated zcap MUST have a capability delegation proof and this proof
+          delegated zcap MUST have a capability delegation proof which
           MUST contain the delegation chain.
         </p>
 
@@ -707,54 +704,54 @@
         </p>
 
         <p>
-          A root zcap MUST have an invocationTarget that is a string that
+          A root zcap MUST have an `invocationTarget` that is a string that
           expresses a URI. The invocation target identifies where the zcap may
-          be invoked. A verifier MUST ensure that the invocationTarget either
-          matches the invocationTarget in the parent capability or, if
+          be invoked. A verifier MUST ensure that the `invocationTarget` either
+          matches the `invocationTarget` in the parent capability or, if
           invocation target attenuation [link] is permitted, that it has the
-          invocationTarget from the parent capability as a prefix. A prefix is
+          `invocationTarget` from the parent capability as a prefix. A prefix is
           defined as a base URI and parent path (and optional query) (i.e.,
-          / delimited and ?/& delimited) [more rigorous definition].
+          `/`-delimited and `?`/`&`-delimited) [more rigorous definition].
         </p>
 
         <p>
-          A delegated zcap MUST have a controller that is a string or an array
+          A delegated zcap MUST have a `controller` that is a string or an array
           of strings that each express a URI that identifies a controller for
           the delegated zcap. The controller (or controllers) may take any
           allowed actions [link] with the invocation target (that are supported
           by the verifier) by invoking the delegated zcap. The controller (or
           controllers) may create delegated zcaps from the delegated zcap.
-          [Note: As with other data model sections in W3C specs, every property
+          <i><b>Note:</b> As with other data model sections in W3C specs, every property
           of a zcap should be called out in its own subsection along with the
-          rules for the property.]
+          rules for the property.</i>
         </p>
 
         <p>
-          A delegated zcap MUST have an expires field that expresses an XSD
-          date-time (Note: The JavaScript new Date().toISOString() code can
+          A delegated zcap MUST have an `expires` field that expresses an XSD
+          date-time <i><b>Note:</b> The JavaScript `new Date().toISOString()` code can
           produce such a date representation, though it is preferred to remove
-          millisecond precision via new Date().toISOString().slice(0, -5) +
-          'Z').
+          millisecond precision via `new Date().toISOString().slice(0, -5) +
+          'Z'`.</i>
         </p>
 
         <p>
           A verifier MUST ensure that an invoked delegated zcap has not expired.
           A verifier MUST ensure that a delegated zcap's expiration date-time is
           not less restrictive than its parent capability's expiration
-          date-time, if present (a root zcap does not have an expiration
-          date-time).
+          date-time, if present. <i><b>Note:</b> a root zcap does not have an expiration
+          date-time.</i>
         </p>
 
         <p>
           A verifier SHOULD ensure that an invoked delegated zcap does not have
-          an expiration date-time that is more than, e.g., three months in the
-          future [TODO: exposition on why 3 months?]. This is because a verifier
-          MUST store revoked zcaps [link to revocation] until they expire to
+          an expiration date-time that is more than three months in the
+          future. [TODO: exposition on why 3 months?] This is because a verifier
+          MUST store revoked zcaps [link to revocation] until they expire, to
           prevent their use. A delegated zcap with an expiration date that is
           unreasonably far into the future will have to be stored for an
           unreasonable period of time to prevent its invocation. There are
-          other mitigation strategies here such as considering all zcaps
-          delegated from a particular controller as revoked or full key
+          other mitigation strategies here, such as considering all zcaps
+          delegated from a particular controller as revoked, or full key
           revocation.
         </p>
 
@@ -763,30 +760,30 @@
           security hygiene practices and because zcaps support decentralized
           delegation. In order to revoke a zcap, it must be submitted to the
           verifier's revocation endpoint for the associated invocation target.
-          If a delegated zcap has been lost / misplaced, it MUST eventually
+          If a delegated zcap has been lost or misplaced, it MUST eventually
           expire to avoid undesirable access.
         </p>
 
         <p>
-          A delegated zcap MAY have an allowedAction field that is a string or
+          A delegated zcap MAY have an `allowedAction` field that is a string or
           an array of strings that each express an action that the controller of
           the zcap may take when invoking the capability. A verifier MUST ensure
-          that the allowedAction field in a delegated zcap is not less
-          restrictive than the parent capability's, if present.
+          that the `allowedAction` field in a delegated zcap is not less
+          restrictive than the parent's capability, if present.
         </p>
 
         <p>
-          A delegated zcap MUST have a proof field that is an object or an
+          A delegated zcap MUST have a `proof` field that is an object or an
           array of objects that each express a DI proof. At least one of these
-          proofs MUST be a zcap capability delegation proof
-          [TODO: more details on this proof].
+          proofs MUST be a zcap capability delegation proof.
+          [TODO: more details on this proof]
         </p>
 
         <p>
           A capability delegator (one who creates a delegated zcap) may
           attenuate authority by setting a more restrictive expiration
           date-time, a more restrictive invocation target (via URL path- or
-          query-based attenuation), or limiting the allowed actions. Taken
+          query-based attenuation), or a greater limit on the allowed actions. Taken
           together, the API that a verifier manages access is expected to have
           the flexibility required to model all desired authorization models.
         </p>
@@ -803,16 +800,16 @@
           <p>
             A verifier will accept delegations (and invocations) where a suffix
             has been added to the parent zcap's invocation target (invoked zcap's
-            invocation target). The suffix MUST start with / or ? if the
-            invocation target prefix has no ? and & otherwise. This allows for
+            invocation target). The suffix MUST start with `/` or `?` if the
+            invocation target prefix has no `?`, and with `&` otherwise. This allows for
             fully customizable attenuations via HTTP API path and query
             parameters. For example, a ZCAP that can be invoked at
-            https://foo.example/bars/123 can be delegated with an attenuation
+            `https://foo.example/bars/123` can be delegated with an attenuation
             such that the delegated ZCAP has an invocation target of
-            https://foo.example/bars/123/bazzes/456. This could be further
+            `https://foo.example/bars/123/bazzes/456`. This could be further
             delegated and attenuated with a ZCAP with an invocation target of
-            https://foo.example/bars/123/bazzes/456?day=tuesday and then again
-            with https://foo.example/bars/123/bazzes/456?day=tuesday&hour=12.
+            `https://foo.example/bars/123/bazzes/456?day=tuesday` and then again
+            with `https://foo.example/bars/123/bazzes/456?day=tuesday&hour=12`.
           </p>
         </section>
 
@@ -823,27 +820,27 @@
 
           <p>
             Just like with root zcaps, there can be multiple ways to invoke a
-            delegated zcap, two are defined and are the same as with root zcaps
-            with the following differences:
+            delegated zcap; two are the same as with root zcaps and are
+            defined with the differences described below:
           </p>
 
           <p>
             When invoking a delegated zcap using an HTTP signature, a
             capability-invocation header must be included that includes the full
-            delegated zcap in a capability parameter by serializing it to JSON,
+            delegated zcap in a `capability` parameter by serializing it to JSON,
             gzipping the result, and then base64url-encoding the gzipped JSON.
           </p>
 
           <p>
-            When invoking using a DI proof, the capability property must express
+            When invoking using a DI proof, the `capability` property must express
             the full delegated zcap.
           </p>
 
           <p>
-            TODO: Add section on revocation detailing what verifiers MUST/SHOULD
+            TODO: Add section on revocation, detailing what verifiers MUST/SHOULD
             do to provide revocation endpoints for zcaps. A root invocation
-            target SHOULD have a /zcaps/revocations subpath where a root zcap of
-            urn:zcap:root:<the revocations path/the zcap ID to revoke> can be
+            target SHOULD have a `/zcaps/revocations` subpath, where a root zcap of
+            `urn:zcap:root:<the revocations path/the zcap ID to revoke>` can be
               invoked. The verifier SHOULD set the controllers for that root
               zcap to all controllers in the (to be revoked) zcap's chain so
               that any controller in the chain can revoke the zcap. Link to
@@ -859,8 +856,8 @@
           <p>
             TODO: Detail how revocation works: Any controller in the chain of a
             delegated zcap may post that zcap to:
-            <rootInvocationTarget>/zcaps/revocations/<zcapToRevokeId> using the
-              root zcap: urn:zcap:root:encodeURIComponent(<rootInvocationTarget>/zcaps/revocations/<zcapToRevokeId>)
+            `<rootInvocationTarget>/zcaps/revocations/<zcapToRevokeId>` using the
+              root zcap: `urn:zcap:root:encodeURIComponent(<rootInvocationTarget>/zcaps/revocations/<zcapToRevokeId>)`
                 to revoke.
                 Example: https://github.com/digitalbazaar/ezcap-express/blob/main/lib/revoke.js
           </p>
