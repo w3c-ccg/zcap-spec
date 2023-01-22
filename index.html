@@ -3,10 +3,7 @@
   <head>
     <meta charset='utf-8'>
     <title>Authorization Capabilities for Linked Data v0.3</title>
-    <script
-        src='https://www.w3.org/Tools/respec/respec-w3c-common'
-        class='remove'></script>
-    <script class='remove'>
+    <script src='//www.w3.org/Tools/respec/respec-w3c' class='remove'></script>    <script class='remove'>
      var respecConfig = {
          specStatus: "CG-DRAFT",
          subtitle: "An object capability framework for linked data systems",
@@ -36,6 +33,7 @@
          processVersion: 2017,
          edDraftURI: "https://w3c-ccg.github.io/zcap-spec/",
          shortName: "zcap-spec",
+         group: "credentials",
          otherLinks: [
              {
                  "key": "Repository",
@@ -542,7 +540,7 @@ urn:zcap:root:${encodeURIComponent(invocationTarget)}
             the verifier at the request URL. The capability action SHOULD be
             read or write. The key used to create the HTTP signature must be either
             1) the private key paired with a verification method that matches
-            the controller of the root zcap or 2) a verification method that is 
+            the controller of the root zcap or 2) a verification method that is
             controlled by the controller of the root zcap &mdash; and authorized for the
             purpose of `capabilityInvocation`.
           </p>
