@@ -213,7 +213,7 @@
   // We are granting authority specifically to one of Alyssa's
   // cryptographic keys (not to be confused with the car
   // key metaphor!)
-  "invoker": "https://social.example/alyssa#key-for-car",
+  "controller": "https://social.example/alyssa#key-for-car",
 
   // Finally we sign this object with cryptographic material from
   // Alyssa's Car's capabilityDelegation field, and using the
@@ -285,7 +285,7 @@
 
      // Alyssa grants authority specifically to one of Ben's
      // cryptographic keys
-     "invoker": "https://chatty.example/ben/#key-33",
+     "controller": "https://chatty.example/ben/#key-33",
 
      // Alyssa adds a caveat: Ben can drive her car, unless she flips
      // the bit at this url
@@ -333,7 +333,7 @@
                   "https://autopower.example/"],
      "id": "https://chatty.example/ben/caps#2cdea8c1",
      "parentCapability": "https://social.example/alyssa/caps#79795d78",
-     "invoker": "https://lem.example/#key-bf36",
+     "controller": "https://lem.example/#key-bf36",
 
      // Ben adds this caveat: this capability can be used to drive the
      // car, but not for more than 5 kilometers
@@ -937,7 +937,7 @@ urn:uuid:<uuid>
             </li>
             <li>
               As the value of a proof's <code>proofPurpose</code> to indicate
-              that this proof is intended to grant authority to the <code>invoker</code>
+              that this proof is intended to grant authority to the <code>controller</code>
               entities on the capability.
             </li>
           </ul>
@@ -953,7 +953,7 @@ urn:uuid:<uuid>
         documents, granting authority to a target, possibly restricted through
         "caveats".
         Authority starts with the target (which always has authority to invoke
-        itself) and extends to further <code>invoker</code> entities along
+        itself) and extends to further <code>controller</code> entities along
         the chain.
         Each capability document granting authority must be signed off with a
         proof by an entity which has previously been granted authority on the
@@ -1006,7 +1006,7 @@ urn:uuid:<uuid>
                specific keys, this will use the capabilityInvocation property
                on both the target and all future granted entities -->
           <code>capabilityDelegation</code> property of the target, or from
-          an <code>invoker</code> previously granted authority on the chain.
+          an <code>controller</code> previously granted authority on the chain.
           <!-- TODO: Should this be by any of the authentication material which
                has authority to use this capability, or only the nearest
                invoker on the chain? -->
@@ -1014,24 +1014,18 @@ urn:uuid:<uuid>
       </ul>
 
       <p>
-        Every capability document, except for the target, MAY have:
+        Every capability document MUST have:
       </p>
 
       <ul>
         <li>
-          <code>invoker</code>, which links to one or more instances of
+          <code>controller</code>, which links to one or more instances of
           cryptographic material (such as public keys) being granted authority
           to use this capability
         </li>
       </ul>
 
       <div class="note">
-        <p>
-          Why don't all child capabilities require a invoker property?
-          The reason is that it is perfectly reasonable for an entity which has
-          authority to a capability to give an attenuated capability to
-          <em>itself</em> to be used in a specific context.
-        </p>
         <p>
           Capabilities are not structured around "who has access" to something
           but rather holding onto a capability for a particular use, and in
@@ -1061,7 +1055,7 @@ urn:uuid:<uuid>
           "capability chain" and is how delegation of capabilities are
           handled in ZCAP-LD.
           New keys MAY be granted authority to use this capability through
-          the associated <code>invoker</code> property.
+          the associated <code>controller</code> property.
         </p>
       </section>
 
@@ -1091,9 +1085,6 @@ urn:uuid:<uuid>
            capability they have authority to use rather than checking who
            is performing a specific action every time an action is
            performed.
-
-           @@: Or is this handled by the (non-)presence of invokers
-             note?
          -->
       </p>
     </section>
@@ -1118,7 +1109,7 @@ urn:uuid:<uuid>
         </li>
         <li>
           the proof must validate against cryptographic material
-          granted authority by the <code>invoker</code> field from the
+          granted authority by the <code>controller</code> field from the
           capability chain.
         </li>
       </ul>
@@ -1155,7 +1146,7 @@ urn:uuid:<uuid>
           The caveats of this capability document are checked for validity.
         </ul>
         <ul>
-          The cryptographic material on the <code>invoker</code> field is added
+          The cryptographic material on the <code>controller</code> field is added
           to the currently authorized set.
         </ul>
         <ul>
