@@ -1125,8 +1125,8 @@ urn:uuid:<uuid>
         is used to both authorize further capability delegation and may be used
         to invoke the capability chain.
         The capability document that is invoked's chain is recursively traversed
-        up along the <code>previousCapability</code> document until the target is
-        found (the root document that has no <code>previousCapability</code>
+        up along the <code>parentCapability</code> document until the target is
+        found (the root document that has no <code>parentCapability</code>
         property).
         The target's <code>capabilityDelegation</code> cryptographic material is
         marked in the initial set of authority.
