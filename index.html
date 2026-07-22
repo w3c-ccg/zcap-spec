@@ -455,7 +455,7 @@
           formerly known as Linked Data proofs) are used instead of JOSE-based
           signatures. This helps keep zcap sizes small by eliminating the need to
           encapsulate zcaps via base64 encoding. This is particularly important
-          for expressing capability chains [TODO: link to capability chains],
+          for expressing capability chains,
           where ancestor zcaps would be base64-encoded N+1 times where N is the
           length or position in the chain. If neither of these approaches were
           used, a novel signature encapsulation mechanism would have to be
@@ -519,7 +519,7 @@ urn:zcap:root:${encodeURIComponent(invocationTarget)}
           verifier can (and MUST) always dereference the zcap locally using a
           trusted dereferencing mechanism. This is because a root zcap does not
           have a capability delegation proof; it is the root of trust for a
-          capability chain [TODO: link to capability chains].
+          capability chain.
         </p>
 
         <section id="invoking-root-capability">
@@ -634,15 +634,13 @@ urn:zcap:root:${encodeURIComponent(invocationTarget)}
           A delegated zcap is different from a root zcap primarily in that it
           has a `parentCapability`, an expiration date-time, and a capability
           delegation proof (found in proof). It is also different from a root
-          zcap in that all delegated zcaps in a chain [link to capability
-          chains] must be fully provided to the verifier when invoking a
+          zcap in that all delegated zcaps in a chain must be fully provided to the verifier when invoking a
           delegated zcap, so that the verifier is not required to dereference
           them other than via the provided chain. <i><b>Note:</b> A verifier may still
           need to query a database for delegated zcaps to perform
           revocation checks by ID. However, a verifier MUST NOT be required to perform
           network requests or database queries to dereference delegated zcaps
-          by ID when verifying the capability chain [link to capability
-          chains], prior to inspecting it for potential revocations.</i>
+          by ID when verifying the capability chain, prior to inspecting it for potential revocations.</i>
         </p>
 
         <p>
@@ -680,10 +678,6 @@ urn:uuid:<uuid>
           A delegated zcap can only be invoked by submitting the entire zcap. A
           delegated zcap MUST have a capability delegation proof which
           MUST contain the delegation chain.
-        </p>
-
-        <p>
-          [target for link to capability chains]
         </p>
 
         <p>
