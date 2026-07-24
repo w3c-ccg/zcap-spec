@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset='utf-8'>
-    <title>Authorization Capabilities for Linked Data v0.4.0-draft</title>
+    <title>Authorization Capabilities v0.4.0-draft</title>
     <script src='//www.w3.org/Tools/respec/respec-w3c' class='remove'></script>    <script class='remove'>
      var respecConfig = {
          specStatus: "CG-DRAFT",
@@ -92,7 +92,7 @@
   <body>
     <section id='abstract'>
       <p>
-        Authorization Capabilities for Linked Data (<code>ZCAP-LD</code> for
+        Authorization Capabilities (<code>zcap</code> for
         short) provides a
         secure way for linked data systems to grant and express authority
         utilizing the
@@ -101,7 +101,7 @@
         Capabilities are represented as linked data objects which are signed
         with <a href="https://w3c-ccg.github.io/ld-proofs/">
           Linked Data Proofs</a>.
-        ZCAP-LD supports delegating authority to other entities
+        Zcaps support delegating authority to other entities
         on the network by chaining together capability documents.
         "Caveats" may be attached to capability documents which may be used to
         restrict the scope of their use, for example to restrict the actions
@@ -126,11 +126,11 @@
       </i></p>
 
       <p>
-        This document does not cover a specific method for delivering ZCAP-LD
+        This document does not cover a specific method for delivering zcap
         invocations to an object, though something like the inbox property and
         associated delivery mechanisms from Linked Data Notifications and
         ActivityPub is one possible system.
-        However there is nothing about ZCAP-LD that is specific to HTTP; for
+        However there is nothing about zcaps that are specific to HTTP; for
         example, both capabilities and invocations could be stored on a
         blockchain or a distributed hash table.
       </p>
@@ -170,7 +170,7 @@
       </section>
 
       <section id="zcap-by-example">
-        <h2>ZCAP-LD by Example</h2>
+        <h2>Zcap by Example</h2>
         <p>
           Much of modern computing security infrastructure relies on "who is
           doing something" using access control lists.
@@ -196,7 +196,7 @@
           Alyssa holds the kind of key that enables her to drive the car, she
           can drive the car.
           Capabilities are very similar to this car metaphor, and we can encode
-          this same idea in ZCAP-LD.
+          this same idea in zcaps.
           The following document delegates authority from the car (who always
           has authority over itself) to Alyssa so that she may drive:
         </p>
@@ -371,7 +371,7 @@
         <h2>Capabilities Are Safer</h2>
         <p>
           We can see from the above example that using an object capability
-          system such as ZCAP-LD can give us some additional
+          system such as zcap can give us some additional
           power around delegating and restricting the scope of capabilities.
           But object capabilities provide improved safety characteristics
           over Access Control Lists which may make them frequently better
@@ -418,7 +418,7 @@
           Object capabilities are less vulnerable to these kinds of attacks
           because capabilities are an encoding of "the principle of least
           authority" in software development practice.
-          ZCAP-LD helps bring the power of capabilities to the web, providing
+          Zcaps help bring the power of capabilities to the web, providing
           specific and directed grants of authority.
         </p>
       </section>
@@ -523,7 +523,7 @@ urn:zcap:root:${encodeURIComponent(invocationTarget)}
         </p>
 
         <section id="invoking-root-capability">
-          <h2>Invoking a Root ZCAP</h2>
+          <h2>Invoking a Root Zcap</h2>
 
           <p>
             There can be multiple ways to invoke a root zcap; these include 1) by
@@ -801,11 +801,11 @@ urn:uuid:<uuid>
             invocation target). The suffix MUST start with `/` or `?` if the
             invocation target prefix has no `?`, and with `&` otherwise. This allows for
             fully customizable attenuations via HTTP API path and query
-            parameters. For example, a ZCAP that can be invoked at
+            parameters. For example, a zcap that can be invoked at
             `https://foo.example/bars/123` can be delegated with an attenuation
-            such that the delegated ZCAP has an invocation target of
+            such that the delegated zcap has an invocation target of
             `https://foo.example/bars/123/bazzes/456`. This could be further
-            delegated and attenuated with a ZCAP with an invocation target of
+            delegated and attenuated with a zcap with an invocation target of
             `https://foo.example/bars/123/bazzes/456?day=tuesday` and then again
             with `https://foo.example/bars/123/bazzes/456?day=tuesday&hour=12`.
           </p>
@@ -813,7 +813,7 @@ urn:uuid:<uuid>
 
         <section id="invoke-delegate-capability">
           <h2>
-            Invoking a Delegated ZCAP
+            Invoking a Delegated Zcap
           </h2>
 
           <p>
@@ -949,7 +949,7 @@ urn:uuid:<uuid>
       <h2>Capabilities</h2>
 
       <p>
-        ZCAP-LD capabilities are encoded through a chain of linked data
+        Zcap capabilities are encoded through a chain of linked data
         documents, granting authority to a target, possibly restricted through
         "caveats".
         Authority starts with the target (which always has authority to invoke
@@ -1053,7 +1053,7 @@ urn:uuid:<uuid>
           target or another capability document.
           A series of capability chained together in this way is called a
           "capability chain" and is how delegation of capabilities are
-          handled in ZCAP-LD.
+          handled in zcaps.
           New keys MAY be granted authority to use this capability through
           the associated <code>controller</code> property.
         </p>
@@ -1094,7 +1094,7 @@ urn:uuid:<uuid>
 
       <p>
         A capability may be enacted through the process of invocation.
-        In the context of ZCAP-LD, an invocation consists of a linked data
+        In the context of zcaps, an invocation consists of a linked data
         object which MUST have a <code>proof</code> property with a value
         containing:
       </p>
@@ -1170,7 +1170,7 @@ urn:uuid:<uuid>
           possible for an invocation to refer to an invocation as an argument.
           For this reason it is critical that mechanisms for accepting
           invocations be sure which invocation is being performed.
-          For example, a mechanism that accepts ZCAP-LD capabilities as
+          For example, a mechanism that accepts authorization capabilities as
           JSON-LD documents will likely have no trouble telling which
           invocation is being performed since that will be the "top"
           of the framed document.
@@ -1273,7 +1273,7 @@ urn:uuid:<uuid>
         Use correlation (Verifiable Credentials) in a reasoning system (most
         commonly human reasoning) as a path to make judgements about whether to
         hand an entity a specific set of initial capabilities.
-        Use capabilities (ZCAP-LD) as the mechanism to grant and exercise
+        Use capabilities (zcaps) as the mechanism to grant and exercise
         authority through computing systems.
         To return to our system administrator example, when Alice applies for the
         job, she submits a series of credentials about her prior work history
@@ -1306,7 +1306,7 @@ urn:uuid:<uuid>
         In some object capability systems (such as many object capability
         programming languages) it is not even possible to see what entity is
         invoking a capability.
-        In the case of ZCAP-LD, it is always possible to inspect an invocation
+        In the case of zcaps, it is always possible to inspect an invocation
         to check which authentication material authorized to invoke the
         capability is being used in the invocation, and this may permit
         checking a certain amount of "who" is performing the action, but to
@@ -1325,7 +1325,7 @@ urn:uuid:<uuid>
         <a href="http://www.erights.org/elib/capability/horton/">Horton</a>
         is one such system for E, though as previously stated,
         such information can be gleaned already by looking at the invocation
-        and capability chain documents in ZCAP-LD.)
+        and capability chain documents in zcaps.)
         The key to permit detecting and mitigating abuse safely in a capability
         based environment is to treat correlation of who is using a service
         not as something that is used per-invocation, but as something to be
