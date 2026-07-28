@@ -40,6 +40,7 @@
          edDraftURI: "https://w3c-ccg.github.io/zcap-spec/",
          shortName: "zcap-spec",
          group: "credentials",
+         issueBase: "https://github.com/w3c-ccg/zcap-spec/issues/",
          otherLinks: [
              {
                  "key": "Repository",
@@ -1348,6 +1349,61 @@ urn:uuid:<uuid>
         from the invocation of a capability granted to some of Mallet's
         authentication material, and Alice revokes that capability.
       </p>
+    </section>
+
+    <section class="appendix informative" id="milestones">
+        <h2>Milestones</h2>
+        <p>
+            This is a non-binding plan of how the authors intend this document to develop.
+        </p>
+
+        <section id="milestone-v0.4">
+            <h3>v0.4: Improve readability</h3>
+            <p>There will be no normative changes in v0.4.</p>
+            <ol>
+                <li class="issue" data-number="56">
+                    Remove TODOs expressed as spec text so the spec is more readable, and all issues are tracked in the issue tracker
+                </li>
+            </ol>
+        </section>
+
+        <section>
+            <h3>v0.5</h3>
+            <p>
+                This milestone is not yet planned. Once <a href="">v0.4</a> is done, it will be planned from issues in the <a href="#backlog">backlog</a> and issue tracker.
+            </p>
+        </section>
+    </section>
+
+    <section class="appendix informative" id="backlog">
+        <h2>Backlog</h2>
+        <p>
+            These issues may be added to <a href="#milestones">milestones</a>.
+            They may also be removed from the backlog.
+            Generally, they are listed in priority order.
+        </p>
+
+        <ol>
+
+            <li class="issue">
+                Fix this ReSpec warning:
+                <blockquote>
+                    Document uses RFC2119 keywords but lacks a conformance section.<br />
+                    How to fix: Please add a <code>&lt;section id="conformance"&gt;</code>.
+                </blockquote>
+
+                <p>Questions</p>
+                <ul>
+                    <li>Is adding a conformance section this a normative change?</li>
+                    <li>Is this appropriate for v0.4 milestone?</li>
+                </ul>
+            </li>
+
+            <li class="issue">
+                v0.3 was published in 2022. Since then, some implementors have made changes to their implementations based on their experience in production, which may be incorporated into this spec. If this experience can be described, and the changes articulated, they may be incorporated into this document.
+            </li>
+
+        </ol>
     </section>
   </body>
 </html>
