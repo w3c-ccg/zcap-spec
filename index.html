@@ -835,17 +835,7 @@ urn:uuid:<uuid>
             the full delegated zcap.
           </p>
 
-          <p>
-            TODO: Add section on revocation, detailing what verifiers MUST/SHOULD
-            do to provide revocation endpoints for zcaps. A root invocation
-            target SHOULD have a `/zcaps/revocations` subpath, where a root zcap of
-            `urn:zcap:root:<the revocations path/the zcap ID to revoke>` can be
-              invoked. The verifier SHOULD set the controllers for that root
-              zcap to all controllers in the (to be revoked) zcap's chain so
-              that any controller in the chain can revoke the zcap. Link to
-              example server-side revocation implementation:
-              https://github.com/digitalbazaar/ezcap-express/blob/main/lib/revoke.js
-          </p>
+         
 
           <p>
             TODO: Detail algorithm for validation process:
@@ -1401,6 +1391,40 @@ urn:uuid:<uuid>
 
             <li class="issue">
                 v0.3 was published in 2022. Since then, some implementors have made changes to their implementations based on their experience in production, which may be incorporated into this spec. If this experience can be described, and the changes articulated, they may be incorporated into this document.
+            </li>
+
+            <li class="issue"
+                title="Add Revocation Section"
+            >
+              <p>
+                Explain revocation behavior in a new section.
+              </p>
+              <p>
+                Wishlist
+              </p>
+              <ul>
+                <li>
+                  Add a named section for other sections to link to for an overview of revocation.
+                </li>
+                <li>
+                  Detail what verifiers MUST/SHOULD do to provide revocation endpoints for zcaps.
+                </li>
+                <li>
+                  A root invocation
+                  target SHOULD have a `/zcaps/revocations` subpath, where a root zcap of
+                  `urn:zcap:root:<the revocations path/the zcap ID to revoke>` can be
+                    invoked. The verifier SHOULD set the controllers for that root
+                    zcap to all controllers in the (to be revoked) zcap's chain so
+                    that any controller in the chain can revoke the zcap.
+                </li>
+                <li>
+                  Link to example server-side revocation implementations like
+                  <a href="https://github.com/digitalbazaar/ezcap-express/blob/main/lib/revoke.js">
+                    digitalbazaar's ezcap-express
+                  </a>
+                  .
+                </li>
+              </ul>
             </li>
 
         </ol>
