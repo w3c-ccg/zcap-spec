@@ -835,13 +835,6 @@ urn:uuid:<uuid>
             the full delegated zcap.
           </p>
 
-         
-
-          <p>
-            TODO: Detail algorithm for validation process:
-            https://github.com/digitalbazaar/zcapld/blob/4386185f784f552d6eaeb2c3c82959cb2e09762e/lib/CapabilityProofPurpose.js#L85
-          </p>
-
           <p>
             TODO: Detail how revocation works: Any controller in the chain of a
             delegated zcap may post that zcap to:
@@ -1373,9 +1366,7 @@ urn:uuid:<uuid>
             Generally, they are listed in priority order.
         </p>
 
-        <ol>
-
-            <li class="issue">
+            <div class="issue">
                 Fix this ReSpec warning:
                 <blockquote>
                     Document uses RFC2119 keywords but lacks a conformance section.<br />
@@ -1387,13 +1378,22 @@ urn:uuid:<uuid>
                     <li>Is adding a conformance section this a normative change?</li>
                     <li>Is this appropriate for v0.4 milestone?</li>
                 </ul>
-            </li>
+            </div>
 
-            <li class="issue">
+            <div class="issue">
                 v0.3 was published in 2022. Since then, some implementors have made changes to their implementations based on their experience in production, which may be incorporated into this spec. If this experience can be described, and the changes articulated, they may be incorporated into this document.
-            </li>
+            </div>
 
-            <li class="issue"
+            <div class="issue"
+                title="Detail validation algorithm"
+              >
+              <p>
+                Detail algorithm for validation process:
+                https://github.com/digitalbazaar/zcapld/blob/4386185f784f552d6eaeb2c3c82959cb2e09762e/lib/CapabilityProofPurpose.js#L85
+              </p>              
+            </div>
+
+            <div class="issue"
                 title="Add Revocation Section"
             >
               <p>
@@ -1425,9 +1425,8 @@ urn:uuid:<uuid>
                   .
                 </li>
               </ul>
-            </li>
+            </div>
 
-        </ol>
     </section>
   </body>
 </html>
