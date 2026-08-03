@@ -741,9 +741,11 @@ urn:uuid:<uuid>
 
         <p>
           A verifier SHOULD ensure that an invoked delegated zcap does not have
-          an expiration date-time that is more than three months in the
-          future. [TODO: exposition on why 3 months?] This is because a verifier
-          MUST store revoked zcaps [link to revocation] until they expire, to
+          an expiration date-time that is more than three months in the future.
+          <!-- TODO: explain why 3 months -->
+          This is because a verifier
+          MUST store revoked zcaps until they expire, to
+          <!-- TODO: add revocation section and link to it -->
           prevent their use. A delegated zcap with an expiration date that is
           unreasonably far into the future will have to be stored for an
           unreasonable period of time to prevent its invocation. There are
