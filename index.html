@@ -835,15 +835,6 @@ urn:uuid:<uuid>
             the full delegated zcap.
           </p>
 
-          <p>
-            TODO: Detail how revocation works: Any controller in the chain of a
-            delegated zcap may post that zcap to:
-            `<rootInvocationTarget>/zcaps/revocations/<zcapToRevokeId>` using the
-              root zcap: `urn:zcap:root:encodeURIComponent(<rootInvocationTarget>/zcaps/revocations/<zcapToRevokeId>)`
-                to revoke.
-                Example: https://github.com/digitalbazaar/ezcap-express/blob/main/lib/revoke.js
-          </p>
-
         </section>
       </section>
     </section>
@@ -1416,6 +1407,15 @@ urn:uuid:<uuid>
                     invoked. The verifier SHOULD set the controllers for that root
                     zcap to all controllers in the (to be revoked) zcap's chain so
                     that any controller in the chain can revoke the zcap.
+                </li>
+                <li>
+                  Any controller in the chain of a
+                  delegated zcap may post that zcap to:
+                  `{rootInvocationTarget}/zcaps/revocations/{zcapToRevokeId}`
+                  using the
+                  root zcap: `urn:zcap:root:encodeURIComponent("{rootInvocationTarget}/zcaps/revocations/{zcapToRevokeId}")`
+                  to revoke.
+                  Example: https://github.com/digitalbazaar/ezcap-express/blob/main/lib/revoke.js
                 </li>
                 <li>
                   Link to example server-side revocation implementations like
