@@ -525,39 +525,20 @@ urn:zcap:root:${encodeURIComponent(invocationTarget)}
           <h2>Invoking a Root Zcap</h2>
 
           <p>
-            There can be multiple ways to invoke a root zcap; these include 1) by
-            using an HTTP signature in an HTTP request, and 2) by attaching an LD
-            capability invocation proof to a document. The verifier will decide
-            which of these methods is acceptable and what other information must
-            be signed (in the case of an HTTP signature) or what documents may
-            be submitted with attached capability invocation proof(s).
+            There can be multiple ways to invoke a root zcap.
+            These include:
           </p>
+          <ul>
+            <li>
+              by <a href="#proving-invocation-with-http-signature">using an HTTP signature</a> in an HTTP request
+            </li>
+            <li>
+              by <a href="#proving-invocation-with-data-integrity-proof">attaching an LD capability invocation proof to a document</a>
+            </li>
+          </ul>
 
           <p>
-            When invoking a root zcap using an HTTP signature, a
-            capability-invocation header must be included that identifies the
-            root zcap by ID (via an `id` parameter) and the capability action
-            that is being invoked (via an `action` parameter). The request URL
-            identifies the intended invocation target, which must either match
-            the invocation target in the root zcap, or, if the verifier allows
-            it, have the root zcap's invocation target as a prefix. The
-            capability action must be an action that is expected (supported) by
-            the verifier at the request URL. The capability action SHOULD be
-            read or write. The key used to create the HTTP signature must be either
-            1) the private key paired with a verification method that matches
-            the controller of the root zcap or 2) a verification method that is
-            controlled by the controller of the root zcap &mdash; and authorized for the
-            purpose of `capabilityInvocation`.
-          </p>
-
-          <p>
-            When invoking using a DI proof, a capability invocation proof must
-            be attached to a document that is acceptable by the API, as
-            defined by the specific API being accessed. The capability
-            invocation proof MUST include the intended `invocationTarget`, the
-            root zcap ID in the `capability` property, and the action to be taken
-            in the `capabilityAction` property. The same controller rules apply
-            as in the HTTP signature case.
+            The verifier will decide which of these methods is acceptable.
           </p>
         </section>
 
@@ -816,21 +797,8 @@ urn:uuid:<uuid>
           </h2>
 
           <p>
-            Just like with root zcaps, there can be multiple ways to invoke a
-            delegated zcap; two are the same as with root zcaps and are
-            defined with the differences described below:
-          </p>
-
-          <p>
-            When invoking a delegated zcap using an HTTP signature, a
-            capability-invocation header must be included that includes the full
-            delegated zcap in a `capability` parameter by serializing it to JSON,
-            gzipping the result, and then base64url-encoding the gzipped JSON.
-          </p>
-
-          <p>
-            When invoking using a DI proof, the `capability` property must express
-            the full delegated zcap.
+            Just like <a href="#invoking-root-capability">with root zcaps</a>, there can be multiple ways to invoke a
+            delegated zcap.
           </p>
 
           <p>
@@ -1178,6 +1146,53 @@ urn:uuid:<uuid>
           to determine the "root" of the invocation.
         </p>
       </div>
+
+      <section id="proving-invocation-with-http-signature">
+        <h2>Proving Invocation with HTTP Signature</h2>
+
+        <p>
+          When invoking a root zcap using an HTTP signature, a
+          capability-invocation header must be included that identifies the
+          root zcap by ID (via an `id` parameter) and the capability action
+          that is being invoked (via an `action` parameter). The request URL
+          identifies the intended invocation target, which must either match
+          the invocation target in the root zcap, or, if the verifier allows
+          it, have the root zcap's invocation target as a prefix. The
+          capability action must be an action that is expected (supported) by
+          the verifier at the request URL. The capability action SHOULD be
+          read or write. The key used to create the HTTP signature must be either
+          1) the private key paired with a verification method that matches
+          the controller of the root zcap or 2) a verification method that is
+          controlled by the controller of the root zcap &mdash; and authorized for the
+          purpose of `capabilityInvocation`.
+        </p>
+
+        <p>
+          When invoking a delegated zcap using an HTTP signature, a
+          capability-invocation header must be included that includes the full
+          delegated zcap in a `capability` parameter by serializing it to JSON,
+          gzipping the result, and then base64url-encoding the gzipped JSON.
+        </p>
+      </section>
+
+      <section id="proving-invocation-with-data-integrity-proof">
+        <h2>Proving Invocation with Data Integrity Proof</h2>
+
+        <p>
+          When invoking using a DI proof, a capability invocation proof must
+          be attached to a document that is acceptable by the API, as
+          defined by the specific API being accessed. The capability
+          invocation proof MUST include the intended `invocationTarget`, the
+          root zcap ID in the `capability` property, and the action to be taken
+          in the `capabilityAction` property. The same controller rules apply
+          as in <a href="#proving-invocation-with-http-signature">the HTTP signature case</a>.
+        </p>
+
+        <p>
+          When invoking a delegated capability using a DI proof,
+          the capability property must express the full delegated zcap.
+        </p>
+      </section>
 
       <section id="actions">
         <h2>Actions</h2>
