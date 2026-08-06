@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset='utf-8'>
-    <title>Authorization Capabilities for Linked Data v0.3</title>
+    <title>Authorization Capabilities v0.4.0-draft</title>
     <script src='//www.w3.org/Tools/respec/respec-w3c' class='remove'></script>    <script class='remove'>
      var respecConfig = {
          specStatus: "CG-DRAFT",
@@ -12,10 +12,16 @@
               url: "https://dustycloud.org/",
               company: "Spec-Ops",
               companyURL: "https://www.spec-ops.io/"},
+             {name: "Dmitri Zagidulin",
+               company: "Interop Alliance",
+               companyURL: "https://interopalliance.org"},
              {name: "Manu Sporny",
               url: "http://manu.sporny.org/",
               company: "Digital Bazaar",
-              companyURL: "http://digitalbazaar.com/"}],
+              companyURL: "http://digitalbazaar.com/"},
+             {name: "Benjamin Goering",
+              url: "https://bengo.is/"},
+         ],
          authors: [
              {name: "Christine Lemmer-Webber",
               url: "https://dustycloud.org/",
@@ -34,6 +40,7 @@
          edDraftURI: "https://w3c-ccg.github.io/zcap-spec/",
          shortName: "zcap-spec",
          group: "credentials",
+         issueBase: "https://github.com/w3c-ccg/zcap-spec/issues/",
          otherLinks: [
              {
                  "key": "Repository",
@@ -86,7 +93,7 @@
   <body>
     <section id='abstract'>
       <p>
-        Authorization Capabilities for Linked Data (<code>ZCAP-LD</code> for
+        Authorization Capabilities (<code>zcap</code> for
         short) provides a
         secure way for linked data systems to grant and express authority
         utilizing the
@@ -95,7 +102,7 @@
         Capabilities are represented as linked data objects which are signed
         with <a href="https://w3c-ccg.github.io/ld-proofs/">
           Linked Data Proofs</a>.
-        ZCAP-LD supports delegating authority to other entities
+        Zcaps support delegating authority to other entities
         on the network by chaining together capability documents.
         "Caveats" may be attached to capability documents which may be used to
         restrict the scope of their use, for example to restrict the actions
@@ -120,11 +127,11 @@
       </i></p>
 
       <p>
-        This document does not cover a specific method for delivering ZCAP-LD
+        This document does not cover a specific method for delivering zcap
         invocations to an object, though something like the inbox property and
         associated delivery mechanisms from Linked Data Notifications and
         ActivityPub is one possible system.
-        However there is nothing about ZCAP-LD that is specific to HTTP; for
+        However there is nothing about zcaps that are specific to HTTP; for
         example, both capabilities and invocations could be stored on a
         blockchain or a distributed hash table.
       </p>
@@ -164,7 +171,7 @@
       </section>
 
       <section id="zcap-by-example">
-        <h2>ZCAP-LD by Example</h2>
+        <h2>Zcap by Example</h2>
         <p>
           Much of modern computing security infrastructure relies on "who is
           doing something" using access control lists.
@@ -190,7 +197,7 @@
           Alyssa holds the kind of key that enables her to drive the car, she
           can drive the car.
           Capabilities are very similar to this car metaphor, and we can encode
-          this same idea in ZCAP-LD.
+          this same idea in zcaps.
           The following document delegates authority from the car (who always
           has authority over itself) to Alyssa so that she may drive:
         </p>
@@ -200,7 +207,7 @@
              noisier -->
         <pre class="example highlight javascript">
 {
-  "@context": ["https://w3id.org/security/v2",
+  "@context": ["https://w3id.org/zcap/v1",
                "https://autopower.example/"],
 
   "id": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
@@ -237,7 +244,7 @@
         </p>
 
         <pre class="example highlight javascript">
-    {"@context": ["https://example.org/zcap/v1",
+    {"@context": ["https://w3id.org/zcap/v1",
                   "https://autopower.example/"],
      "id": "urn:uuid:ad86cb2c-e9db-434a-beae-71b82120a8a4",
      "action": "Drive",
@@ -275,7 +282,7 @@
         </p>
 
         <pre class="example highlight javascript">
-    {"@context": ["https://example.org/zcap/v1",
+    {"@context": ["https://w3id.org/zcap/v1",
                   "https://autopower.example/"],
      "id": "https://social.example/alyssa/caps#79795d78",
 
@@ -329,7 +336,7 @@
         </p>
 
         <pre class="example highlight javascript">
-    {"@context": ["https://example.org/zcap/v1",
+    {"@context": ["https://w3id.org/zcap/v1",
                   "https://autopower.example/"],
      "id": "https://chatty.example/ben/caps#2cdea8c1",
      "parentCapability": "https://social.example/alyssa/caps#79795d78",
@@ -365,7 +372,7 @@
         <h2>Capabilities Are Safer</h2>
         <p>
           We can see from the above example that using an object capability
-          system such as ZCAP-LD can give us some additional
+          system such as zcap can give us some additional
           power around delegating and restricting the scope of capabilities.
           But object capabilities provide improved safety characteristics
           over Access Control Lists which may make them frequently better
@@ -412,7 +419,7 @@
           Object capabilities are less vulnerable to these kinds of attacks
           because capabilities are an encoding of "the principle of least
           authority" in software development practice.
-          ZCAP-LD helps bring the power of capabilities to the web, providing
+          Zcaps help bring the power of capabilities to the web, providing
           specific and directed grants of authority.
         </p>
       </section>
@@ -425,9 +432,7 @@
 
         <pre class="example highlight javascript">
 {
-  "@context": [
-    "https://w3id.org/zcap/v1"
-  ],
+  "@context": "https://w3id.org/zcap/v1",
   "id": "urn:zcap:root:https%3A%2F%2Fexample.com%2Ffoo",
   "controller": "did:key:example",
   "invocationTarget": "https://example.com/foo"
@@ -449,7 +454,7 @@
           formerly known as Linked Data proofs) are used instead of JOSE-based
           signatures. This helps keep zcap sizes small by eliminating the need to
           encapsulate zcaps via base64 encoding. This is particularly important
-          for expressing capability chains [TODO: link to capability chains],
+          for expressing capability chains,
           where ancestor zcaps would be base64-encoded N+1 times where N is the
           length or position in the chain. If neither of these approaches were
           used, a novel signature encapsulation mechanism would have to be
@@ -513,46 +518,27 @@ urn:zcap:root:${encodeURIComponent(invocationTarget)}
           verifier can (and MUST) always dereference the zcap locally using a
           trusted dereferencing mechanism. This is because a root zcap does not
           have a capability delegation proof; it is the root of trust for a
-          capability chain [TODO: link to capability chains].
+          capability chain.
         </p>
 
         <section id="invoking-root-capability">
-          <h2>Invoking a Root ZCAP</h2>
+          <h2>Invoking a Root Zcap</h2>
 
           <p>
-            There can be multiple ways to invoke a root zcap; these include 1) by
-            using an HTTP signature in an HTTP request, and 2) by attaching an LD
-            capability invocation proof to a document. The verifier will decide
-            which of these methods is acceptable and what other information must
-            be signed (in the case of an HTTP signature) or what documents may
-            be submitted with attached capability invocation proof(s).
+            There can be multiple ways to invoke a root zcap.
+            These include:
           </p>
+          <ul>
+            <li>
+              by <a href="#proving-invocation-with-http-signature">using an HTTP signature</a> in an HTTP request
+            </li>
+            <li>
+              by <a href="#proving-invocation-with-data-integrity-proof">attaching an LD capability invocation proof to a document</a>
+            </li>
+          </ul>
 
           <p>
-            When invoking a root zcap using an HTTP signature, a
-            capability-invocation header must be included that identifies the
-            root zcap by ID (via an `id` parameter) and the capability action
-            that is being invoked (via an `action` parameter). The request URL
-            identifies the intended invocation target, which must either match
-            the invocation target in the root zcap, or, if the verifier allows
-            it, have the root zcap's invocation target as a prefix. The
-            capability action must be an action that is expected (supported) by
-            the verifier at the request URL. The capability action SHOULD be
-            read or write. The key used to create the HTTP signature must be either
-            1) the private key paired with a verification method that matches
-            the controller of the root zcap or 2) a verification method that is
-            controlled by the controller of the root zcap &mdash; and authorized for the
-            purpose of `capabilityInvocation`.
-          </p>
-
-          <p>
-            When invoking using a DI proof, a capability invocation proof must
-            be attached to a document that is acceptable by the API, as
-            defined by the specific API being accessed. The capability
-            invocation proof MUST include the intended `invocationTarget`, the
-            root zcap ID in the `capability` property, and the action to be taken
-            in the `capabilityAction` property. The same controller rules apply
-            as in the HTTP signature case.
+            The verifier will decide which of these methods is acceptable.
           </p>
         </section>
 
@@ -576,9 +562,7 @@ urn:zcap:root:${encodeURIComponent(invocationTarget)}
 
           <pre class="example highlight javascript">
             {
-  "@context": [
-    "https://w3id.org/zcap/v1"
-  ],
+  "@context": "https://w3id.org/zcap/v1",
   "id": "urn:zcap:root:https%3A%2F%2Ffoo.example%2Fcollections%2F123",
   // populated via a database or external system call
   "controller": "did:key:example",
@@ -628,21 +612,19 @@ urn:zcap:root:${encodeURIComponent(invocationTarget)}
           A delegated zcap is different from a root zcap primarily in that it
           has a `parentCapability`, an expiration date-time, and a capability
           delegation proof (found in proof). It is also different from a root
-          zcap in that all delegated zcaps in a chain [link to capability
-          chains] must be fully provided to the verifier when invoking a
+          zcap in that all delegated zcaps in a chain must be fully provided to the verifier when invoking a
           delegated zcap, so that the verifier is not required to dereference
           them other than via the provided chain. <i><b>Note:</b> A verifier may still
           need to query a database for delegated zcaps to perform
           revocation checks by ID. However, a verifier MUST NOT be required to perform
           network requests or database queries to dereference delegated zcaps
-          by ID when verifying the capability chain [link to capability
-          chains], prior to inspecting it for potential revocations.</i>
+          by ID when verifying the capability chain, prior to inspecting it for potential revocations.</i>
         </p>
 
         <p>
           A delegated zcap MUST have an `@context` field with an array where the
-          first value is the zcapld context and any subsequent values identify
-          context(s) used to define vocabulary terms used in the capability
+          first value is the zcapld context `https://w3id.org/zcap/v1`,
+          and any subsequent values identify context(s) used to define vocabulary terms used in the capability
           delegation proof. [Note: Maximum array size should be defined in the
           spec along with rationale].
         </p>
@@ -674,10 +656,6 @@ urn:uuid:<uuid>
           A delegated zcap can only be invoked by submitting the entire zcap. A
           delegated zcap MUST have a capability delegation proof which
           MUST contain the delegation chain.
-        </p>
-
-        <p>
-          [target for link to capability chains]
         </p>
 
         <p>
@@ -801,11 +779,11 @@ urn:uuid:<uuid>
             invocation target). The suffix MUST start with `/` or `?` if the
             invocation target prefix has no `?`, and with `&` otherwise. This allows for
             fully customizable attenuations via HTTP API path and query
-            parameters. For example, a ZCAP that can be invoked at
+            parameters. For example, a zcap that can be invoked at
             `https://foo.example/bars/123` can be delegated with an attenuation
-            such that the delegated ZCAP has an invocation target of
+            such that the delegated zcap has an invocation target of
             `https://foo.example/bars/123/bazzes/456`. This could be further
-            delegated and attenuated with a ZCAP with an invocation target of
+            delegated and attenuated with a zcap with an invocation target of
             `https://foo.example/bars/123/bazzes/456?day=tuesday` and then again
             with `https://foo.example/bars/123/bazzes/456?day=tuesday&hour=12`.
           </p>
@@ -813,25 +791,12 @@ urn:uuid:<uuid>
 
         <section id="invoke-delegate-capability">
           <h2>
-            Invoking a Delegated ZCAP
+            Invoking a Delegated Zcap
           </h2>
 
           <p>
-            Just like with root zcaps, there can be multiple ways to invoke a
-            delegated zcap; two are the same as with root zcaps and are
-            defined with the differences described below:
-          </p>
-
-          <p>
-            When invoking a delegated zcap using an HTTP signature, a
-            capability-invocation header must be included that includes the full
-            delegated zcap in a `capability` parameter by serializing it to JSON,
-            gzipping the result, and then base64url-encoding the gzipped JSON.
-          </p>
-
-          <p>
-            When invoking using a DI proof, the `capability` property must express
-            the full delegated zcap.
+            Just like <a href="#invoking-root-capability">with root zcaps</a>, there can be multiple ways to invoke a
+            delegated zcap.
           </p>
 
           <p>
@@ -949,7 +914,7 @@ urn:uuid:<uuid>
       <h2>Capabilities</h2>
 
       <p>
-        ZCAP-LD capabilities are encoded through a chain of linked data
+        Zcap capabilities are encoded through a chain of linked data
         documents, granting authority to a target, possibly restricted through
         "caveats".
         Authority starts with the target (which always has authority to invoke
@@ -1053,7 +1018,7 @@ urn:uuid:<uuid>
           target or another capability document.
           A series of capability chained together in this way is called a
           "capability chain" and is how delegation of capabilities are
-          handled in ZCAP-LD.
+          handled in zcaps.
           New keys MAY be granted authority to use this capability through
           the associated <code>controller</code> property.
         </p>
@@ -1094,7 +1059,7 @@ urn:uuid:<uuid>
 
       <p>
         A capability may be enacted through the process of invocation.
-        In the context of ZCAP-LD, an invocation consists of a linked data
+        In the context of zcaps, an invocation consists of a linked data
         object which MUST have a <code>proof</code> property with a value
         containing:
       </p>
@@ -1170,7 +1135,7 @@ urn:uuid:<uuid>
           possible for an invocation to refer to an invocation as an argument.
           For this reason it is critical that mechanisms for accepting
           invocations be sure which invocation is being performed.
-          For example, a mechanism that accepts ZCAP-LD capabilities as
+          For example, a mechanism that accepts authorization capabilities as
           JSON-LD documents will likely have no trouble telling which
           invocation is being performed since that will be the "top"
           of the framed document.
@@ -1179,6 +1144,53 @@ urn:uuid:<uuid>
           to determine the "root" of the invocation.
         </p>
       </div>
+
+      <section id="proving-invocation-with-http-signature">
+        <h2>Proving Invocation with HTTP Signature</h2>
+
+        <p>
+          When invoking a root zcap using an HTTP signature, a
+          capability-invocation header must be included that identifies the
+          root zcap by ID (via an `id` parameter) and the capability action
+          that is being invoked (via an `action` parameter). The request URL
+          identifies the intended invocation target, which must either match
+          the invocation target in the root zcap, or, if the verifier allows
+          it, have the root zcap's invocation target as a prefix. The
+          capability action must be an action that is expected (supported) by
+          the verifier at the request URL. The capability action SHOULD be
+          read or write. The key used to create the HTTP signature must be either
+          1) the private key paired with a verification method that matches
+          the controller of the root zcap or 2) a verification method that is
+          controlled by the controller of the root zcap &mdash; and authorized for the
+          purpose of `capabilityInvocation`.
+        </p>
+
+        <p>
+          When invoking a delegated zcap using an HTTP signature, a
+          capability-invocation header must be included that includes the full
+          delegated zcap in a `capability` parameter by serializing it to JSON,
+          gzipping the result, and then base64url-encoding the gzipped JSON.
+        </p>
+      </section>
+
+      <section id="proving-invocation-with-data-integrity-proof">
+        <h2>Proving Invocation with Data Integrity Proof</h2>
+
+        <p>
+          When invoking using a DI proof, a capability invocation proof must
+          be attached to a document that is acceptable by the API, as
+          defined by the specific API being accessed. The capability
+          invocation proof MUST include the intended `invocationTarget`, the
+          root zcap ID in the `capability` property, and the action to be taken
+          in the `capabilityAction` property. The same controller rules apply
+          as in <a href="#proving-invocation-with-http-signature">the HTTP signature case</a>.
+        </p>
+
+        <p>
+          When invoking a delegated capability using a DI proof,
+          the capability property must express the full delegated zcap.
+        </p>
+      </section>
 
       <section id="actions">
         <h2>Actions</h2>
@@ -1201,6 +1213,15 @@ urn:uuid:<uuid>
              common.  Do we want to define such a caveat in this document? -->
 
       </section>
+    </section>
+
+    <section id="conformance">
+        <!--
+        ReSpec will insert here something like:
+        > As well as sections marked as non-normative, all authoring guidelines, diagrams, examples, and notes in this specification are non-normative. Everything else in this specification is normative.
+        >
+        > The key words MAY, MUST, MUST NOT, and SHOULD in this document are to be interpreted as described in BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all capitals, as shown here.
+        -->
     </section>
 
     <!-- TODO: explore whether composition is fully supported by the
@@ -1264,7 +1285,7 @@ urn:uuid:<uuid>
         Use correlation (Verifiable Credentials) in a reasoning system (most
         commonly human reasoning) as a path to make judgements about whether to
         hand an entity a specific set of initial capabilities.
-        Use capabilities (ZCAP-LD) as the mechanism to grant and exercise
+        Use capabilities (zcaps) as the mechanism to grant and exercise
         authority through computing systems.
         To return to our system administrator example, when Alice applies for the
         job, she submits a series of credentials about her prior work history
@@ -1297,7 +1318,7 @@ urn:uuid:<uuid>
         In some object capability systems (such as many object capability
         programming languages) it is not even possible to see what entity is
         invoking a capability.
-        In the case of ZCAP-LD, it is always possible to inspect an invocation
+        In the case of zcaps, it is always possible to inspect an invocation
         to check which authentication material authorized to invoke the
         capability is being used in the invocation, and this may permit
         checking a certain amount of "who" is performing the action, but to
@@ -1316,7 +1337,7 @@ urn:uuid:<uuid>
         <a href="http://www.erights.org/elib/capability/horton/">Horton</a>
         is one such system for E, though as previously stated,
         such information can be gleaned already by looking at the invocation
-        and capability chain documents in ZCAP-LD.)
+        and capability chain documents in zcaps.)
         The key to permit detecting and mitigating abuse safely in a capability
         based environment is to treat correlation of who is using a service
         not as something that is used per-invocation, but as something to be
@@ -1339,6 +1360,61 @@ urn:uuid:<uuid>
         from the invocation of a capability granted to some of Mallet's
         authentication material, and Alice revokes that capability.
       </p>
+    </section>
+
+    <section class="appendix informative" id="milestones">
+        <h2>Milestones</h2>
+        <p>
+            This is a non-binding plan of how the authors intend this document to develop.
+        </p>
+
+        <section id="milestone-v0.4">
+            <h3>v0.4: Improve readability</h3>
+            <p>There will be no normative changes in v0.4.</p>
+            <ol>
+                <li class="issue" data-number="56">
+                    Remove TODOs expressed as spec text so the spec is more readable, and all issues are tracked in the issue tracker
+                </li>
+            </ol>
+        </section>
+
+        <section>
+            <h3>v0.5</h3>
+            <p>
+                This milestone is not yet planned. Once <a href="">v0.4</a> is done, it will be planned from issues in the <a href="#backlog">backlog</a> and issue tracker.
+            </p>
+        </section>
+    </section>
+
+    <section class="appendix informative" id="backlog">
+        <h2>Backlog</h2>
+        <p>
+            These issues may be added to <a href="#milestones">milestones</a>.
+            They may also be removed from the backlog.
+            Generally, they are listed in priority order.
+        </p>
+
+        <ol>
+
+            <li class="issue">
+                Fix this ReSpec warning:
+                <blockquote>
+                    Document uses RFC2119 keywords but lacks a conformance section.<br />
+                    How to fix: Please add a <code>&lt;section id="conformance"&gt;</code>.
+                </blockquote>
+
+                <p>Questions</p>
+                <ul>
+                    <li>Is adding a conformance section this a normative change?</li>
+                    <li>Is this appropriate for v0.4 milestone?</li>
+                </ul>
+            </li>
+
+            <li class="issue">
+                v0.3 was published in 2022. Since then, some implementors have made changes to their implementations based on their experience in production, which may be incorporated into this spec. If this experience can be described, and the changes articulated, they may be incorporated into this document.
+            </li>
+
+        </ol>
     </section>
   </body>
 </html>
