@@ -205,60 +205,20 @@
         <!-- TODO: Should we include the full embedded key?  That's better
              practice in general (outside of DIDs) but will make the example
              noisier -->
-        <pre class="example highlight javascript">
-{
-  "@context": ["https://w3id.org/zcap/v1",
-               "https://autopower.example/"],
-
-  "id": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
-
-  // Since this is the first delegated capability, the parentCapability
-  // points to the target this capability will operate against
-  // (in this case, Alyssa's Car)
-  "parentCapability": "https://whatacar.example/a-fancy-car",
-
-  // We are granting authority specifically to one of Alyssa's
-  // cryptographic keys (not to be confused with the car
-  // key metaphor!)
-  "controller": "https://social.example/alyssa#key-for-car",
-
-  // Finally we sign this object with cryptographic material from
-  // Alyssa's Car's capabilityDelegation field, and using the
-  // capabilityDelegation proofPurpose.
-  "proof": {
-    "type": "Ed25519Signature2018",
-    "created": "2018-02-13T21:26:08Z",
-    "capabilityChain": [
-      "https://whatacar.example/a-fancy-car"
-    ],
-    "jws": "eyJhbGciOiJFZERTQSIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..lfAFjrWE-4RxhL0gtzSMRX72NR9SRDgaMmkjPA4if0ERbw4R2bnts5sAs8OyhAlbFzBAKOqrFk57AYqwSR2vCw",
-    "proofPurpose": "capabilityDelegation",
-    "verificationMethod": "https://example.com/i/alice/keys/1"
-  }
-}
-        </pre>
+        <pre
+          class="example highlight javascript"
+          data-include="examples/intro-zcap-by-example-alyssa-car-key.zcap.json"
+        ></pre>
 
         <p>
           Turning on this car and driving into the sunset is as easy as
           invoking the capability to do so:
         </p>
 
-        <pre class="example highlight javascript">
-    {"@context": ["https://w3id.org/zcap/v1",
-                  "https://autopower.example/"],
-     "id": "urn:uuid:ad86cb2c-e9db-434a-beae-71b82120a8a4",
-     "action": "Drive",
-     "proof": {
-        "type": "RsaSignature2016",
-        // A linked data document can be an invocation if it has a
-        // proofPurpose of capabilityInvocation and links to the capability
-        // chain it is invoking
-        "proofPurpose": "capabilityInvocation",
-        "capability": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
-        "created": "2016-02-08T17:13:48Z",
-        "creator": "https://social.example/alyssa/#key-for-car",
-        "signatureValue": "..."}}
-        </pre>
+        <pre
+          class="example highlight javascript"
+          data-include="examples/intro-zcap-by-example-drive-invocation.zcap.json"
+        ></pre>
 
         <p>
           Alyssa lives with her roommate and long-time friend Ben Bitdiddle.
@@ -281,33 +241,10 @@
           capability she has, adding the caveat:
         </p>
 
-        <pre class="example highlight javascript">
-    {"@context": ["https://w3id.org/zcap/v1",
-                  "https://autopower.example/"],
-     "id": "https://social.example/alyssa/caps#79795d78",
-
-     // Pointing up the chain at the capability from which Alyssa was
-     // initially gained authority
-     "parentCapability": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
-
-     // Alyssa grants authority specifically to one of Ben's
-     // cryptographic keys
-     "controller": "https://chatty.example/ben/#key-33",
-
-     // Alyssa adds a caveat: Ben can drive her car, unless she flips
-     // the bit at this url
-     "caveat": [
-       {"type": "ValidWhileTrue",
-        "uri": "https://social.example/alyssa/ben-can-still-drive"}],
-
-     // Finally Alyssa signs this object with the key she was granted
-     // authority with
-     "proof": {
-        "type": "RsaSignature2016",
-        "proofPurpose": "capabilityDelegation",
-        "created": "2017-03-28T06:01:25Z",
-        "creator": "https://social.example/alyssa/#key-for-car",
-        "signatureValue": "..."}}
+        <pre
+          class="example highlight javascript"
+          data-include="examples/intro-zcap-by-example-alyssa-car-key-caveat.zcap.json"
+          >
         </pre>
 
         <p>
@@ -335,29 +272,10 @@
           to 5 kilometers, but no more:
         </p>
 
-        <pre class="example highlight javascript">
-    {"@context": ["https://w3id.org/zcap/v1",
-                  "https://autopower.example/"],
-     "id": "https://chatty.example/ben/caps#2cdea8c1",
-     "parentCapability": "https://social.example/alyssa/caps#79795d78",
-     "controller": "https://lem.example/#key-bf36",
-
-     // Ben adds this caveat: this capability can be used to drive the
-     // car, but not for more than 5 kilometers
-     "caveat": [
-       {"type": "DriveNoMoreThan",
-        // Alyssa's gauge currently says 123854 kilometers driven,
-        // so this is only 5 km more than the current value
-        "kilometers": 123859}],
-
-     // Finally Ben signs this object with the key he was granted
-     // authority with
-     "proof": {
-        "type": "RsaSignature2016",
-        "proofPurpose": "capabilityDelegation",
-        "created": "2017-06-13T19:15:03Z",
-        "creator": "https://chatty.example/ben/#key-33",
-        "signatureValue": "..."}}
+        <pre
+          class="example highlight javascript"
+          data-include="examples/intro-zcap-by-example-ben-valet.zcap.json"
+          >
         </pre>
 
         <p>
@@ -430,13 +348,10 @@
           A root zcap looks like this:
         </p>
 
-        <pre class="example highlight javascript">
-{
-  "@context": "https://w3id.org/zcap/v1",
-  "id": "urn:zcap:root:https%3A%2F%2Fexample.com%2Ffoo",
-  "controller": "did:key:example",
-  "invocationTarget": "https://example.com/foo"
-}
+        <pre
+          class="example highlight javascript"
+          data-include="examples/intro-root-capability-example.zcap.json"
+          >
         </pre>
 
         <p>
@@ -560,15 +475,10 @@ urn:zcap:root:${encodeURIComponent(invocationTarget)}
             and dynamically converts that (after looking up its controller) into:
           </p>
 
-          <pre class="example highlight javascript">
-            {
-  "@context": "https://w3id.org/zcap/v1",
-  "id": "urn:zcap:root:https%3A%2F%2Ffoo.example%2Fcollections%2F123",
-  // populated via a database or external system call
-  "controller": "did:key:example",
-  "invocationTarget": "https://foo.example/collections/123"
-}
-          </pre>
+          <pre
+            class="example highlight javascript"
+            data-include="examples/intro-root-capability-dereferenced.zcap.json"
+          ></pre>
 
         </section>
       </section>
@@ -580,32 +490,10 @@ urn:zcap:root:${encodeURIComponent(invocationTarget)}
           A delegated zcap looks like this:
         </p>
 
-        <pre class="example highlight javascript">
-{
-  "@context": [
-    "https://w3id.org/zcap/v1",
-    "https://w3id.org/security/suites/ed25519-2020/v1"
-  ],
-  "id": "urn:uuid:cdc77118-6bfa-11ec-aceb-10bf48838a41",
-  "parentCapability": "urn:zcap:root:https%3A%2F%2Fexample.com%2Ffoo",
-  "controller": "did:key:example",
-  "invocationTarget": "https://example.com/foo",
-  "expires": "2021-11-03T18:33:51Z",
-  "allowedAction": [
-    "write",
-    "read"
-  ],
-  "proof": {
-    "type": "Ed25519Signature2020",
-    "created": "2021-10-27T18:33:51Z",
-    "verificationMethod": "did:key:z6MkfWKcvBiKCfNgz5UUGseNt37t4dguEvFgJ9XvX2UV6zB9#z6MkfWKcvBiKCfNgz5UUGseNt37t4dguEvFgJ9XvX2UV6zB9",
-    "proofPurpose": "capabilityDelegation",
-    "capabilityChain": [
-      "urn:zcap:root:https%3A%2F%2Fexample.com%2Ffoo"
-    ],
-    "proofValue": "z3t9BCQyF21MDVYmLKc9zbLreqx4wBtQnUsd5aqyoWS5FfhapRz7QjPNLcgKAornUVmJR4ZjbGpuxRFnffxX1ZjtF"
-  }
-}
+        <pre
+          class="example highlight javascript"
+          data-include="examples/intro-delegated-capability-example.zcap.json"
+          >
         </pre>
 
         <p>

@@ -1,0 +1,26 @@
+{"@context": ["https://w3id.org/zcap/v1",
+              "https://autopower.example/"],
+ "id": "https://social.example/alyssa/caps#79795d78",
+
+ // Pointing up the chain at the capability from which Alyssa was
+ // initially gained authority
+ "parentCapability": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
+
+ // Alyssa grants authority specifically to one of Ben's
+ // cryptographic keys
+ "controller": "https://chatty.example/ben/#key-33",
+
+ // Alyssa adds a caveat: Ben can drive her car, unless she flips
+ // the bit at this url
+ "caveat": [
+   {"type": "ValidWhileTrue",
+    "uri": "https://social.example/alyssa/ben-can-still-drive"}],
+
+ // Finally Alyssa signs this object with the key she was granted
+ // authority with
+ "proof": {
+    "type": "RsaSignature2016",
+    "proofPurpose": "capabilityDelegation",
+    "created": "2017-03-28T06:01:25Z",
+    "creator": "https://social.example/alyssa/#key-for-car",
+    "signatureValue": "..."}}

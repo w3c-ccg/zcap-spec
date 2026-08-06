@@ -1,0 +1,9 @@
+            {
+  "@context": [
+    "https://w3id.org/zcap/v1"
+  ],
+  "id": "urn:zcap:root:https%3A%2F%2Ffoo.example%2Fcollections%2F123",
+  // populated via a database or external system call
+  "controller": "did:key:example",
+  "invocationTarget": "https://foo.example/collections/123"
+}
