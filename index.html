@@ -207,7 +207,7 @@
              noisier -->
         <pre class="example highlight javascript">
 {
-  "@context": ["https://w3id.org/security/v2",
+  "@context": ["https://w3id.org/zcap/v1",
                "https://autopower.example/"],
 
   "id": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
@@ -244,7 +244,7 @@
         </p>
 
         <pre class="example highlight javascript">
-    {"@context": ["https://example.org/zcap/v1",
+    {"@context": ["https://w3id.org/zcap/v1",
                   "https://autopower.example/"],
      "id": "urn:uuid:ad86cb2c-e9db-434a-beae-71b82120a8a4",
      "action": "Drive",
@@ -282,7 +282,7 @@
         </p>
 
         <pre class="example highlight javascript">
-    {"@context": ["https://example.org/zcap/v1",
+    {"@context": ["https://w3id.org/zcap/v1",
                   "https://autopower.example/"],
      "id": "https://social.example/alyssa/caps#79795d78",
 
@@ -336,7 +336,7 @@
         </p>
 
         <pre class="example highlight javascript">
-    {"@context": ["https://example.org/zcap/v1",
+    {"@context": ["https://w3id.org/zcap/v1",
                   "https://autopower.example/"],
      "id": "https://chatty.example/ben/caps#2cdea8c1",
      "parentCapability": "https://social.example/alyssa/caps#79795d78",
@@ -581,9 +581,7 @@ urn:zcap:root:${encodeURIComponent(invocationTarget)}
 
           <pre class="example highlight javascript">
             {
-  "@context": [
-    "https://w3id.org/zcap/v1"
-  ],
+  "@context": "https://w3id.org/zcap/v1",
   "id": "urn:zcap:root:https%3A%2F%2Ffoo.example%2Fcollections%2F123",
   // populated via a database or external system call
   "controller": "did:key:example",
@@ -644,8 +642,8 @@ urn:zcap:root:${encodeURIComponent(invocationTarget)}
 
         <p>
           A delegated zcap MUST have an `@context` field with an array where the
-          first value is the zcapld context and any subsequent values identify
-          context(s) used to define vocabulary terms used in the capability
+          first value is the zcapld context `https://w3id.org/zcap/v1`,
+          and any subsequent values identify context(s) used to define vocabulary terms used in the capability
           delegation proof. [Note: Maximum array size should be defined in the
           spec along with rationale].
         </p>
