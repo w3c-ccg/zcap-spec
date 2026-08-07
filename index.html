@@ -254,7 +254,26 @@
         // proofPurpose of capabilityInvocation and links to the capability
         // chain it is invoking
         "proofPurpose": "capabilityInvocation",
-        "capability": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
+        "capability": {
+          "@context": "https://w3id.org/zcap/v1",
+          "id": "urn:uuid:d2c83c43-878a-4c01-984f-b2f57932ce5f",
+          "parentCapability": "urn:uuid:f7412b9a-854b-47ab-806b-3ac736cc7cda",
+          "controller": "did:key:dummy",
+          "expires": "2026-01-31T00:00:00Z",
+          "allowedAction": [
+            "https://example.com/storage/method/UploadFile"
+          ],
+          "proof": [
+            {
+              "type": "DataIntegrityProof",
+              "cryptosuite": "eddsa-jcs-2022",
+              "created": "2026-01-01T00:00:00Z",
+              "verificationMethod": "did:key:bob#bob",
+              "proofPurpose": "capabilityDelegation",
+              "proofValue": "zQeVbY4oey5q2M3XKaxup3tmzN4DRFTLVqpLMweBrSxMY2xHX5XTYV8nQApmEcqaqA3Q1gVHMrXFkXJeV6doDwLWx"
+            }
+          ]
+        },
         "created": "2016-02-08T17:13:48Z",
         "creator": "https://social.example/alyssa/#key-for-car",
         "signatureValue": "..."}}
