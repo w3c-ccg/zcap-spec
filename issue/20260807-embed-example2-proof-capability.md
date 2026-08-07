@@ -60,3 +60,9 @@ Change Example 2's to have a new `proof.capability` value identical to Example 1
 
 By changing the invocation DI proof's `capability` property to be the full expression of the invoked delegated capability, this now satisfies the requirement
 > When invoking a delegated capability using a DI proof, the capability property must express the full delegated zcap.
+
+## Resolution
+
+This issue was resolved by accepting the proposal above,
+and replacing example 2 `proof.capability` with the full expression of the invoked capability delegation so the following requirement is satisfied
+> When invoking a delegated capability using a DI proof, the capability property must express the full delegated zcap.
