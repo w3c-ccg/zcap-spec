@@ -485,7 +485,7 @@
           Additionally, JSON-LD compatibility enables CBOR-LD to be used
           to express zcaps &mdash; further reducing size via semantic compression.
 
-          [Note: [See invoking a root zcap section]. When invoking a root zcap,
+          When <a href="#invoking-root-capability">invoking a root zcap</a>,
           a capability invocation proof is added, not to the root zcap itself,
           but rather to another document that is acceptable to an API. This
           means that no additional contexts (especially cryptosuite contexts) ever
@@ -498,8 +498,8 @@
           A root zcap MUST have an `id` that is a string that expresses a URN.
           This ID can always be dereferenced by the verifier system if it is a
           valid root zcap for a particular endpoint. The ID of a root zcap
-          SHOULD [Note: this should become a MUST if it covers all use cases,
-          to keep things simple] have the following format:
+          SHOULD <!-- this should become a MUST if it covers all use cases,
+          to keep things simple --> have the following format:
         </p>
 
         <pre>
@@ -524,8 +524,8 @@ urn:zcap:root:${encodeURIComponent(invocationTarget)}
           root zcap. The controller (or controllers) may take any actions with
           the invocation target (that are supported by the verifier) by
           invoking the root zcap. The controller (or controllers) may create
-          delegated zcaps from the root zcap [TODO: link to delegated zcap
-          section].
+          <a href="#delegated-capability">delegated zcaps</a>
+          from the root zcap.
         </p>
 
         <p>
@@ -580,7 +580,7 @@ urn:zcap:root:${encodeURIComponent(invocationTarget)}
           </p>
 
           <pre class="example highlight javascript">
-            {
+{
   "@context": "https://w3id.org/zcap/v1",
   "id": "urn:zcap:root:https%3A%2F%2Ffoo.example%2Fcollections%2F123",
   // populated via a database or external system call
@@ -644,8 +644,7 @@ urn:zcap:root:${encodeURIComponent(invocationTarget)}
           A delegated zcap MUST have an `@context` field with an array where the
           first value is the zcapld context `https://w3id.org/zcap/v1`,
           and any subsequent values identify context(s) used to define vocabulary terms used in the capability
-          delegation proof. [Note: Maximum array size should be defined in the
-          spec along with rationale].
+          delegation proof.
         </p>
 
         <p>
@@ -694,8 +693,8 @@ urn:uuid:<uuid>
         <p>
           A verifier MUST limit the length of the capability chain to prevent
           long chain attacks. A verifier SHOULD limit the length of the
-          capability chain to 10. [exposition on why 10 / link to security
-          section].
+          capability chain to 10. <!-- exposition on why 10 / link to security
+          section]. -->
         </p>
 
         <p>
@@ -703,17 +702,17 @@ urn:uuid:<uuid>
           expresses a URI. The invocation target identifies where the zcap may
           be invoked. A verifier MUST ensure that the `invocationTarget` either
           matches the `invocationTarget` in the parent capability or, if
-          invocation target attenuation [link] is permitted, that it has the
+          invocation target attenuation <!-- TODO: link --> is permitted, that it has the
           `invocationTarget` from the parent capability as a prefix. A prefix is
           defined as a base URI and parent path (and optional query) (i.e.,
-          `/`-delimited and `?`/`&`-delimited) [more rigorous definition].
+          `/`-delimited and `?`/`&`-delimited) <!-- TODO: more rigorous definition -->
         </p>
 
         <p>
           A delegated zcap MUST have a `controller` that is a string or an array
           of strings that each express a URI that identifies a controller for
           the delegated zcap. The controller (or controllers) may take any
-          allowed actions [link] with the invocation target (that are supported
+          allowed <a href="#actions">actions</a> with the invocation target (that are supported
           by the verifier) by invoking the delegated zcap. The controller (or
           controllers) may create delegated zcaps from the delegated zcap.
           <i><b>Note:</b> As with other data model sections in W3C specs, every property
@@ -739,9 +738,11 @@ urn:uuid:<uuid>
 
         <p>
           A verifier SHOULD ensure that an invoked delegated zcap does not have
-          an expiration date-time that is more than three months in the
-          future. [TODO: exposition on why 3 months?] This is because a verifier
-          MUST store revoked zcaps [link to revocation] until they expire, to
+          an expiration date-time that is more than three months in the future.
+          <!-- TODO: explain why 3 months -->
+          This is because a verifier
+          MUST store revoked zcaps until they expire, to
+          <!-- TODO: add revocation section and link to it -->
           prevent their use. A delegated zcap with an expiration date that is
           unreasonably far into the future will have to be stored for an
           unreasonable period of time to prevent its invocation. There are
@@ -771,7 +772,7 @@ urn:uuid:<uuid>
           A delegated zcap MUST have a `proof` field that is an object or an
           array of objects that each express a DI proof. At least one of these
           proofs MUST be a zcap capability delegation proof.
-          [TODO: more details on this proof]
+          <!-- TODO: more details on this proof -->
         </p>
 
         <p>
@@ -816,32 +817,6 @@ urn:uuid:<uuid>
           <p>
             Just like <a href="#invoking-root-capability">with root zcaps</a>, there can be multiple ways to invoke a
             delegated zcap.
-          </p>
-
-          <p>
-            TODO: Add section on revocation, detailing what verifiers MUST/SHOULD
-            do to provide revocation endpoints for zcaps. A root invocation
-            target SHOULD have a `/zcaps/revocations` subpath, where a root zcap of
-            `urn:zcap:root:<the revocations path/the zcap ID to revoke>` can be
-              invoked. The verifier SHOULD set the controllers for that root
-              zcap to all controllers in the (to be revoked) zcap's chain so
-              that any controller in the chain can revoke the zcap. Link to
-              example server-side revocation implementation:
-              https://github.com/digitalbazaar/ezcap-express/blob/main/lib/revoke.js
-          </p>
-
-          <p>
-            TODO: Detail algorithm for validation process:
-            https://github.com/digitalbazaar/zcapld/blob/4386185f784f552d6eaeb2c3c82959cb2e09762e/lib/CapabilityProofPurpose.js#L85
-          </p>
-
-          <p>
-            TODO: Detail how revocation works: Any controller in the chain of a
-            delegated zcap may post that zcap to:
-            `<rootInvocationTarget>/zcaps/revocations/<zcapToRevokeId>` using the
-              root zcap: `urn:zcap:root:encodeURIComponent(<rootInvocationTarget>/zcaps/revocations/<zcapToRevokeId>)`
-                to revoke.
-                Example: https://github.com/digitalbazaar/ezcap-express/blob/main/lib/revoke.js
           </p>
 
         </section>
@@ -1413,9 +1388,7 @@ urn:uuid:<uuid>
             Generally, they are listed in priority order.
         </p>
 
-        <ol>
-
-            <li class="issue">
+            <div class="issue">
                 Fix this ReSpec warning:
                 <blockquote>
                     Document uses RFC2119 keywords but lacks a conformance section.<br />
@@ -1427,18 +1400,86 @@ urn:uuid:<uuid>
                     <li>Is adding a conformance section this a normative change?</li>
                     <li>Is this appropriate for v0.4 milestone?</li>
                 </ul>
-            </li>
+            </div>
 
-            <li class="issue">
+            <div
+              class="issue"
+              title="Clarify Delegation Proof"
+              >
+              <p>
+                Add more details to the requirements on delegation proof property.
+
+                Consider linking to
+                <a href="https://www.w3.org/TR/vc-data-integrity-1.1/">
+                  vc-data-integrity-1.1
+                </a>.
+              </p>
+              <blockquote>
+                A delegated zcap MUST have a proof field that is an object or an array of objects that each express a DI proof. At least one of these proofs MUST be a zcap capability delegation proof.
+              </blockquote>
+            </div>
+
+            <div class="issue">
                 v0.3 was published in 2022. Since then, some implementors have made changes to their implementations based on their experience in production, which may be incorporated into this spec. If this experience can be described, and the changes articulated, they may be incorporated into this document.
-            </li>
+            </div>
 
-        </ol>
+            <div class="issue"
+                title="Detail validation algorithm"
+              >
+              <p>
+                Detail algorithm for validation process:
+                https://github.com/digitalbazaar/zcapld/blob/4386185f784f552d6eaeb2c3c82959cb2e09762e/lib/CapabilityProofPurpose.js#L85
+              </p>              
+            </div>
 
+            <div class="issue"
+                title="Add Revocation Section"
+            >
+              <p>
+                Explain revocation behavior in a new section.
+              </p>
+              <p>
+                Wishlist
+              </p>
+              <ul>
+                <li>
+                  Add a named section for other sections to link to for an overview of revocation.
+                </li>
+                <li>
+                  Detail what verifiers MUST/SHOULD do to provide revocation endpoints for zcaps.
+                </li>
+                <li>
+                  A root invocation
+                  target SHOULD have a `/zcaps/revocations` subpath, where a root zcap of
+                  `urn:zcap:root:<the revocations path/the zcap ID to revoke>` can be
+                    invoked. The verifier SHOULD set the controllers for that root
+                    zcap to all controllers in the (to be revoked) zcap's chain so
+                    that any controller in the chain can revoke the zcap.
+                </li>
+                <li>
+                  Any controller in the chain of a
+                  delegated zcap may post that zcap to:
+                  `{rootInvocationTarget}/zcaps/revocations/{zcapToRevokeId}`
+                  using the
+                  root zcap: `urn:zcap:root:encodeURIComponent("{rootInvocationTarget}/zcaps/revocations/{zcapToRevokeId}")`
+                  to revoke.
+                  Example: https://github.com/digitalbazaar/ezcap-express/blob/main/lib/revoke.js
+                </li>
+                <li>
+                  Link to example server-side revocation implementations like
+                  <a href="https://github.com/digitalbazaar/ezcap-express/blob/main/lib/revoke.js">
+                    digitalbazaar's ezcap-express
+                  </a>
+                  .
+                </li>
+              </ul>
+            </div>
+      
         <section
           data-include="issue/20260807-embed-example2-proof-capability.md"
           data-include-format="markdown"
           ></section>
+
     </section>
   </body>
 </html>
