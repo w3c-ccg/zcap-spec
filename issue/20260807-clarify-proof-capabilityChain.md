@@ -10,11 +10,6 @@ but this property name isn't described anywhere in the spec.
 
 In thinking through what to do about it, I am left with some questions, and a thought that maybe the spec's examples are inconsistent with its recommendations, and the result is a lack of clarity about how delegations and invocations should be proven.
 
-## Open Questions
-* Is there no definition of `capabilityChain` because it's an old/outdated concept?
-* Should we add a definition of `capabilityChain`?
-* Is `proof.capabilityChain` it specific to capabilityDelegation proofs, or would capabilityInvocation proofs have it too?
-
 ## Background: Spec Text
 
 * In [Delegation through Capability Chains](https://w3c-ccg.github.io/zcap-spec/#delegation)
@@ -42,11 +37,11 @@ I'm not sure which term was defined first, but `capabilityChain` i.e. "capabilit
 
 It may reduce confusion to remove the informative text that currently also defines "capability chain" to be different than "capability delegation chain".
 
-### Proposal: Use `delegation proof ancestor array` instead of `capability delegation chain`
+### Proposal: Use `delegation ancestors array` instead of `capability delegation chain`
 
-A later proposal makes changes to use the term "delegation proof ancestor array" instead of "capability delegation chain".
+A later proposal makes changes to use the term "delegation ancestors array" instead of "capability delegation chain".
 The new term was chosen because
-* it represent that this array does not have the full chain, only the chain of ancestors capabilities of the proven delegated capability
+* it represent that this array does not have the full chain, only the chain of ancestor capabilities of the delegated capability
 * it clarifies the data type is an array, to distinguish it from the other, currently more prevalent in the spec, "capability chain" that is not an array but a linked list.
 
 ## Problem: There is not enough detail on how to satisfy `A delegated zcap MUST have a capability delegation proof which MUST contain the delegation chain.` to ensure interoperability
@@ -60,23 +55,24 @@ Some of the examples don't, which appears to be an oversight. These problems are
 
 The bigger problem is implementors (and example authors) are lacking text that explains how to satisfy this requirement in a way that facilitates interoperable verification with verifiers. There's no text that explains the method of including `proof.capabilityChain` as a way for the delegation proof to "contain the delegation chain".
 
-### Proposal: Adjust the requirement to require the delegation chain be included as the value of the `capabilityChain` property
+### Proposal: Adjust the requirement text to require the delegation chain be included as the value of the `capabilityChain` property
 
 Change
 > A delegated zcap can only be invoked by submitting the entire zcap. A delegated zcap MUST have a capability delegation proof which MUST contain the delegation chain.
 > 
-> A capability delegation chain MUST be an array that includes the root zcap using its ID (i.e., by reference only, not embedded) and every other delegated zcap in its ancestry must be referenced by ID except for the parent delegated zcap, which MUST be fully embedded. This ensures that delegated zcaps are of minimal size (other delegated zcaps in the chain are never repeated) and that every delegated zcap can be dereferenced directly from the chain without ever having to hit a network resource or similar. The capability delegation chain is ordered; the first entry MUST be the root zcap's ID and any other entries must be in the order of delegation from least recent to most recent.
+> A capability delegation chain MUST be an array that includes the root zcap using its ID (i.e., by reference only, not embedded) and every other delegated zcap in its ancestry must be referenced by ID except for the parent delegated zcap, which MUST be fully embedded.
 
 To
 > A delegated zcap can only be invoked by submitting the entire zcap.
 > 
 > A delegated zcap MUST have a capability delegation proof.
-> A capability delegation MUST have a capability delegation proof that has a `capabilityChain` property whose value is a delegation proof ancestor array.
-> A delegation proof ancestor array MUST be an array that includes the root zcap using its ID (i.e., by reference only, not embedded) and every other delegated zcap in its ancestry must be referenced by ID except for the parent delegated zcap, which MUST be fully embedded. This ensures that delegated zcaps are of minimal size (other delegated zcaps in the chain are never repeated) and that every delegated zcap can be dereferenced directly from the chain without ever having to hit a network resource or similar. The capability delegation chain is ordered; the first entry MUST be the root zcap's ID and any other entries must be in the order of delegation from least recent to most recent.
+> A capability delegation proof MUST have a `capabilityChain` property whose value is a delegation ancestors array.
+> A delegation ancestors array MUST be an array that includes the root zcap using its ID (i.e., by reference only, not embedded) and every other delegated zcap in its ancestry must be referenced by ID except for the parent delegated zcap, which MUST be fully embedded.
 
 This change clarifies that the capability delegation proof should use a `capabilityChain` property to include the array.
 
-It also uses "delegation proof ancestor array" instead of "capability delegation chain" to avoid the current challenge of confusing "capability delegation chain" (array in proof) with "capability chain". The new term was chosen because
+
+The change also uses "delegation ancestors array" instead of "capability delegation chain" to avoid the current challenge of confusing "capability delegation chain" (array in proof) with "capability chain". The new term was chosen because
 * it represent that this array does not have the full chain, only the chain of ancestors capabilities of the proven delegated capability
 * it clarifies the data type is an array, to distinguish it from the other, currently more prevalent in the spec, "capability chain" that is not an array but a linked list.
 
@@ -147,7 +143,7 @@ This appears to be an oversight. If so, we can add the required `capabilityChain
 ### Proposal: Add `proof.capabilityChain` to Example 3
 
 The full new Example 3 would be as follows, which has the following changes from the original example 3:
-* `proof.capabilityChain` inserted whose value is a capability delegation proof ancestor array.
+* `proof.capabilityChain` inserted whose value is a capability delegation ancestors array.
 The first entry in the array is the URN of the root zcap, `"urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car"`. The second entry in the array is the full capability delegation object corresponding to the proven delegation's `parentCapability` (identified as `"https://whatacar.example/a-fancy-car/proc/7a397d7b"`).
 
 ```json
