@@ -12,3 +12,6 @@ Non-normative
   Previously, some values started with URLs to other contexts like `example.org`.
 * Fix example 6 root capability `@context` value to be a string, as required. Previously it was an array.               
 * add `capabilityChain` to delegation proofs in examples 3 & 4
+* Fix example 1 `parentCapability` and `proof.capabilityChain` to identify the parent root capability by a URN.
+  Before, the example text identified the parent capability using an HTTPS URL.
+  After, example 1 conforms to the requirement that delegations identify root capabilities using a URN.
