@@ -107,13 +107,9 @@ But if we decide that the intended `parentCapability` is a root zcap URI (not th
 
 #### Proposal: Change Example 1 to identify parentCapability/root using a URN
 
-Status:
-* This proposal has agreement from bengo and dzagidulin
-* A version of this change has been made in the text
-
 These changes will ensure Example 1 has an unambiguous parentCapability which is identified using a URN as required and a `urn:zcap:root:` URN as recommended.
 
-* [ ] Change [Example 1][] (many properties omitted) to use these property values:
+* [x] Change [Example 1][] (many properties omitted) to use these property values:
   ```json
   {
     "id": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
@@ -131,9 +127,7 @@ These changes will ensure Example 1 has an unambiguous parentCapability which is
 
 Currently, there is no example of a delegated zcap's capability chain when the chain is longer than 2. An example would help reduce ambiguity of the normative text. Ideally the normative text is unambiguous *and* tricky-but-common cases like capability chains of length 3+ are demonstrated by example.
 
-This is satisfied by the other proposals to add `proof.capabilityChain` to Examples 3 and 4.
-
-If we don't update those examples to demonstrate this case, e.g. because it makes those early examples too large, then we should ensure there is an example in an appendix, or address this problem some other way.
+This would be satisfied by the other proposals to add `proof.capabilityChain` to Examples 3 and 4.
 
 ## Problem: Example 3 does not satisfy requirement "A delegated zcap MUST have a capability delegation proof which MUST contain the delegation chain."
 
@@ -179,30 +173,18 @@ The first entry in the array is the URN of the root zcap, `"urn:zcap:root:https%
     "signatureValue": "...",
     "capabilityChain": [
       "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car",
+      // This is the full expression of the parentCapability (i.e. Example 1)
       {
         "@context": ["https://w3id.org/zcap/v1",
                     "https://autopower.example/"],
-
         "id": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
-
-        // Since this is the first delegated capability, the parentCapability
-        // points to the target this capability will operate against
-        // (in this case, Alyssa's Car)
-        "parentCapability": "https://whatacar.example/a-fancy-car",
-
-        // We are granting authority specifically to one of Alyssa's
-        // cryptographic keys (not to be confused with the car
-        // key metaphor!)
+        "parentCapability": "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car",
         "controller": "https://social.example/alyssa#key-for-car",
-
-        // Finally we sign this object with cryptographic material from
-        // Alyssa's Car's capabilityDelegation field, and using the
-        // capabilityDelegation proofPurpose.
         "proof": {
           "type": "Ed25519Signature2018",
           "created": "2018-02-13T21:26:08Z",
           "capabilityChain": [
-            "https://whatacar.example/a-fancy-car"
+            "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car"
           ],
           "jws": "eyJhbGciOiJFZERTQSIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..lfAFjrWE-4RxhL0gtzSMRX72NR9SRDgaMmkjPA4if0ERbw4R2bnts5sAs8OyhAlbFzBAKOqrFk57AYqwSR2vCw",
           "proofPurpose": "capabilityDelegation",
@@ -259,23 +241,11 @@ The resulting Example 4 would be
       {"@context": ["https://w3id.org/zcap/v1",
                     "https://autopower.example/"],
       "id": "https://social.example/alyssa/caps#79795d78",
-
-      // Pointing up the chain at the capability from which Alyssa was
-      // initially gained authority
       "parentCapability": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
-
-      // Alyssa grants authority specifically to one of Ben's
-      // cryptographic keys
       "controller": "https://chatty.example/ben/#key-33",
-
-      // Alyssa adds a caveat: Ben can drive her car, unless she flips
-      // the bit at this url
       "caveat": [
         {"type": "ValidWhileTrue",
           "uri": "https://social.example/alyssa/ben-can-still-drive"}],
-
-      // Finally Alyssa signs this object with the key she was granted
-      // authority with
       "proof": {
           "type": "RsaSignature2016",
           "proofPurpose": "capabilityDelegation",
@@ -289,20 +259,8 @@ The resulting Example 4 would be
                           "https://autopower.example/"],
 
               "id": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
-
-              // Since this is the first delegated capability, the parentCapability
-              // points to the target this capability will operate against
-              // (in this case, Alyssa's Car)
               "parentCapability": "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car",
-
-              // We are granting authority specifically to one of Alyssa's
-              // cryptographic keys (not to be confused with the car
-              // key metaphor!)
               "controller": "https://social.example/alyssa#key-for-car",
-
-              // Finally we sign this object with cryptographic material from
-              // Alyssa's Car's capabilityDelegation field, and using the
-              // capabilityDelegation proofPurpose.
               "proof": {
                 "type": "Ed25519Signature2018",
                 "created": "2018-02-13T21:26:08Z",
@@ -322,15 +280,28 @@ The resulting Example 4 would be
 }
 ```
 
-## Problem: Requirements of "capability delegation chain" array lead to large delegation examples that are hard to read
+## Challenge: Requirements of "capability delegation chain" array lead to large delegation examples that are hard to read
 
-After updating Examples 3 and 4 to satisfy the requirements of capability delegation proofs by including a proof `capabilityChain`, the examples are no longer very easy to read.
+After updating Examples 3 and 4 to satisfy the requirements of capability delegation proofs by including a proof `capabilityChain`, the examples are no longer very short.
+On the other hand, their length is a more accurate example of a real-world zcap.
 
-Should the examples omit the full expression of the parent capability in the last entry of `capabilityChain`? That would make the examples smaller, but it might hinder implementors who would then lack a clear full example. A full example could be included in an appendix.
+One way of addressing this would be to have the examples be incomplete examples, and abbreviate or omit some values.
+By addressing the challenge this way
+* we'd gain some way for the examples to be shorter and take up less space.
+  * We'd also need to come up with a convention for these kinds of 'incomplete examples' and how to markup any abbreviations/omissions.
+* we'd lose the examples being a complete example zcap.
+  * this could be mitigated by including the full example zcap in an appendix, but this would mean editors are maintaining two versions of every example in different sections.
+    I'd prefer to avoid that.
 
-The current syntax for the `capabilityChain` also seems like it leads to some verbosity in long chains. Specifically, because delegation includes the id of every ancestor delegation, adding the Nth delegation requires a proof with a `capabilityChain` of length N-1, so the number of ancestor ids in a delegation chain of length n is O(n**2).
-* We can't just drop `proof.capabilityChain` unless we're ok with a verifier no longer having ability to know chain length in O(1). But if that's the only reason it's here, the verbosity could be cut down by keeping only a `chainLength` integer and not repeating all the capability ids.
-* There may be other optimizations possible, but they all depend on things like whether the proof `capabilityChain` is required to verify the `proofValue`
+Another way of addressing this would be to keep long complete examples in the text, but configure our respec tooling to use a respec plugin
+that can re-render long examples in a way that collapses deep sections.
+This would allow document authors to keep complete examples in the HTML source, but readers would see shorter examples after the respec renders the examples to markup that shows some parts of the long example collapsed.
+
+For now, we will not address this challenge.
+
+The examples may be long, but at least they will be self-contained and complete
+While they are self-contained, they are easier to maintain than if split across sections.
+While they are complete, the examples are most illustrative of what a zcap is.
 
 ## Question: Should the requirement of "capability delegation chain" array in proof be determined by the Proof Type / cryptosuite instead of the zcap spec?
 
