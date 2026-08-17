@@ -724,13 +724,13 @@ urn:uuid:<uuid>
         </p>
 
         <p>
-          A delegated zcap can only be invoked by submitting the entire zcap. A
-          delegated zcap MUST have a capability delegation proof which
-          MUST contain the delegation chain.
+          A delegated zcap can only be invoked by submitting the entire zcap.
         </p>
 
         <p>
-          A capability delegation chain MUST be an array that includes the root
+          A delegated zcap MUST have a capability delegation proof.
+          A capability delegation proof MUST have a `capabilityChain` property whose value is a capability ancestors array.
+          A capability ancestors array MUST be an array that includes the root
           zcap using its ID (i.e., by reference only, not embedded) and every
           other delegated zcap in its ancestry must be referenced by ID except
           for the parent delegated zcap, which MUST be fully embedded. This
@@ -1416,8 +1416,43 @@ urn:uuid:<uuid>
         </p>
 
         <section id="milestone-v0.4">
-            <h3>v0.4: Improve readability</h3>
-            <p>There will be no normative changes in v0.4.</p>
+            <h3>v0.4: Readability Improvements, Accurate Examples</h3>
+            <p>
+              There will be no normative changes in v0.4.
+            </p>
+            <p>
+              The goals of the release are
+              to ship some low cost high impact readability improvements
+              and to build early momentum with an initial release that avoids normative changes
+              while beginning to plan work on normative changes in v0.5.x and beyond.
+            </p>
+
+            <p>Changes in v0.4.x</p>
+            <ul>
+              <li>
+                <p>
+                  Removed all usage of inline "TODO" and "[comment...]" text that rendered for readers.
+                  Some were converted to HTML comments so the text does not render for readers.
+                  Some TODO comments were copied to the appendix describing a backlog of future work.
+                  
+                  The resulting zcap-spec is more readable because the text now focuses on explaining zcap's normative behavior as defined today,
+                  deferring for the reader any discussion of planning how the spec may change tomorrow,
+                  so new readers can understand the basics quickly.
+
+                  Instead, discussion of future work is moved from parentheticals to a <a href="#backlog">section</a> where the future work can be prioritized into a plan. 
+                </p>
+              </li>
+              <li>
+                Clarified delegation proof requires `capabilityChain`,
+                add `capabilityChain` to examples 3 & 4.
+
+                See
+                <a href="decision/20260807-clarify-proof-capabilityChain.md">decision record</a>
+                for more.
+              </li>
+            </ul>
+
+            <p>Plan for v0.4.x</p>
             <ol>
                 <li class="issue" data-number="56">
                     Remove TODOs expressed as spec text so the spec is more readable, and all issues are tracked in the issue tracker
@@ -1528,10 +1563,20 @@ urn:uuid:<uuid>
               </ul>
             </div>
 
-        <section
-          data-include="issue/20260807-clarify-proof-capabilityChain.md"
-          data-include-format="markdown"
-          ></section>
+        <div
+          class="issue"
+          data-title="Long Examples are Hard to Read"
+          >
+          <p>
+            Examples with long `capabilityChain` values can get very long.
+            It's nice for authors to maintain complete, conformant examples in one place,
+            but some readers might not like having to scroll so much to scroll past each example.
+          </p>
+          <p>
+            We should consider mitigating this by using a respec plugin that renders JSON examples so the initial render doesn't take up as much vertical space as the full JSON value serialized with newlines.
+            For example, the plugin could collapse or minimize some values unless the end-user clicks to expand and show a fuller example that takes up more space.
+          </p>
+        </div>
     </section>
   </body>
 </html>
