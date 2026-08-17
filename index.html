@@ -213,9 +213,9 @@
   "id": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
 
   // Since this is the first delegated capability, the parentCapability
-  // points to the target this capability will operate against
+  // is the root zcap of the target this capability will operate against
   // (in this case, Alyssa's Car)
-  "parentCapability": "https://whatacar.example/a-fancy-car",
+  "parentCapability": "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car",
 
   // We are granting authority specifically to one of Alyssa's
   // cryptographic keys (not to be confused with the car
@@ -229,7 +229,7 @@
     "type": "Ed25519Signature2018",
     "created": "2018-02-13T21:26:08Z",
     "capabilityChain": [
-      "https://whatacar.example/a-fancy-car"
+      "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car"
     ],
     "jws": "eyJhbGciOiJFZERTQSIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..lfAFjrWE-4RxhL0gtzSMRX72NR9SRDgaMmkjPA4if0ERbw4R2bnts5sAs8OyhAlbFzBAKOqrFk57AYqwSR2vCw",
     "proofPurpose": "capabilityDelegation",

@@ -107,6 +107,10 @@ But if we decide that the intended `parentCapability` is a root zcap URI (not th
 
 #### Proposal: Change Example 1 to identify parentCapability/root using a URN
 
+Status:
+* This proposal has agreement from bengo and dzagidulin
+* A version of this change has been made in the text
+
 These changes will ensure Example 1 has an unambiguous parentCapability which is identified using a URN as required and a `urn:zcap:root:` URN as recommended.
 
 * [ ] Change [Example 1][] (many properties omitted) to use these property values:
@@ -127,7 +131,7 @@ These changes will ensure Example 1 has an unambiguous parentCapability which is
 
 Currently, there is no example of a delegated zcap's capability chain when the chain is longer than 2. An example would help reduce ambiguity of the normative text. Ideally the normative text is unambiguous *and* tricky-but-common cases like capability chains of length 3+ are demonstrated by example.
 
-This is satisfied by the above proposals to add `proof.capabilityChain` to Examples 3 and 4.
+This is satisfied by the other proposals to add `proof.capabilityChain` to Examples 3 and 4.
 
 If we don't update those examples to demonstrate this case, e.g. because it makes those early examples too large, then we should ensure there is an example in an appendix, or address this problem some other way.
 
