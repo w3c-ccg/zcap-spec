@@ -556,7 +556,7 @@ urn:zcap:root:${encodeURIComponent(invocationTarget)}
             another system in some kind of decentralized setup) for that
             resource and include it in a "dynamically dereferenced" root zcap.
             In other words, the verifier sees the root zcap ID
-            `urn:zcap:root:<encodeURIComponent(https://foo.example/collections/123)>`,
+            `urn:zcap:root:{encodeURIComponent(https://foo.example/collections/123)}`,
             and dynamically converts that (after looking up its controller) into:
           </p>
 
@@ -634,7 +634,7 @@ urn:zcap:root:${encodeURIComponent(invocationTarget)}
         </p>
 
         <pre>
-urn:uuid:<uuid>
+urn:uuid:{uuid}
         </pre>
 
         <p>
@@ -1432,7 +1432,7 @@ urn:uuid:<uuid>
                 <li>
                   A root invocation
                   target SHOULD have a `/zcaps/revocations` subpath, where a root zcap of
-                  `urn:zcap:root:<the revocations path/the zcap ID to revoke>` can be
+                  `urn:zcap:root:{the revocations path/the zcap ID to revoke}` can be
                     invoked. The verifier SHOULD set the controllers for that root
                     zcap to all controllers in the (to be revoked) zcap's chain so
                     that any controller in the chain can revoke the zcap.
