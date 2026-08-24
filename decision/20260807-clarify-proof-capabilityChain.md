@@ -14,7 +14,7 @@ Before this decision
 After this decision
 * the property name `capabilityChain` is explicitly used in the relevant capability delegation proof requirement. This avoid the ambiguity by clearly requiring use of `capabilityChain`, offering clear guidance for examples
 * update examples 3 and 4 to use `proof.capabilityChain` as required
-* examples 3 and 4 show what a `proof.capabilityChain` value looks like for a zcap that is a delegation of a delegation: the 
+* examples 3 and 4 show what a `proof.capabilityChain` value looks like for a zcap that is a delegation of a delegation. 
 
 In thinking through what to do about it, I am left with some questions, and a thought that maybe the spec's examples are inconsistent with its recommendations, and the result is a lack of clarity about how delegations and invocations should be proven.
 
@@ -23,7 +23,7 @@ The examples should be consistent and conformant in how they use `proof.capabili
 ## Background: Spec Text
 
 * In [Delegation through Capability Chains](https://w3c-ccg.github.io/zcap-spec/#delegation)
-  * > A capability document that is not the target MUST also have a parentCapability property which either points at the target or another capability document. A series of capability chained together in this way is called a "capability chain" and is how delegation of capabilities are handled in zcaps.
+  * > A capability document that is not the target MUST also have a parentCapability property which either points at the target or another capability document. A series of capabilities chained together in this way is called a "capability chain" and is how delegation of capabilities is handled in zcaps.
 
 * In [Delegated Capability](https://w3c-ccg.github.io/zcap-spec/#delegated-capability), right after example 7 
   * > all delegated zcaps in a chain must be fully provided to the verifier when invoking a delegated zcap, so that the verifier is not required to dereference them other than via the provided chain.
@@ -93,13 +93,13 @@ The existing normative text is too ambiguous for the requirement to be satisfied
 }
 ```
 
-The comment above example 1 `parentCapability` implies that the identified `parentCapability` is meant to be a root capability, and it is identified withan `https:` URL.
+The comment above example 1 `parentCapability` implies that the identified `parentCapability` is meant to be a root capability, and it is identified with an `https:` URL.
 The `proof.capabilityChain` includes this same URL as the first item, also hinting that the intention is for the parentCapability to be a root capability zcap.
 
 However, later the [Root Capability](https://w3c-ccg.github.io/zcap-spec/#root-capability) section requires
 > A root zcap MUST have an id that is a string that expresses a URN
 
-Because the currently parentCapability URL does not satisfy requirements of a root capability `id`, the delegation's `proof.capabilityChain` does not appear to satisfy the requirement
+Because the parentCapability URL currently does not satisfy requirements of a root capability `id`, the delegation's `proof.capabilityChain` does not appear to satisfy the requirement
 > The capability delegation chain is ordered; the first entry MUST be the root zcap's ID and any other entries must be in the order of delegation from least recent to most recent.
 
 But if we decide that the intended `parentCapability` is a root zcap URI (not the URL of the invocationTarget itself), and we change to identifying it by a URN, then we can resolve the challenge.
@@ -140,7 +140,7 @@ This appears to be an oversight. If so, we can add the required `capabilityChain
 ### Decision: Add `proof.capabilityChain` to Example 3
 
 The full new Example 3 would be as follows, which has the following changes from the original example 3:
-* `proof.capabilityChain` inserted whose value is a capability capability ancestors array.
+* `proof.capabilityChain` inserted whose value is a capability ancestors array.
 The first entry in the array is the URN of the root zcap, `"urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car"`. The second entry in the array is the full capability delegation object corresponding to the proven delegation's `parentCapability` (identified as `"https://whatacar.example/a-fancy-car/proc/7a397d7b"`).
 
 ```json
@@ -208,7 +208,7 @@ Make the following changes to Example 4
   * the second entry is the identifier of the delegation of the root zcap, which is `https://whatacar.example/a-fancy-car/proc/7a397d7b`
   * the third entry is the full expression of the delegation of the capability identified by the second entry. This is also the referent of the outer delegation's `parentCapability` value `"https://social.example/alyssa/caps#79795d78"`.
 
-This makes the example much longer, because the `capabilityChain` includes a full expression of the parent capability delegation `https://social.example/alyssa/caps#79795d78`, which itself has a `proof.capabilityChain` that includes a full expression of `https://whatacar.example/a-fancy-car/proc/7a397d7b`, which itself has a `proof.capabilityChain`. This seems to be the unavoidable if we hope the examples to be a complete demonstration of the normative requirements.
+This makes the example much longer, because the `capabilityChain` includes a full expression of the parent capability delegation `https://social.example/alyssa/caps#79795d78`, which itself has a `proof.capabilityChain` that includes a full expression of `https://whatacar.example/a-fancy-car/proc/7a397d7b`, which itself has a `proof.capabilityChain`. This seems to be unavoidable if we hope for the examples to be a complete demonstration of the normative requirements.
 
 The resulting Example 4 would be
 ```json

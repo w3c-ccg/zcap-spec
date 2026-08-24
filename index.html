@@ -729,8 +729,8 @@ urn:uuid:<uuid>
 
         <p>
           A delegated zcap MUST have a capability delegation proof.
-          A capability delegation proof MUST have a `capabilityChain` property whose value is a capability ancestors array.
-          A capability ancestors array MUST be an array that includes the root
+          A capability delegation proof MUST have a `capabilityChain` property whose value is a <dfn>capability ancestors array</dfn>.
+          A [=capability ancestors array=] MUST be an array that includes the root
           zcap using its ID (i.e., by reference only, not embedded) and every
           other delegated zcap in its ancestry must be referenced by ID except
           for the parent delegated zcap, which MUST be fully embedded. This
