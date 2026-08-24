@@ -249,15 +249,16 @@
      "id": "urn:uuid:ad86cb2c-e9db-434a-beae-71b82120a8a4",
      "action": "Drive",
      "proof": {
-        "type": "RsaSignature2016",
+        "type": "DataIntegrityProof",
+        "cryptosuite": "eddsa-jcs-2022",
         // A linked data document can be an invocation if it has a
         // proofPurpose of capabilityInvocation and links to the capability
         // chain it is invoking
         "proofPurpose": "capabilityInvocation",
         "capability": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
         "created": "2016-02-08T17:13:48Z",
-        "creator": "https://social.example/alyssa/#key-for-car",
-        "signatureValue": "..."}}
+        "verificationMethod": "https://social.example/alyssa/#key-for-car",
+        "proofValue": "..."}}
         </pre>
 
         <p>
@@ -303,11 +304,12 @@
      // Finally Alyssa signs this object with the key she was granted
      // authority with
      "proof": {
-        "type": "RsaSignature2016",
+        "type": "DataIntegrityProof",
+        "cryptosuite": "eddsa-jcs-2022",
         "proofPurpose": "capabilityDelegation",
         "created": "2017-03-28T06:01:25Z",
-        "creator": "https://social.example/alyssa/#key-for-car",
-        "signatureValue": "...",
+        "verificationMethod": "https://social.example/alyssa/#key-for-car",
+        "proofValue": "...",
         "capabilityChain": [
           "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car",
           // This should be the full expression of the parentCapability (i.e. Example 1)
@@ -378,11 +380,12 @@
      // Finally Ben signs this object with the key he was granted
      // authority with
      "proof": {
-        "type": "RsaSignature2016",
+        "type": "DataIntegrityProof",
+        "cryptosuite": "eddsa-jcs-2022",
         "proofPurpose": "capabilityDelegation",
         "created": "2017-06-13T19:15:03Z",
-        "creator": "https://chatty.example/ben/#key-33",
-        "signatureValue": "...",
+        "verificationMethod": "https://chatty.example/ben/#key-33",
+        "proofValue": "...",
         "capabilityChain": [
           "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car",
           "https://whatacar.example/a-fancy-car/proc/7a397d7b",
@@ -398,11 +401,12 @@
                "uri": "https://social.example/alyssa/ben-can-still-drive"}
             ],
             "proof": {
-              "type": "RsaSignature2016",
+              "type": "DataIntegrityProof",
+              "cryptosuite": "eddsa-jcs-2022",
               "proofPurpose": "capabilityDelegation",
               "created": "2017-03-28T06:01:25Z",
-              "creator": "https://social.example/alyssa/#key-for-car",
-              "signatureValue": "...",
+              "verificationMethod": "https://social.example/alyssa/#key-for-car",
+              "proofValue": "...",
               "capabilityChain": [
                 "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car",
                 // This is the full expression of the parentCapability (i.e. Example 1)
