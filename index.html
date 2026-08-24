@@ -628,7 +628,7 @@ urn:zcap:root:${encodeURIComponent(invocationTarget)}
             another system in some kind of decentralized setup) for that
             resource and include it in a "dynamically dereferenced" root zcap.
             In other words, the verifier sees the root zcap ID
-            `urn:zcap:root:<encodeURIComponent(https://foo.example/collections/123)>`,
+            `urn:zcap:root:{encodeURIComponent(https://foo.example/collections/123)}`,
             and dynamically converts that (after looking up its controller) into:
           </p>
 
@@ -706,7 +706,7 @@ urn:zcap:root:${encodeURIComponent(invocationTarget)}
         </p>
 
         <pre>
-urn:uuid:<uuid>
+urn:uuid:{uuid}
         </pre>
 
         <p>
@@ -1049,9 +1049,9 @@ urn:uuid:<uuid>
           that it know for what specific purpose it has been granted that
           capability so that it does not become confused and use it in the
           wrong scenario.
-          This is not unlike how in computer programs a procedure called with
-          specific arguments understands for what the meaning of those arguments
-          are and for what they may be used.
+          This is like how, in computer programs, a procedure called with
+          specific arguments understands the meanings of those arguments
+          and what they may be used for.
         </p>
       </div>
 
@@ -1481,20 +1481,6 @@ urn:uuid:<uuid>
             Generally, they are listed in priority order.
         </p>
 
-            <div class="issue">
-                Fix this ReSpec warning:
-                <blockquote>
-                    Document uses RFC2119 keywords but lacks a conformance section.<br />
-                    How to fix: Please add a <code>&lt;section id="conformance"&gt;</code>.
-                </blockquote>
-
-                <p>Questions</p>
-                <ul>
-                    <li>Is adding a conformance section this a normative change?</li>
-                    <li>Is this appropriate for v0.4 milestone?</li>
-                </ul>
-            </div>
-
             <div
               class="issue"
               title="Clarify Delegation Proof"
@@ -1544,7 +1530,7 @@ urn:uuid:<uuid>
                 <li>
                   A root invocation
                   target SHOULD have a `/zcaps/revocations` subpath, where a root zcap of
-                  `urn:zcap:root:<the revocations path/the zcap ID to revoke>` can be
+                  `urn:zcap:root:{the revocations path/the zcap ID to revoke}` can be
                     invoked. The verifier SHOULD set the controllers for that root
                     zcap to all controllers in the (to be revoked) zcap's chain so
                     that any controller in the chain can revoke the zcap.
