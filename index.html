@@ -213,9 +213,9 @@
   "id": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
 
   // Since this is the first delegated capability, the parentCapability
-  // points to the target this capability will operate against
+  // is the root zcap of the target this capability will operate against
   // (in this case, Alyssa's Car)
-  "parentCapability": "https://whatacar.example/a-fancy-car",
+  "parentCapability": "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car",
 
   // We are granting authority specifically to one of Alyssa's
   // cryptographic keys (not to be confused with the car
@@ -229,7 +229,7 @@
     "type": "Ed25519Signature2018",
     "created": "2018-02-13T21:26:08Z",
     "capabilityChain": [
-      "https://whatacar.example/a-fancy-car"
+      "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car"
     ],
     "jws": "eyJhbGciOiJFZERTQSIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..lfAFjrWE-4RxhL0gtzSMRX72NR9SRDgaMmkjPA4if0ERbw4R2bnts5sAs8OyhAlbFzBAKOqrFk57AYqwSR2vCw",
     "proofPurpose": "capabilityDelegation",
@@ -307,7 +307,32 @@
         "proofPurpose": "capabilityDelegation",
         "created": "2017-03-28T06:01:25Z",
         "creator": "https://social.example/alyssa/#key-for-car",
-        "signatureValue": "..."}}
+        "signatureValue": "...",
+        "capabilityChain": [
+          "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car",
+          // This should be the full expression of the parentCapability (i.e. Example 1)
+          {
+            "@context": [
+              "https://w3id.org/zcap/v1",
+              "https://autopower.example/"
+            ],
+            "id": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
+            "parentCapability": "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car",
+            "controller": "https://social.example/alyssa#key-for-car",
+            "proof": {
+              "type": "Ed25519Signature2018",
+              "created": "2018-02-13T21:26:08Z",
+              "capabilityChain": [
+                "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car"
+              ],
+              "jws": "eyJhbGciOiJFZERTQSIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..lfAFjrWE-4RxhL0gtzSMRX72NR9SRDgaMmkjPA4if0ERbw4R2bnts5sAs8OyhAlbFzBAKOqrFk57AYqwSR2vCw",
+              "proofPurpose": "capabilityDelegation",
+              "verificationMethod": "https://example.com/i/alice/keys/1"
+            }
+          }
+        ]
+      }
+    }
         </pre>
 
         <p>
@@ -357,7 +382,54 @@
         "proofPurpose": "capabilityDelegation",
         "created": "2017-06-13T19:15:03Z",
         "creator": "https://chatty.example/ben/#key-33",
-        "signatureValue": "..."}}
+        "signatureValue": "...",
+        "capabilityChain": [
+          "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car",
+          "https://whatacar.example/a-fancy-car/proc/7a397d7b",
+          // This is the full expression of the parentCapability (i.e. Example 3)
+          {
+            "@context": ["https://w3id.org/zcap/v1",
+                         "https://autopower.example/"],
+            "id": "https://social.example/alyssa/caps#79795d78",
+            "parentCapability": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
+            "controller": "https://chatty.example/ben/#key-33",
+            "caveat": [
+              {"type": "ValidWhileTrue",
+               "uri": "https://social.example/alyssa/ben-can-still-drive"}
+            ],
+            "proof": {
+              "type": "RsaSignature2016",
+              "proofPurpose": "capabilityDelegation",
+              "created": "2017-03-28T06:01:25Z",
+              "creator": "https://social.example/alyssa/#key-for-car",
+              "signatureValue": "...",
+              "capabilityChain": [
+                "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car",
+                // This is the full expression of the parentCapability (i.e. Example 1)
+                {
+                  "@context": ["https://w3id.org/zcap/v1",
+                              "https://autopower.example/"],
+
+                  "id": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
+                  "parentCapability": "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car",
+                  "controller": "https://social.example/alyssa#key-for-car",
+                  "proof": {
+                    "type": "Ed25519Signature2018",
+                    "created": "2018-02-13T21:26:08Z",
+                    "capabilityChain": [
+                      "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car"
+                    ],
+                    "jws": "eyJhbGciOiJFZERTQSIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..lfAFjrWE-4RxhL0gtzSMRX72NR9SRDgaMmkjPA4if0ERbw4R2bnts5sAs8OyhAlbFzBAKOqrFk57AYqwSR2vCw",
+                    "proofPurpose": "capabilityDelegation",
+                    "verificationMethod": "https://example.com/i/alice/keys/1"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+     }
+    }
         </pre>
 
         <p>
@@ -652,13 +724,13 @@ urn:uuid:{uuid}
         </p>
 
         <p>
-          A delegated zcap can only be invoked by submitting the entire zcap. A
-          delegated zcap MUST have a capability delegation proof which
-          MUST contain the delegation chain.
+          A delegated zcap can only be invoked by submitting the entire zcap.
         </p>
 
         <p>
-          A capability delegation chain MUST be an array that includes the root
+          A delegated zcap MUST have a capability delegation proof.
+          A capability delegation proof MUST have a `capabilityChain` property whose value is a <dfn>capability ancestors array</dfn>.
+          A [=capability ancestors array=] MUST be an array that includes the root
           zcap using its ID (i.e., by reference only, not embedded) and every
           other delegated zcap in its ancestry must be referenced by ID except
           for the parent delegated zcap, which MUST be fully embedded. This
@@ -1344,8 +1416,48 @@ urn:uuid:{uuid}
         </p>
 
         <section id="milestone-v0.4">
-            <h3>v0.4: Improve readability</h3>
-            <p>There will be no normative changes in v0.4.</p>
+            <h3>v0.4: Readability Improvements, Accurate Examples</h3>
+            <p>
+              There will be no normative changes in v0.4.
+            </p>
+            <p>
+              The goals of the release are
+              to ship some low cost high impact readability improvements
+              and to build early momentum with an initial release that avoids normative changes
+              while beginning to plan work on normative changes in v0.5.x and beyond.
+            </p>
+
+            <p>Changes in v0.4.x</p>
+            <ul>
+              <li>
+                <p>
+                  Removed all usage of inline "TODO" and "[comment...]" text that rendered for readers.
+                  Some were converted to HTML comments so the text does not render for readers.
+                  Some TODO comments were copied to the appendix describing a backlog of future work.
+                  
+                  The resulting zcap-spec is more readable because the text now focuses on explaining zcap's normative behavior as defined today,
+                  deferring for the reader any discussion of planning how the spec may change tomorrow,
+                  so new readers can understand the basics quickly.
+
+                  Instead, discussion of future work is moved from parentheticals to a <a href="#backlog">section</a> where the future work can be prioritized into a plan. 
+                </p>
+              </li>
+              <li>
+                Clarified delegation proof requires `capabilityChain`,
+                add `capabilityChain` to examples 3 & 4.
+
+                See
+                <a href="decision/20260807-clarify-proof-capabilityChain.md">decision record</a>
+                for more.
+              </li>
+              <li>
+                Fixed example 1 `parentCapability` and `proof.capabilityChain` to identify the parent root capability by a URN.
+                Before, the example text identified the parent capability using an HTTPS URL.
+                After, example 1 conforms to the requirement that delegations identify root capabilities using a URN.
+              </li>
+            </ul>
+
+            <p>Plan for v0.4.x</p>
             <ol>
                 <li class="issue" data-number="56">
                     Remove TODOs expressed as spec text so the spec is more readable, and all issues are tracked in the issue tracker
@@ -1442,6 +1554,20 @@ urn:uuid:{uuid}
               </ul>
             </div>
 
+        <div
+          class="issue"
+          data-title="Long Examples are Hard to Read"
+          >
+          <p>
+            Examples with long `capabilityChain` values can get very long.
+            It's nice for authors to maintain complete, conformant examples in one place,
+            but some readers might not like having to scroll so much to scroll past each example.
+          </p>
+          <p>
+            We should consider mitigating this by using a respec plugin that renders JSON examples so the initial render doesn't take up as much vertical space as the full JSON value serialized with newlines.
+            For example, the plugin could collapse or minimize some values unless the end-user clicks to expand and show a fuller example that takes up more space.
+          </p>
+        </div>
     </section>
   </body>
 </html>
