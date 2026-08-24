@@ -1459,6 +1459,11 @@ urn:uuid:{uuid}
                 Before, the example text identified the parent capability using an HTTPS URL.
                 After, example 1 conforms to the requirement that delegations identify root capabilities using a URN.
               </li>
+              <li>
+                Removed all usage in examples of zcap proofs that use type RsaSignature2016.
+                Replace with proofs of type <a href="https://www.w3.org/TR/vc-data-integrity/#dataintegrityproof">DataIntegrityProof</a>,
+                which use the property named proofValue (instead of the formerly used signatureValue) for the output of cryptosuite.
+              </li>
             </ul>
 
             <p>Plan for v0.4.x</p>

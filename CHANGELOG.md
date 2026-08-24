@@ -25,3 +25,7 @@ Non-normative
 
 * Fix respec warning "Document uses RFC2119 keywords but lacks a conformance section." by adding a minimal conformance section.
   * Pull Request: <https://github.com/w3c-ccg/zcap-spec/pull/59>
+
+* Replaced all usage of RsaSignature2016 in examples with [DataIntegrityProof](https://www.w3.org/TR/vc-data-integrity/#dataintegrityproof),
+  which use the property named proofValue (instead of the formerly used signatureValue) for the output of the algorithm used by the verification method.
+  This makes the examples a better reflection of the kind of proofs described by the rest of the spec.
