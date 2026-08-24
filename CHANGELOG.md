@@ -29,3 +29,5 @@ Non-normative
 * Replaced all usage of RsaSignature2016 in examples with [DataIntegrityProof](https://www.w3.org/TR/vc-data-integrity/#dataintegrityproof),
   which use the property named proofValue (instead of the formerly used signatureValue) for the output of the algorithm used by the verification method.
   This makes the examples a better reflection of the kind of proofs described by the rest of the spec.
+
+* Added contexts/zcap-v1.jsonld, a representation of the JSON-LD Context that the zcap-spec assumes is resolvable at <https://w3id.org/zcap/v1>, the location required in zcap JSON-LD `@context` property values.
