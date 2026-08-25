@@ -1,0 +1,160 @@
+# Publish the spec to the `gh-pages` branch under a version prefix.
+#
+# The version comes from the <title> element of index.html, e.g.
+# it might publish to
+# `gh-pages:/v0.4.0-draft/` and is served at
+# <https://OWNER.github.io/zcap-spec/v0.4.0-draft/>.
+#
+# The root index.html of gh-pages is regenerated on every deploy: it lists all
+# published versions and redirects to the latest non-pull-request one.
+name: Deploy to gh-pages
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version prefix (default: parsed from <title> in index.html)"
+        required: false
+        type: string
+      update_root_index:
+        description: "Regenerate the gh-pages root index.html"
+        required: false
+        default: true
+        type: boolean
+
+permissions:
+  contents: write
+
+# Serialize deploys: concurrent runs would race on pushing gh-pages. With
+# cancel-in-progress false, rapid pushes to main queue instead of racing, and
+# GitHub drops superseded pending runs -- fine here, since each run republishes
+# the whole prefix from its own checkout and the last one wins.
+concurrency:
+  group: gh-pages-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+        with:
+          path: src
+
+      - name: Determine version prefix
+        id: version
+        working-directory: src
+        env:
+          # Passed through the environment, never interpolated into the shell,
+          # so workflow inputs cannot inject commands.
+          INPUT_VERSION: ${{ inputs.version }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+
+          if [ -n "${INPUT_VERSION:-}" ]; then
+            version="$INPUT_VERSION"
+          else
+            version="$(.github/scripts/spec-version.sh index.html)"
+          fi
+
+          case "$version" in
+            v*) ;;
+            *) version="v$version" ;;
+          esac
+
+          # For a pull request build, add `-pr.N` to prerelease part
+          # so `v0.4.0-draft` on PR 52 becomes `v0.4.0-pr.52`.
+          if [ -n "${PR_NUMBER:-}" ] && [ -z "${INPUT_VERSION:-}" ]; then
+            versionNoBuild="${versionNoBuild%%+*}"
+            version="${versionNoBuild}-pr.${PR_NUMBER}"
+          fi
+
+          # Reject anything that is not a plain semver -- this string becomes a
+          # directory name and is passed to `rm -rf`.
+          if ! printf '%s' "$version" | grep -q -E '^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.]+)?$'; then
+            echo "::error::refusing to deploy to unsafe version prefix: $version"
+            exit 1
+          fi
+
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "Publishing to prefix: $version"
+
+      - name: Check out gh-pages branch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          remote="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+
+          if git ls-remote --exit-code --heads "$remote" gh-pages >/dev/null 2>&1; then
+            git clone --depth 1 --branch gh-pages "$remote" gh-pages
+          else
+            echo "gh-pages branch does not exist yet; creating it"
+            mkdir gh-pages
+            git -C gh-pages init --quiet
+            git -C gh-pages checkout --quiet -b gh-pages
+            git -C gh-pages remote add origin "$remote"
+          fi
+
+      - name: Copy spec into version prefix
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -euo pipefail
+
+          # Replace the prefix wholesale so removed files do not linger.
+          rm -rf "gh-pages/${VERSION}"
+          mkdir -p "gh-pages/${VERSION}"
+
+          # `git archive HEAD` is exactly the tracked files, with no .git dir
+          # and no untracked build junk.
+          git -C src archive HEAD | tar -x -C "gh-pages/${VERSION}"
+
+          # CI config is not part of the published spec.
+          rm -rf "gh-pages/${VERSION}/.github"
+
+          ls -la "gh-pages/${VERSION}"
+
+      - name: Regenerate root index
+        # Always regenerate, except when a manual run explicitly opts out.
+        # Do NOT write this as `inputs.update_root_index != false`: on a push
+        # event `inputs.update_root_index` is null, and GitHub casts both null
+        # and false to 0, so that comparison is false and the step is skipped.
+        if: github.event_name != 'workflow_dispatch' || inputs.update_root_index
+        run: src/.github/scripts/gh-pages-index.sh gh-pages
+
+      - name: Commit and push
+        working-directory: gh-pages
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to publish."
+            exit 0
+          fi
+
+          git commit -m "deploy ${VERSION} from ${GITHUB_SHA}"
+          git push origin HEAD:gh-pages
+
+      - name: Summary
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          owner="${GITHUB_REPOSITORY%%/*}"
+          repo="${GITHUB_REPOSITORY##*/}"
+          url="https://${owner}.github.io/${repo}/${VERSION}/"
+          {
+            echo "### Deployed \`${VERSION}\`"
+            echo ""
+            echo "<${url}>"
+            echo ""
+            echo "If this is the first deploy, enable GitHub Pages for this repository"
+            echo "with source \`Deploy from a branch\` → \`gh-pages\` / \`/ (root)\`."
+          } >> "$GITHUB_STEP_SUMMARY"
