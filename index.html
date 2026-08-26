@@ -136,40 +136,6 @@
         blockchain or a distributed hash table.
       </p>
 
-      <section>
-        <h2>Capabilities vs. Access Control Lists</h2>
-        <p>
-          One of the first questions that is usually asked about using
-          Object Capabilities for authorization is: "How are Capabilities
-          different from Access Control Lists?". Fundamentally, Access Control
-          Lists are about <em>authority by identity</em> whereas
-          Object Capabilities are about <em>authority by possession</em>.
-        </p>
-
-        <p>
-          Authority by identity is the process of giving access to a resource
-          to a specific entity based on their identity. These processes
-          typically ask the question: "Who are you?"
-        </p>
-
-        <p>
-          Authority by possession is the process of giving access to a resource
-          to any entity that possesses something, like a key. These processes
-          typically ask the question: "Do you have a key that fits this lock?"
-        </p>
-
-        <p>
-          This document doesn't explain why Access Control Lists lead to
-          a variety of security issues or why Object Capabilities provide
-          stronger security guarantees. For those that would like to
-          learn more about these topics,
-          <a href="http://srl.cs.jhu.edu/pubs/SRL2003-02.pdf">Capability Myths Demolished</a>
-          and
-          <a href="http://waterken.sourceforge.net/aclsdont/current.pdf">ACLs Don't</a>
-          provide a deeper exploration into the benefits of Object Capabilities.
-        </p>
-      </section>
-
       <section id="zcap-by-example">
         <h2>Zcap by Example</h2>
         <p>
@@ -1113,6 +1079,40 @@ urn:uuid:{uuid}
         </p>
       </section>
 
+      <section id="capabilities-vs-ACLs">
+        <h2>Capabilities vs. Access Control Lists</h2>
+        <p>
+          One of the first questions that is usually asked about using
+          Object Capabilities for authorization is: "How are Capabilities
+          different from Access Control Lists?". Fundamentally, Access Control
+          Lists are about <em>authority by identity</em> whereas
+          Object Capabilities are about <em>authority by possession</em>.
+        </p>
+
+        <p>
+          Authority by identity is the process of giving access to a resource
+          to a specific entity based on their identity. These processes
+          typically ask the question: "Who are you?"
+        </p>
+
+        <p>
+          Authority by possession is the process of giving access to a resource
+          to any entity that possesses something, like a key. These processes
+          typically ask the question: "Do you have a key that fits this lock?"
+        </p>
+
+        <p>
+          This document doesn't explain why Access Control Lists lead to
+          a variety of security issues or why Object Capabilities provide
+          stronger security guarantees. For those that would like to
+          learn more about these topics,
+          <a href="http://srl.cs.jhu.edu/pubs/SRL2003-02.pdf">Capability Myths Demolished</a>
+          and
+          <a href="http://waterken.sourceforge.net/aclsdont/current.pdf">ACLs Don't</a>
+          provide a deeper exploration into the benefits of Object Capabilities.
+        </p>
+      </section>
+
       <!-- TODO: move this to security considerations section:
 
            Unlike access control lists, the focus of capabilities is about
@@ -1597,12 +1597,15 @@ Signature: zcap=:m28+dfHk1Pq6VvKxFxX9Q9zNz98bX5cKldP1M0zNzM3NzUzNzdXNzr1PzM3NzUz
 
             </ul>
 
-            <p>Plan for v0.4.x</p>
-            <ol>
-                <li class="issue" data-number="56">
-                    Remove TODOs expressed as spec text so the spec is more readable, and all issues are tracked in the issue tracker
-                </li>
-            </ol>
+              <li>
+                Moved section on
+                <a href="#capabilities-vs-ACLs">Capabilities vs. Access Control Lists</a>
+                from the <a href="#introduction">Introduction</a>
+                to
+                <a href="#capabilities-vs-ACLs">Capabilities</a>.
+                This keeps the introduction short. The full section on comparison with ACLs does not need to be in the introduction.
+              </li>
+            </ul>
         </section>
 
         <section>
