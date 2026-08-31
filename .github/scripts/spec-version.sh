@@ -26,7 +26,7 @@ fi
 
 # semver, optionally with a `-prerelease` and/or `+build` part.
 version="$(printf '%s' "$title" \
-  | grep -o -E 'v?[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?(\+[0-9A-Za-z.-]+)?' \
+  | grep -o -E 'v?[0-9]+\.[0-9]+(\.[0-9]+(-[0-9A-Za-z.-]+)?(\+[0-9A-Za-z.-]+)?)?' \
   | head -n 1 || true)"
 
 if [ -z "$version" ]; then
