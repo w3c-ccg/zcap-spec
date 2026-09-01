@@ -494,6 +494,188 @@
           specific and directed grants of authority.
         </p>
       </section>
+    </section>
+    <section id="terminology">
+      <h2>Terminology</h2>
+      <!-- TODO: Add introductory paragraph to this section -->
+      <dl>
+        <dt>capability</dt>
+        <dd>
+          Authority which may be invoked to perform some operation upon a
+          (linked data) object.
+        </dd>
+
+        <dt>target</dt>
+        <dd>
+          The entity that will be acted upon when the capability is invoked.
+        </dd>
+
+        <dt>capability chain</dt>
+        <dd>
+          A chain of capability documents which may be used to delegate
+          authority to other entities in the system.
+          Each capability document in the chain inherits the caveats of
+          previous capabilities in the chain and may only be granted by
+          entities which have existing authority within the chain.
+        </dd>
+
+        <dt>caveat</dt>
+        <dd>
+          Also known as "attenuation" within object capability literature,
+          a "caveat" may be attached to a capability as a restriction on
+          how that capability may be used.
+          Delegated capabilities will preserve caveats and themselves
+          may be further restricted by adding more caveats.
+        </dd>
+
+        <dt>invocation</dt>
+        <dd>
+          The "activation" of a capability, represented as a linked data
+          document which is signed in such a way that matches authority
+          granted through a prior capability.
+          <!-- TODO: fix up awkward wording here -->
+          An invocation may have arguments, similar to how a procedure call
+          may have arguments.
+        </dd>
+
+        <dt>action</dt>
+        <dd>
+          An argument of an invocation which directs what particular
+          functionality of the object is being used.
+          For example, an invocation against a file storage service
+          may specify either a write action or a read action.
+          (Actions are the same as what are frequently called "methods" in
+          computer programming.)
+        </dd>
+
+        <dt>parentCapability</dt>
+        <dd>
+          The previous capability document on the chain, which is granting
+          authority to this invocation document.
+          In the case of the first delegated capability document, this points
+          at the target.
+        </dd>
+
+        <dt>capabilityDelegation</dt>
+        <dd>
+          This term serves two purposes:
+          <ul>
+            <li>
+              As a property from which the target supplies the "initial source
+              of authority" on the chain.
+              This holds cryptographic material which it may use to initially
+              delegate on the chain (and in some cases which it may use to
+              invoke itself as a capability).
+            </li>
+            <li>
+              As the value of a proof's <code>proofPurpose</code> to indicate
+              that this proof is intended to grant authority to the <code>controller</code>
+              entities on the capability.
+            </li>
+          </ul>
+        </dd>
+      </dl>
+    </section>
+
+    <section id="capabilities">
+      <h2>Capabilities</h2>
+
+      <p>
+        Zcap capabilities are encoded through a chain of linked data
+        documents, granting authority to a target, possibly restricted through
+        "caveats".
+        Authority starts with the target (which always has authority to invoke
+        itself) and extends to further <code>controller</code> entities along
+        the chain.
+        Each capability document granting authority must be signed off with a
+        proof by an entity which has previously been granted authority on the
+        chain.
+        Any caveat applied by a parent in the chain applies to its descendants.
+      </p>
+
+      <div class="note">
+        <p>
+          The target's json-ld document is a kind of "special" capability document
+          implicitly granting authority to itself.
+          But why?
+          Surely in most protocols, such as when objects are sending
+          invocations over HTTP POST requests, any target that wants to
+          self-modify could do so internally without an explicit invocation
+          process.
+          But in some systems such as blockchains, there is no "internal" state,
+          so explicitly doing an invocation to change behavior is still useful.
+        </p>
+        <p>
+          Another reason is that it simplifies the invocation algorithm: as we
+          delegate authority to the first non-target entity, we do so using the
+          target's cryptographic authority.
+          If this authority can be used to grant capabilities, it may as well
+          be able to be used to invoke them as well.
+        </p>
+      </div>
+
+      <p>
+        Every capability document, except for the target, MUST have:
+      </p>
+
+      <ul>
+        <!-- TODO: What's the right way to say this?
+             This sounds very json-ld centric -->
+        <li>an associated <code>id</code></li>
+        <li>
+          <code>parentCapability</code>, which links to the target if this is
+          the first delegated capability on the chain, or otherwise links to
+          another capability document
+        </li>
+        <li>
+          <!-- TODO: open this up a bit more for more than just "keys" -->
+          a <code>proof</code> field, which MUST sign the document with
+          <a href="https://w3c-ccg.github.io/ld-proofs/">
+            Linked Data Proofs</a>
+          by cryptographic material which has already been granted authority
+          on the chain (either being cryptographic material from the
+          <!-- TODO: if #15 ends up with us granting to entities rather than
+               specific keys, this will use the capabilityInvocation property
+               on both the target and all future granted entities -->
+          <code>capabilityDelegation</code> property of the target, or from
+          an <code>controller</code> previously granted authority on the chain.
+          <!-- TODO: Should this be by any of the authentication material which
+               has authority to use this capability, or only the nearest
+               invoker on the chain? -->
+        </li>
+      </ul>
+
+      <p>
+        Every capability document MUST have:
+      </p>
+
+      <ul>
+        <li>
+          <code>controller</code>, which links to one or more instances of
+          cryptographic material (such as public keys) being granted authority
+          to use this capability
+        </li>
+      </ul>
+
+      <div class="note">
+        <p>
+          Capabilities are not structured around "who has access" to something
+          but rather holding onto a capability for a particular use, and in
+          order to avoid confused deputy and ambient authority problems,
+          in general objects should not hold on to a "bucket" of capabilities
+          which grant them authority, but hold on to them within specific
+          contexts for specific purposes.
+          In general, when an object is granted a capability, it is important
+          that it know for what specific purpose it has been granted that
+          capability so that it does not become confused and use it in the
+          wrong scenario.
+          This is like how, in computer programs, a procedure called with
+          specific arguments understands the meanings of those arguments
+          and what they may be used for.
+        </p>
+      </div>
+
+      <!-- TODO: Insert Alyssa's example from the introduction -->
 
       <section id="root-capability">
         <h2>Root Capability</h2>
@@ -874,188 +1056,6 @@ urn:uuid:{uuid}
 
         </section>
       </section>
-    </section>
-    <section id="terminology">
-      <h2>Terminology</h2>
-      <!-- TODO: Add introductory paragraph to this section -->
-      <dl>
-        <dt>capability</dt>
-        <dd>
-          Authority which may be invoked to perform some operation upon a
-          (linked data) object.
-        </dd>
-
-        <dt>target</dt>
-        <dd>
-          The entity that will be acted upon when the capability is invoked.
-        </dd>
-
-        <dt>capability chain</dt>
-        <dd>
-          A chain of capability documents which may be used to delegate
-          authority to other entities in the system.
-          Each capability document in the chain inherits the caveats of
-          previous capabilities in the chain and may only be granted by
-          entities which have existing authority within the chain.
-        </dd>
-
-        <dt>caveat</dt>
-        <dd>
-          Also known as "attenuation" within object capability literature,
-          a "caveat" may be attached to a capability as a restriction on
-          how that capability may be used.
-          Delegated capabilities will preserve caveats and themselves
-          may be further restricted by adding more caveats.
-        </dd>
-
-        <dt>invocation</dt>
-        <dd>
-          The "activation" of a capability, represented as a linked data
-          document which is signed in such a way that matches authority
-          granted through a prior capability.
-          <!-- TODO: fix up awkward wording here -->
-          An invocation may have arguments, similar to how a procedure call
-          may have arguments.
-        </dd>
-
-        <dt>action</dt>
-        <dd>
-          An argument of an invocation which directs what particular
-          functionality of the object is being used.
-          For example, an invocation against a file storage service
-          may specify either a write action or a read action.
-          (Actions are the same as what are frequently called "methods" in
-          computer programming.)
-        </dd>
-
-        <dt>parentCapability</dt>
-        <dd>
-          The previous capability document on the chain, which is granting
-          authority to this invocation document.
-          In the case of the first delegated capability document, this points
-          at the target.
-        </dd>
-
-        <dt>capabilityDelegation</dt>
-        <dd>
-          This term serves two purposes:
-          <ul>
-            <li>
-              As a property from which the target supplies the "initial source
-              of authority" on the chain.
-              This holds cryptographic material which it may use to initially
-              delegate on the chain (and in some cases which it may use to
-              invoke itself as a capability).
-            </li>
-            <li>
-              As the value of a proof's <code>proofPurpose</code> to indicate
-              that this proof is intended to grant authority to the <code>controller</code>
-              entities on the capability.
-            </li>
-          </ul>
-        </dd>
-      </dl>
-    </section>
-
-    <section id="capabilities">
-      <h2>Capabilities</h2>
-
-      <p>
-        Zcap capabilities are encoded through a chain of linked data
-        documents, granting authority to a target, possibly restricted through
-        "caveats".
-        Authority starts with the target (which always has authority to invoke
-        itself) and extends to further <code>controller</code> entities along
-        the chain.
-        Each capability document granting authority must be signed off with a
-        proof by an entity which has previously been granted authority on the
-        chain.
-        Any caveat applied by a parent in the chain applies to its descendants.
-      </p>
-
-      <div class="note">
-        <p>
-          The target's json-ld document is a kind of "special" capability document
-          implicitly granting authority to itself.
-          But why?
-          Surely in most protocols, such as when objects are sending
-          invocations over HTTP POST requests, any target that wants to
-          self-modify could do so internally without an explicit invocation
-          process.
-          But in some systems such as blockchains, there is no "internal" state,
-          so explicitly doing an invocation to change behavior is still useful.
-        </p>
-        <p>
-          Another reason is that it simplifies the invocation algorithm: as we
-          delegate authority to the first non-target entity, we do so using the
-          target's cryptographic authority.
-          If this authority can be used to grant capabilities, it may as well
-          be able to be used to invoke them as well.
-        </p>
-      </div>
-
-      <p>
-        Every capability document, except for the target, MUST have:
-      </p>
-
-      <ul>
-        <!-- TODO: What's the right way to say this?
-             This sounds very json-ld centric -->
-        <li>an associated <code>id</code></li>
-        <li>
-          <code>parentCapability</code>, which links to the target if this is
-          the first delegated capability on the chain, or otherwise links to
-          another capability document
-        </li>
-        <li>
-          <!-- TODO: open this up a bit more for more than just "keys" -->
-          a <code>proof</code> field, which MUST sign the document with
-          <a href="https://w3c-ccg.github.io/ld-proofs/">
-            Linked Data Proofs</a>
-          by cryptographic material which has already been granted authority
-          on the chain (either being cryptographic material from the
-          <!-- TODO: if #15 ends up with us granting to entities rather than
-               specific keys, this will use the capabilityInvocation property
-               on both the target and all future granted entities -->
-          <code>capabilityDelegation</code> property of the target, or from
-          an <code>controller</code> previously granted authority on the chain.
-          <!-- TODO: Should this be by any of the authentication material which
-               has authority to use this capability, or only the nearest
-               invoker on the chain? -->
-        </li>
-      </ul>
-
-      <p>
-        Every capability document MUST have:
-      </p>
-
-      <ul>
-        <li>
-          <code>controller</code>, which links to one or more instances of
-          cryptographic material (such as public keys) being granted authority
-          to use this capability
-        </li>
-      </ul>
-
-      <div class="note">
-        <p>
-          Capabilities are not structured around "who has access" to something
-          but rather holding onto a capability for a particular use, and in
-          order to avoid confused deputy and ambient authority problems,
-          in general objects should not hold on to a "bucket" of capabilities
-          which grant them authority, but hold on to them within specific
-          contexts for specific purposes.
-          In general, when an object is granted a capability, it is important
-          that it know for what specific purpose it has been granted that
-          capability so that it does not become confused and use it in the
-          wrong scenario.
-          This is like how, in computer programs, a procedure called with
-          specific arguments understands the meanings of those arguments
-          and what they may be used for.
-        </p>
-      </div>
-
-      <!-- TODO: Insert Alyssa's example from the introduction -->
 
       <section id="delegation">
         <h2>Delegation through Capability Chains</h2>
@@ -1544,19 +1544,21 @@ Signature: zcap=:m28+dfHk1Pq6VvKxFxX9Q9zNz98bX5cKldP1M0zNzM3NzUzNzdXNzr1PzM3NzUz
             This is a non-binding plan of how the authors intend this document to develop.
         </p>
 
-        <section id="milestone-v0.4">
-            <h3>v0.4: Readability Improvements, Accurate Examples</h3>
-            <p>
-              There will be no normative changes in v0.4.
-            </p>
+        <section id="milestone-v0.4.0">
+            <h3>v0.4.0: Improve Readability, Update Examples</h3>
+
             <p>
               The goals of the release are
-              to ship some low cost high impact readability improvements
-              and to build early momentum with an initial release that avoids normative changes
-              while beginning to plan work on normative changes in v0.5.x and beyond.
+              to ship some low cost high impact readability improvements,
+              ensure examples conform to specified behaviors,
+              move quickly and safely by prioritizing only non-normative changes,
+              and to begin planning more substantial normative changes in the <a href="#backlog">backlog</a>
+              for v0.5.0 and beyond.
             </p>
 
-            <p>Changes in v0.4.x</p>
+            <p>
+              Changes in v0.4.0:
+            </p>
             <ul>
               <li>
                 <p>
@@ -1605,24 +1607,29 @@ Signature: zcap=:m28+dfHk1Pq6VvKxFxX9Q9zNz98bX5cKldP1M0zNzM3NzUzNzdXNzr1PzM3NzUz
                 <a href="#invocation-json-example">Example Invocation JSON</a>.
                 Previously, there were no examples of how an invocation is expressed as an HTTP request.
                 The new example illustrates the general form of the invocation request much more quickly and clearly than the previous text-only description.
-              </li>              
+              </li>
 
               <li>
-                Moved section on
+                Moved
+                <a href="#root-capability">Root Capability</a>,
+                <a href="#delegated-capability">Delegated Capability</a>,
+                and
                 <a href="#capabilities-vs-ACLs">Capabilities vs. Access Control Lists</a>
-                from the <a href="#introduction">Introduction</a>
+                sections
+                from <a href="#introduction">Introduction</a>
                 to
-                <a href="#capabilities-vs-ACLs">Capabilities</a>.
-                This keeps the introduction short. The full section on comparison with ACLs does not need to be in the introduction.
+                <a href="#capabilities">Capabilities</a>.
+                This keeps <a href="#introduction">Introduction</a> focused on introductory material
+                and centralizes normative details in a more specific section.
               </li>
-              
+
             </ul>
         </section>
 
-        <section>
-            <h3>v0.5</h3>
+        <section id="milestone-v0.5.0">
+            <h3>v0.5.0</h3>
             <p>
-                This milestone is not yet planned. Once <a href="">v0.4</a> is done, it will be planned from issues in the <a href="#backlog">backlog</a> and issue tracker.
+                This milestone is not yet planned. Once <a href="#milestone-v0.4.0">v0.4</a> is done, it will be planned from issues in the <a href="#backlog">backlog</a> and issue tracker.
             </p>
         </section>
     </section>
