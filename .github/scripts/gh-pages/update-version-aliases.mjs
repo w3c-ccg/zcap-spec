@@ -1,16 +1,23 @@
 #!/usr/bin/env node
-// Updates the vMAJOR and vMAJOR.MINOR "latest release" alias directories in
-// gh-pages, based on every full-semver vX.Y.Z directory already published.
-// Prerelease versions (e.g. v0.4.0-draft, v0.4.0-pr.52) are never
-// considered as candidates, and never get their own alias.
+// Updates the vMAJOR, vMAJOR.MINOR, and top-level "latest" alias
+// directories in gh-pages, based on every full-semver vX.Y.Z directory
+// already published. Prerelease versions (e.g. v0.4.0-draft,
+// v0.4.0-pr.52) are never considered as candidates, and never get their
+// own alias.
 
 const DOC = `update-version-aliases.mjs
 
-Updates the vMAJOR and vMAJOR.MINOR "latest release" alias directories
-in a gh-pages checkout, based on every full-semver vX.Y.Z directory
-already published there. Prerelease versions (e.g. v0.4.0-draft,
-v0.4.0-pr.52) are never considered as candidates, and never get an
-alias of their own.
+Updates the vMAJOR, vMAJOR.MINOR, and top-level "latest" alias
+directories in a gh-pages checkout, based on every full-semver vX.Y.Z
+directory already published there. Prerelease versions (e.g.
+v0.4.0-draft, v0.4.0-pr.52) are never considered as candidates, and
+never get an alias of their own.
+
+'latest' always mirrors the single highest release across every major
+line (e.g. once v9.0.0 is published, 'latest', 'v9', 'v9.0', and
+'v9.0.0' all mirror it, even though 'v8' would keep pointing at the
+highest v8.x.y release). 'vMAJOR' and 'vMAJOR.MINOR' mirror the highest
+release within that specific major or major.minor line.
 
 Usage:
   update-version-aliases.mjs <gh-pages-dir>
@@ -45,6 +52,7 @@ function listReleaseVersions(dir) {
 function updateAlias(alias, target) {
   // Guard against an alias colliding with a real full-semver dir (shouldn't
   // happen given parseVersion, but these paths get recursively deleted).
+  // "latest" never matches this, so it always passes through untouched.
   if (/^v\d+\.\d+\.\d+$/.test(alias)) {
     console.log(`::error::refusing to alias over full version dir: ${alias}`);
     process.exit(1);
@@ -72,5 +80,12 @@ for (const v of versions) {
   latestForMajor.set(`${v.major}`, v.name);
 }
 
+// The single highest release across every major line. `versions` is sorted
+// ascending, so the last entry is the overall latest -- e.g. if v9.0.0 is
+// the newest release, "latest" mirrors it even though older major lines
+// (v8, v7, ...) keep their own vMAJOR alias pointing elsewhere.
+const overallLatest = versions[versions.length - 1];
+
 for (const [key, target] of latestForMinor) updateAlias(`v${key}`, target);
 for (const [key, target] of latestForMajor) updateAlias(`v${key}`, target);
+updateAlias("latest", overallLatest.name);
