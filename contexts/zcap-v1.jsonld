@@ -37,6 +37,10 @@
       "@id": "https://w3id.org/security#controller",
       "@type": "@id"
     },
+    "DataIntegrityProof": {
+      "@id": "https://w3id.org/security#DataIntegrityProof",
+      "@type": "@id"
+    },
     "delegator": {
       "@id": "https://w3id.org/security#delegator",
       "@type": "@id"
