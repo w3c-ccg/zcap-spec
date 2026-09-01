@@ -174,6 +174,7 @@
         <pre class="example highlight javascript">
 {
   "@context": ["https://w3id.org/zcap/v1",
+               "https://w3id.org/security/data-integrity/v2",
                "https://autopower.example/"],
 
   "id": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
@@ -192,13 +193,14 @@
   // Alyssa's Car's capabilityDelegation field, and using the
   // capabilityDelegation proofPurpose.
   "proof": {
-    "type": "Ed25519Signature2018",
+    "type": "DataIntegrityProof",
     "created": "2018-02-13T21:26:08Z",
+    "cryptosuite": "eddsa-jcs-2022",
     "capabilityChain": [
       "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car"
     ],
-    "jws": "eyJhbGciOiJFZERTQSIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..lfAFjrWE-4RxhL0gtzSMRX72NR9SRDgaMmkjPA4if0ERbw4R2bnts5sAs8OyhAlbFzBAKOqrFk57AYqwSR2vCw",
     "proofPurpose": "capabilityDelegation",
+    "proofValue": "z2YwC8z3ap7yx1nZYCg4L3j3ApHsF8kgPdSb5xoS1VR7vPG3F561B52hYnQF9iseabecm3ijx4K1FBTQsCZahKZme",
     "verificationMethod": "https://example.com/i/alice/keys/1"
   }
 }
@@ -211,6 +213,7 @@
 
         <pre class="example highlight javascript">
     {"@context": ["https://w3id.org/zcap/v1",
+                  "https://w3id.org/security/data-integrity/v2",
                   "https://autopower.example/"],
      "id": "urn:uuid:ad86cb2c-e9db-434a-beae-71b82120a8a4",
      "action": "Drive",
@@ -269,6 +272,7 @@
 
         <pre class="example highlight javascript">
     {"@context": ["https://w3id.org/zcap/v1",
+                  "https://w3id.org/security/data-integrity/v2",
                   "https://autopower.example/"],
      "id": "https://social.example/alyssa/caps#79795d78",
 
@@ -301,18 +305,20 @@
           {
             "@context": [
               "https://w3id.org/zcap/v1",
+              "https://w3id.org/security/data-integrity/v2",
               "https://autopower.example/"
             ],
             "id": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
             "parentCapability": "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car",
             "controller": "https://social.example/alyssa#key-for-car",
             "proof": {
-              "type": "Ed25519Signature2018",
+              "type": "DataIntegrityProof",
+              "cryptosuite": "eddsa-jcs-2022",
               "created": "2018-02-13T21:26:08Z",
               "capabilityChain": [
                 "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car"
               ],
-              "jws": "eyJhbGciOiJFZERTQSIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..lfAFjrWE-4RxhL0gtzSMRX72NR9SRDgaMmkjPA4if0ERbw4R2bnts5sAs8OyhAlbFzBAKOqrFk57AYqwSR2vCw",
+              "proofValue": "eyJhbGciOiJFZERTQSIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19lfAFjrWE-4RxhL0gtzSMRX72NR9SRDgaMmkjPA4if0ERbw4R2bnts5sAs8OyhAlbFzBAKOqrFk57AYqwSR2vCw",
               "proofPurpose": "capabilityDelegation",
               "verificationMethod": "https://example.com/i/alice/keys/1"
             }
@@ -349,6 +355,7 @@
 
         <pre class="example highlight javascript">
     {"@context": ["https://w3id.org/zcap/v1",
+                  "https://w3id.org/security/data-integrity/v2",
                   "https://autopower.example/"],
      "id": "https://chatty.example/ben/caps#2cdea8c1",
      "parentCapability": "https://social.example/alyssa/caps#79795d78",
@@ -396,20 +403,23 @@
                 "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car",
                 // This is the full expression of the parentCapability (i.e. Example 1)
                 {
-                  "@context": ["https://w3id.org/zcap/v1",
-                              "https://autopower.example/"],
-
+                  "@context": [
+                    "https://w3id.org/zcap/v1",
+                    "https://w3id.org/security/suites/ed25519-2020/v1",
+                    "https://autopower.example/"
+                  ],
                   "id": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
                   "parentCapability": "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car",
                   "controller": "https://social.example/alyssa#key-for-car",
                   "proof": {
-                    "type": "Ed25519Signature2018",
+                    "type": "DataIntegrityProof",
+                    "cryptosuite": "eddsa-jcs-2022",
                     "created": "2018-02-13T21:26:08Z",
                     "capabilityChain": [
                       "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car"
                     ],
-                    "jws": "eyJhbGciOiJFZERTQSIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..lfAFjrWE-4RxhL0gtzSMRX72NR9SRDgaMmkjPA4if0ERbw4R2bnts5sAs8OyhAlbFzBAKOqrFk57AYqwSR2vCw",
                     "proofPurpose": "capabilityDelegation",
+                    "proofValue": "z4oey5q2M3XKaxup3tmzN4DRFTLVqpLMweBrSxMY2xHX5XTYVQeVbY8nQAVHMrXFkXJpmEcqdoDwLWxaqA3Q1geV6",
                     "verificationMethod": "https://example.com/i/alice/keys/1"
                   }
                 }
@@ -645,7 +655,7 @@ urn:zcap:root:${encodeURIComponent(invocationTarget)}
 {
   "@context": [
     "https://w3id.org/zcap/v1",
-    "https://w3id.org/security/suites/ed25519-2020/v1"
+    "https://w3id.org/security/data-integrity/v2"
   ],
   "id": "urn:uuid:cdc77118-6bfa-11ec-aceb-10bf48838a41",
   "parentCapability": "urn:zcap:root:https%3A%2F%2Fexample.com%2Ffoo",
@@ -657,14 +667,15 @@ urn:zcap:root:${encodeURIComponent(invocationTarget)}
     "read"
   ],
   "proof": {
-    "type": "Ed25519Signature2020",
+    "type": "DataIntegrityProof",
+    "cryptosuite": "eddsa-jcs-2022",
     "created": "2021-10-27T18:33:51Z",
-    "verificationMethod": "did:key:z6MkfWKcvBiKCfNgz5UUGseNt37t4dguEvFgJ9XvX2UV6zB9#z6MkfWKcvBiKCfNgz5UUGseNt37t4dguEvFgJ9XvX2UV6zB9",
-    "proofPurpose": "capabilityDelegation",
     "capabilityChain": [
       "urn:zcap:root:https%3A%2F%2Fexample.com%2Ffoo"
     ],
-    "proofValue": "z3t9BCQyF21MDVYmLKc9zbLreqx4wBtQnUsd5aqyoWS5FfhapRz7QjPNLcgKAornUVmJR4ZjbGpuxRFnffxX1ZjtF"
+    "proofPurpose": "capabilityDelegation",
+    "proofValue": "z3t9BCQyF21MDVYmLKc9zbLreqx4wBtQnUsd5aqyoWS5FfhapRz7QjPNLcgKAornUVmJR4ZjbGpuxRFnffxX1ZjtF",
+    "verificationMethod": "did:key:z6MkfWKcvBiKCfNgz5UUGseNt37t4dguEvFgJ9XvX2UV6zB9#z6MkfWKcvBiKCfNgz5UUGseNt37t4dguEvFgJ9XvX2UV6zB9"
   }
 }
         </pre>
@@ -1347,6 +1358,7 @@ Signature: zcap=:m28+dfHk1Pq6VvKxFxX9Q9zNz98bX5cKldP1M0zNzM3NzUzNzdXNzr1PzM3NzUz
   },
   "@context": [
     "https://w3id.org/zcap/v1",
+    "https://w3id.org/security/data-integrity/v2",
     "https://autopower.example/"
   ]
 }
@@ -1603,6 +1615,7 @@ Signature: zcap=:m28+dfHk1Pq6VvKxFxX9Q9zNz98bX5cKldP1M0zNzM3NzUzNzdXNzr1PzM3NzUz
                 <a href="#capabilities-vs-ACLs">Capabilities</a>.
                 This keeps the introduction short. The full section on comparison with ACLs does not need to be in the introduction.
               </li>
+              
             </ul>
         </section>
 
