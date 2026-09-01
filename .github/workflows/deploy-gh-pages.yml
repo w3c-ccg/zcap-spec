@@ -5,8 +5,13 @@
 # `gh-pages:/v0.4.0-draft/` and is served at
 # <https://OWNER.github.io/zcap-spec/v0.4.0-draft/>.
 #
+# In addition to the full semver directory, every release (non-prerelease,
+# non-PR) build also updates `vMAJOR.MINOR` and `vMAJOR` alias directories
+# to mirror the highest release published under that major/minor line, e.g.
+# after publishing v0.3.1, `v0.3` and `v0` both mirror v0.3.1's content.
+#
 # The root index.html of gh-pages is regenerated on every deploy: it lists all
-# published versions and redirects to the latest non-pull-request one.
+# published versions and redirects to the latest non-pull-request version.
 name: Deploy to gh-pages
 
 on:
@@ -41,9 +46,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           path: src
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
 
       - name: Determine version prefix
         id: version
@@ -57,32 +67,14 @@ jobs:
           set -euo pipefail
 
           if [ -n "${INPUT_VERSION:-}" ]; then
-            version="$INPUT_VERSION"
+            raw_version="$INPUT_VERSION"
+            had_explicit_input=true
           else
-            version="$(.github/scripts/spec-version.sh index.html)"
+            raw_version="$(node .github/scripts/gh-pages/spec-version.mjs index.html)"
+            had_explicit_input=false
           fi
 
-          case "$version" in
-            v*) ;;
-            *) version="v$version" ;;
-          esac
-
-          # For a pull request build, add `-pr.N` to prerelease part
-          # so `v0.4.0-draft` on PR 52 becomes `v0.4.0-pr.52`.
-          if [ -n "${PR_NUMBER:-}" ] && [ -z "${INPUT_VERSION:-}" ]; then
-            versionNoBuild="${versionNoBuild%%+*}"
-            version="${versionNoBuild}-pr.${PR_NUMBER}"
-          fi
-
-          # Reject anything that is not a plain semver -- this string becomes a
-          # directory name and is passed to `rm -rf`.
-          if ! printf '%s' "$version" | grep -q -E '^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.]+)?$'; then
-            echo "::error::refusing to deploy to unsafe version prefix: $version"
-            exit 1
-          fi
-
-          echo "version=$version" >> "$GITHUB_OUTPUT"
-          echo "Publishing to prefix: $version"
+          HAD_EXPLICIT_INPUT="$had_explicit_input" node .github/scripts/gh-pages/determine-version.mjs "$raw_version"
 
       - name: Check out gh-pages branch
         env:
@@ -120,13 +112,23 @@ jobs:
 
           ls -la "gh-pages/${VERSION}"
 
+      - name: Update major/minor "latest" aliases
+        # Prereleases (including PR builds) never become the latest alias
+        # for a major or minor line.
+        if: steps.version.outputs.is_prerelease != 'true'
+        run: node src/.github/scripts/gh-pages/update-version-aliases.mjs gh-pages
+
       - name: Regenerate root index
         # Always regenerate, except when a manual run explicitly opts out.
         # Do NOT write this as `inputs.update_root_index != false`: on a push
         # event `inputs.update_root_index` is null, and GitHub casts both null
         # and false to 0, so that comparison is false and the step is skipped.
         if: github.event_name != 'workflow_dispatch' || inputs.update_root_index
-        run: src/.github/scripts/gh-pages-index.sh gh-pages
+        run: |
+          set -euo pipefail
+          node src/.github/scripts/gh-pages/gh-pages-index.mjs gh-pages > gh-pages/index.html
+          # gh-pages should serve files verbatim, not run them through Jekyll.
+          touch gh-pages/.nojekyll
 
       - name: Commit and push
         working-directory: gh-pages
