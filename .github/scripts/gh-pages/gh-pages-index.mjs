@@ -69,11 +69,10 @@ const releases = allVersions.filter((v) => !isPrPreview(v.name));
 const previews = allVersions.filter((v) => isPrPreview(v.name));
 
 // "latest" never points at a pull-request preview, so an open PR can never
-// hijack the root redirect. Also never a prerelease build (e.g. -draft).
-const latestCandidates = releases.filter((v) => v.prerelease === null);
-const latest = latestCandidates.length > 0
-  ? latestCandidates[latestCandidates.length - 1]
-  : null;
+// hijack the root redirect. Prereleases *are* eligible: semver precedence
+// puts 0.4.0-draft above 0.3.0 but below 0.4.0, so the redirect tracks the
+// newest work in progress and settles onto the release once it's tagged.
+const latest = releases.length > 0 ? releases[releases.length - 1] : null;
 
 function listItems(versions) {
   // Newest first.
