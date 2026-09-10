@@ -26,6 +26,15 @@ Non-normative
   After, `proof.capability` expresses the full delegated zcap, as required when invoking a delegated capability using a DI proof,
   and the proof includes the required `invocationTarget` and `capabilityAction`.
 
+* Rename the verification method used by example 1's capability delegation proof
+  from `https://example.com/i/alice/keys/1` to `https://example.com/i/alyssa/keys/1`.
+  The key belongs to Alyssa, so it did not make sense for its URL to name Alice.
+
+* Add an example of the document that the target `https://whatacar.example/a-fancy-car` dereferences to,
+  including its `capabilityDelegation` property value.
+  Before, example 1's delegation proof was created with a verification method that the document never showed to be authorized by the car.
+  After, the reader can follow the initial source of authority from the target's `capabilityDelegation` property to the key that signs the first delegation.
+
 * Fix example 6 root capability `@context` value to be a string, as required. Previously it was an array.
   * Pull Request: <https://github.com/w3c-ccg/zcap-spec/pull/60>
 

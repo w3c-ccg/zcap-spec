@@ -164,8 +164,39 @@
           can drive the car.
           Capabilities are very similar to this car metaphor, and we can encode
           this same idea in zcaps.
+        </p>
+
+        <p>
+          The car is the target of this capability chain, and it is the initial
+          source of authority on that chain.
+          Dereferencing the car's identifier,
+          <code>https://whatacar.example/a-fancy-car</code>,
+          yields a document whose <code>capabilityDelegation</code> property
+          holds the cryptographic material the car uses to make that first
+          delegation:
+        </p>
+
+        <pre class="example highlight javascript">
+{
+  "@context": ["https://w3id.org/zcap/v1",
+               "https://w3id.org/security/data-integrity/v2"],
+
+  "id": "https://whatacar.example/a-fancy-car",
+
+  // The initial source of authority on any chain rooted at this car.
+  // Alyssa bought the car, so the car's manufacturer provisioned it to
+  // recognize one of Alyssa's keys as its delegating key.
+  "capabilityDelegation": ["https://example.com/i/alyssa/keys/1"]
+}
+        </pre>
+
+        <p>
           The following document delegates authority from the car (who always
-          has authority over itself) to Alyssa so that she may drive:
+          has authority over itself) to Alyssa so that she may drive.
+          Note that its proof is created with
+          <code>https://example.com/i/alyssa/keys/1</code>, the key named
+          above in the car's <code>capabilityDelegation</code> property, which
+          is what makes the delegation authoritative:
         </p>
 
         <!-- TODO: Should we include the full embedded key?  That's better
@@ -201,7 +232,7 @@
     ],
     "proofPurpose": "capabilityDelegation",
     "proofValue": "z2YwC8z3ap7yx1nZYCg4L3j3ApHsF8kgPdSb5xoS1VR7vPG3F561B52hYnQF9iseabecm3ijx4K1FBTQsCZahKZme",
-    "verificationMethod": "https://example.com/i/alice/keys/1"
+    "verificationMethod": "https://example.com/i/alyssa/keys/1"
   }
 }
         </pre>
@@ -320,7 +351,7 @@
               ],
               "proofValue": "eyJhbGciOiJFZERTQSIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19lfAFjrWE-4RxhL0gtzSMRX72NR9SRDgaMmkjPA4if0ERbw4R2bnts5sAs8OyhAlbFzBAKOqrFk57AYqwSR2vCw",
               "proofPurpose": "capabilityDelegation",
-              "verificationMethod": "https://example.com/i/alice/keys/1"
+              "verificationMethod": "https://example.com/i/alyssa/keys/1"
             }
           }
         ]
@@ -420,7 +451,7 @@
                     ],
                     "proofPurpose": "capabilityDelegation",
                     "proofValue": "z4oey5q2M3XKaxup3tmzN4DRFTLVqpLMweBrSxMY2xHX5XTYVQeVbY8nQAVHMrXFkXJpmEcqdoDwLWxaqA3Q1geV6",
-                    "verificationMethod": "https://example.com/i/alice/keys/1"
+                    "verificationMethod": "https://example.com/i/alyssa/keys/1"
                   }
                 }
               ]
@@ -1640,6 +1671,22 @@ Signature: zcap=:m28+dfHk1Pq6VvKxFxX9Q9zNz98bX5cKldP1M0zNzM3NzUzNzdXNzr1PzM3NzUz
                 After, `proof.capability` expresses the full delegated zcap, as required when invoking a
                 delegated capability using a DI proof,
                 and the proof includes the required `invocationTarget` and `capabilityAction`.
+              </li>
+
+              <li>
+                Renamed the verification method used by example 1's capability delegation proof
+                from `https://example.com/i/alice/keys/1` to `https://example.com/i/alyssa/keys/1`.
+                The key belongs to Alyssa, so it did not make sense for its URL to name Alice.
+              </li>
+
+              <li>
+                Added an example of the document that the target
+                `https://whatacar.example/a-fancy-car` dereferences to,
+                including its `capabilityDelegation` property value.
+                Previously, example 1's delegation proof was created with a verification method
+                that the document never showed to be authorized by the car.
+                After, the reader can follow the initial source of authority from the target's
+                `capabilityDelegation` property to the key that signs the first delegation.
               </li>
 
               <li>
