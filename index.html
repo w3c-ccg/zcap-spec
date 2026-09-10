@@ -178,15 +178,19 @@
 
         <pre class="example highlight javascript">
 {
-  "@context": ["https://w3id.org/zcap/v1",
-               "https://w3id.org/security/data-integrity/v2"],
+  "@context": [
+    "https://w3id.org/zcap/v1",
+    "https://w3id.org/security/data-integrity/v2"
+  ],
 
   "id": "https://whatacar.example/a-fancy-car",
 
   // The initial source of authority on any chain rooted at this car.
   // Alyssa bought the car, so the car's manufacturer provisioned it to
   // recognize one of Alyssa's keys as its delegating key.
-  "capabilityDelegation": ["https://example.com/i/alyssa/keys/1"]
+  "capabilityDelegation": [
+    "https://example.com/i/alyssa/keys/1"
+  ]
 }
         </pre>
 
@@ -204,9 +208,11 @@
              noisier -->
         <pre class="example highlight javascript">
 {
-  "@context": ["https://w3id.org/zcap/v1",
-               "https://w3id.org/security/data-integrity/v2",
-               "https://autopower.example/"],
+  "@context": [
+    "https://w3id.org/zcap/v1",
+    "https://w3id.org/security/data-integrity/v2",
+    "https://autopower.example/"
+  ],
 
   "id": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
 
@@ -243,41 +249,46 @@
         </p>
 
         <pre class="example highlight javascript">
-    {"@context": ["https://w3id.org/zcap/v1",
-                  "https://w3id.org/security/data-integrity/v2",
-                  "https://autopower.example/"],
-     "id": "urn:uuid:ad86cb2c-e9db-434a-beae-71b82120a8a4",
-     "action": "Drive",
-     "proof": {
-        "type": "DataIntegrityProof",
-        "cryptosuite": "eddsa-jcs-2022",
-        // A linked data document can be an invocation if it has a
-        // proofPurpose of capabilityInvocation and links to the capability
-        // chain it is invoking
-        "proofPurpose": "capabilityInvocation",
-        "capability": {
-          "@context": "https://w3id.org/zcap/v1",
-          "id": "urn:uuid:d2c83c43-878a-4c01-984f-b2f57932ce5f",
-          "parentCapability": "urn:uuid:f7412b9a-854b-47ab-806b-3ac736cc7cda",
-          "controller": "did:key:dummy",
-          "expires": "2026-01-31T00:00:00Z",
-          "allowedAction": [
-            "https://example.com/storage/method/UploadFile"
-          ],
-          "proof": [
-            {
-              "type": "DataIntegrityProof",
-              "cryptosuite": "eddsa-jcs-2022",
-              "created": "2026-01-01T00:00:00Z",
-              "verificationMethod": "did:key:bob#bob",
-              "proofPurpose": "capabilityDelegation",
-              "proofValue": "zQeVbY4oey5q2M3XKaxup3tmzN4DRFTLVqpLMweBrSxMY2xHX5XTYV8nQApmEcqaqA3Q1gVHMrXFkXJeV6doDwLWx"
-            }
-          ]
-        },
-        "created": "2016-02-08T17:13:48Z",
-        "verificationMethod": "https://social.example/alyssa/#key-for-car",
-        "proofValue": "..."}}
+{
+  "@context": [
+    "https://w3id.org/zcap/v1",
+    "https://w3id.org/security/data-integrity/v2",
+    "https://autopower.example/"
+  ],
+  "id": "urn:uuid:ad86cb2c-e9db-434a-beae-71b82120a8a4",
+  "action": "Drive",
+  "proof": {
+    "type": "DataIntegrityProof",
+    "cryptosuite": "eddsa-jcs-2022",
+    // A linked data document can be an invocation if it has a
+    // proofPurpose of capabilityInvocation and links to the capability
+    // chain it is invoking
+    "proofPurpose": "capabilityInvocation",
+    "capability": {
+      "@context": "https://w3id.org/zcap/v1",
+      "id": "urn:uuid:d2c83c43-878a-4c01-984f-b2f57932ce5f",
+      "parentCapability": "urn:uuid:f7412b9a-854b-47ab-806b-3ac736cc7cda",
+      "controller": "did:key:dummy",
+      "expires": "2026-01-31T00:00:00Z",
+      "allowedAction": [
+        "https://example.com/storage/method/UploadFile"
+      ],
+      "proof": [
+        {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "eddsa-jcs-2022",
+          "created": "2026-01-01T00:00:00Z",
+          "verificationMethod": "did:key:bob#bob",
+          "proofPurpose": "capabilityDelegation",
+          "proofValue": "zQeVbY4oey5q2M3XKaxup3tmzN4DRFTLVqpLMweBrSxMY2xHX5XTYV8nQApmEcqaqA3Q1gVHMrXFkXJeV6doDwLWx"
+        }
+      ]
+    },
+    "created": "2016-02-08T17:13:48Z",
+    "verificationMethod": "https://social.example/alyssa/#key-for-car",
+    "proofValue": "..."
+  }
+}
         </pre>
 
         <p>
@@ -302,61 +313,67 @@
         </p>
 
         <pre class="example highlight javascript">
-    {"@context": ["https://w3id.org/zcap/v1",
-                  "https://w3id.org/security/data-integrity/v2",
-                  "https://autopower.example/"],
-     "id": "https://social.example/alyssa/caps#79795d78",
+{
+  "@context": [
+    "https://w3id.org/zcap/v1",
+    "https://w3id.org/security/data-integrity/v2",
+    "https://autopower.example/"
+  ],
+  "id": "https://social.example/alyssa/caps#79795d78",
 
-     // Pointing up the chain at the capability from which Alyssa was
-     // initially gained authority
-     "parentCapability": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
+  // Pointing up the chain at the capability from which Alyssa was
+  // initially gained authority
+  "parentCapability": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
 
-     // Alyssa grants authority specifically to one of Ben's
-     // cryptographic keys
-     "controller": "https://chatty.example/ben/#key-33",
+  // Alyssa grants authority specifically to one of Ben's
+  // cryptographic keys
+  "controller": "https://chatty.example/ben/#key-33",
 
-     // Alyssa adds a caveat: Ben can drive her car, unless she flips
-     // the bit at this url
-     "caveat": [
-       {"type": "ValidWhileTrue",
-        "uri": "https://social.example/alyssa/ben-can-still-drive"}],
-
-     // Finally Alyssa signs this object with the key she was granted
-     // authority with
-     "proof": {
-        "type": "DataIntegrityProof",
-        "cryptosuite": "eddsa-jcs-2022",
-        "proofPurpose": "capabilityDelegation",
-        "created": "2017-03-28T06:01:25Z",
-        "verificationMethod": "https://social.example/alyssa/#key-for-car",
-        "proofValue": "...",
-        "capabilityChain": [
-          "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car",
-          // This should be the full expression of the parentCapability (i.e. Example 1)
-          {
-            "@context": [
-              "https://w3id.org/zcap/v1",
-              "https://w3id.org/security/data-integrity/v2",
-              "https://autopower.example/"
-            ],
-            "id": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
-            "parentCapability": "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car",
-            "controller": "https://social.example/alyssa#key-for-car",
-            "proof": {
-              "type": "DataIntegrityProof",
-              "cryptosuite": "eddsa-jcs-2022",
-              "created": "2018-02-13T21:26:08Z",
-              "capabilityChain": [
-                "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car"
-              ],
-              "proofValue": "eyJhbGciOiJFZERTQSIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19lfAFjrWE-4RxhL0gtzSMRX72NR9SRDgaMmkjPA4if0ERbw4R2bnts5sAs8OyhAlbFzBAKOqrFk57AYqwSR2vCw",
-              "proofPurpose": "capabilityDelegation",
-              "verificationMethod": "https://example.com/i/alyssa/keys/1"
-            }
-          }
-        ]
-      }
+  // Alyssa adds a caveat: Ben can drive her car, unless she flips
+  // the bit at this url
+  "caveat": [
+    {
+      "type": "ValidWhileTrue",
+      "uri": "https://social.example/alyssa/ben-can-still-drive"
     }
+  ],
+
+  // Finally Alyssa signs this object with the key she was granted
+  // authority with
+  "proof": {
+    "type": "DataIntegrityProof",
+    "cryptosuite": "eddsa-jcs-2022",
+    "proofPurpose": "capabilityDelegation",
+    "created": "2017-03-28T06:01:25Z",
+    "verificationMethod": "https://social.example/alyssa/#key-for-car",
+    "proofValue": "...",
+    "capabilityChain": [
+      "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car",
+      // This should be the full expression of the parentCapability (i.e. Example 1)
+      {
+        "@context": [
+          "https://w3id.org/zcap/v1",
+          "https://w3id.org/security/data-integrity/v2",
+          "https://autopower.example/"
+        ],
+        "id": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
+        "parentCapability": "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car",
+        "controller": "https://social.example/alyssa#key-for-car",
+        "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "eddsa-jcs-2022",
+          "created": "2018-02-13T21:26:08Z",
+          "capabilityChain": [
+            "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car"
+          ],
+          "proofValue": "eyJhbGciOiJFZERTQSIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19lfAFjrWE-4RxhL0gtzSMRX72NR9SRDgaMmkjPA4if0ERbw4R2bnts5sAs8OyhAlbFzBAKOqrFk57AYqwSR2vCw",
+          "proofPurpose": "capabilityDelegation",
+          "verificationMethod": "https://example.com/i/alyssa/keys/1"
+        }
+      }
+    ]
+  }
+}
         </pre>
 
         <p>
@@ -385,81 +402,91 @@
         </p>
 
         <pre class="example highlight javascript">
-    {"@context": ["https://w3id.org/zcap/v1",
-                  "https://w3id.org/security/data-integrity/v2",
-                  "https://autopower.example/"],
-     "id": "https://chatty.example/ben/caps#2cdea8c1",
-     "parentCapability": "https://social.example/alyssa/caps#79795d78",
-     "controller": "https://lem.example/#key-bf36",
+{
+  "@context": [
+    "https://w3id.org/zcap/v1",
+    "https://w3id.org/security/data-integrity/v2",
+    "https://autopower.example/"
+  ],
+  "id": "https://chatty.example/ben/caps#2cdea8c1",
+  "parentCapability": "https://social.example/alyssa/caps#79795d78",
+  "controller": "https://lem.example/#key-bf36",
 
-     // Ben adds this caveat: this capability can be used to drive the
-     // car, but not for more than 5 kilometers
-     "caveat": [
-       {"type": "DriveNoMoreThan",
-        // Alyssa's gauge currently says 123854 kilometers driven,
-        // so this is only 5 km more than the current value
-        "kilometers": 123859}],
-
-     // Finally Ben signs this object with the key he was granted
-     // authority with
-     "proof": {
-        "type": "DataIntegrityProof",
-        "cryptosuite": "eddsa-jcs-2022",
-        "proofPurpose": "capabilityDelegation",
-        "created": "2017-06-13T19:15:03Z",
-        "verificationMethod": "https://chatty.example/ben/#key-33",
-        "proofValue": "...",
-        "capabilityChain": [
-          "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car",
-          "https://whatacar.example/a-fancy-car/proc/7a397d7b",
-          // This is the full expression of the parentCapability (i.e. Example 3)
-          {
-            "@context": ["https://w3id.org/zcap/v1",
-                         "https://autopower.example/"],
-            "id": "https://social.example/alyssa/caps#79795d78",
-            "parentCapability": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
-            "controller": "https://chatty.example/ben/#key-33",
-            "caveat": [
-              {"type": "ValidWhileTrue",
-               "uri": "https://social.example/alyssa/ben-can-still-drive"}
-            ],
-            "proof": {
-              "type": "DataIntegrityProof",
-              "cryptosuite": "eddsa-jcs-2022",
-              "proofPurpose": "capabilityDelegation",
-              "created": "2017-03-28T06:01:25Z",
-              "verificationMethod": "https://social.example/alyssa/#key-for-car",
-              "proofValue": "...",
-              "capabilityChain": [
-                "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car",
-                // This is the full expression of the parentCapability (i.e. Example 1)
-                {
-                  "@context": [
-                    "https://w3id.org/zcap/v1",
-                    "https://w3id.org/security/suites/ed25519-2020/v1",
-                    "https://autopower.example/"
-                  ],
-                  "id": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
-                  "parentCapability": "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car",
-                  "controller": "https://social.example/alyssa#key-for-car",
-                  "proof": {
-                    "type": "DataIntegrityProof",
-                    "cryptosuite": "eddsa-jcs-2022",
-                    "created": "2018-02-13T21:26:08Z",
-                    "capabilityChain": [
-                      "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car"
-                    ],
-                    "proofPurpose": "capabilityDelegation",
-                    "proofValue": "z4oey5q2M3XKaxup3tmzN4DRFTLVqpLMweBrSxMY2xHX5XTYVQeVbY8nQAVHMrXFkXJpmEcqdoDwLWxaqA3Q1geV6",
-                    "verificationMethod": "https://example.com/i/alyssa/keys/1"
-                  }
-                }
-              ]
-            }
-          }
-        ]
-     }
+  // Ben adds this caveat: this capability can be used to drive the
+  // car, but not for more than 5 kilometers
+  "caveat": [
+    {
+      "type": "DriveNoMoreThan",
+      // Alyssa's gauge currently says 123854 kilometers driven,
+      // so this is only 5 km more than the current value
+      "kilometers": 123859
     }
+  ],
+
+  // Finally Ben signs this object with the key he was granted
+  // authority with
+  "proof": {
+    "type": "DataIntegrityProof",
+    "cryptosuite": "eddsa-jcs-2022",
+    "proofPurpose": "capabilityDelegation",
+    "created": "2017-06-13T19:15:03Z",
+    "verificationMethod": "https://chatty.example/ben/#key-33",
+    "proofValue": "...",
+    "capabilityChain": [
+      "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car",
+      "https://whatacar.example/a-fancy-car/proc/7a397d7b",
+      // This is the full expression of the parentCapability (i.e. Example 3)
+      {
+        "@context": [
+          "https://w3id.org/zcap/v1",
+          "https://autopower.example/"
+        ],
+        "id": "https://social.example/alyssa/caps#79795d78",
+        "parentCapability": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
+        "controller": "https://chatty.example/ben/#key-33",
+        "caveat": [
+          {
+            "type": "ValidWhileTrue",
+            "uri": "https://social.example/alyssa/ben-can-still-drive"
+          }
+        ],
+        "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "eddsa-jcs-2022",
+          "proofPurpose": "capabilityDelegation",
+          "created": "2017-03-28T06:01:25Z",
+          "verificationMethod": "https://social.example/alyssa/#key-for-car",
+          "proofValue": "...",
+          "capabilityChain": [
+            "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car",
+            // This is the full expression of the parentCapability (i.e. Example 1)
+            {
+              "@context": [
+                "https://w3id.org/zcap/v1",
+                "https://w3id.org/security/suites/ed25519-2020/v1",
+                "https://autopower.example/"
+              ],
+              "id": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
+              "parentCapability": "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car",
+              "controller": "https://social.example/alyssa#key-for-car",
+              "proof": {
+                "type": "DataIntegrityProof",
+                "cryptosuite": "eddsa-jcs-2022",
+                "created": "2018-02-13T21:26:08Z",
+                "capabilityChain": [
+                  "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car"
+                ],
+                "proofPurpose": "capabilityDelegation",
+                "proofValue": "z4oey5q2M3XKaxup3tmzN4DRFTLVqpLMweBrSxMY2xHX5XTYVQeVbY8nQAVHMrXFkXJpmEcqdoDwLWxaqA3Q1geV6",
+                "verificationMethod": "https://example.com/i/alyssa/keys/1"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
         </pre>
 
         <p>
