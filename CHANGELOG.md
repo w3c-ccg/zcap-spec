@@ -5,6 +5,24 @@ This change log records changes that have been made since earlier versions of th
 Planned changes are described in [Milestones](index.html#milestones)
 Unscheduled possible changes are documented in [Backlog](index.html#backlog) until they are understood enough to schedule into Milestones.
 
+<h2 id="changelog-v0.5.0">v0.5.0</h2>
+
+Unlike [v0.4.0](#changelog-v0.4.0), this release may include normative changes.
+
+<h3 id="changelog-v0.5.0-normative">Normative</h3>
+
+* Removed the recommendation "The capability action SHOULD be read or write." from
+  [Invocation HTTP Signature](index.html#invocation-http-signature).
+  The document never defined `read` or `write`, so the recommendation was not actionable,
+  and it contradicted [Actions](index.html#actions),
+  which says targets are free to choose their own action vocabulary
+  and illustrates this with `https://datastore.example/WriteFile`.
+  It is common for an invocation to invoke a domain-specific action other than these two.
+  What remains is the requirement that already governed the capability action:
+  it must be an action that the verifier expects at the request URL.
+  * No previously-conforming invocation becomes non-conforming:
+    the recommendation discouraged other actions, but never prohibited them.
+
 <h2 id="changelog-v0.4.0">v0.4.0</h2>
 
 The goals of this release are
