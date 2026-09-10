@@ -1592,302 +1592,232 @@ Signature: zcap=:m28+dfHk1Pq6VvKxFxX9Q9zNz98bX5cKldP1M0zNzM3NzUzNzdXNzr1PzM3NzUz
       </p>
     </section>
 
-    <section class="appendix informative" id="milestones">
-        <h2>Milestones</h2>
-        <p>
-            This is a non-binding plan of how the authors intend this document to develop.
-        </p>
-
-        <section id="milestone-v0.4.0">
-            <h3>v0.4.0: Improve Readability, Update Examples</h3>
-
-            <p>
-              The goals of the release are
-              to ship some low cost high impact readability improvements,
-              ensure examples conform to specified behaviors,
-              move quickly and safely by prioritizing only non-normative changes,
-              and to begin planning more substantial normative changes in the <a href="#backlog">backlog</a>
-              for v0.5.0 and beyond.
-            </p>
-
-            <p>
-              Changes in v0.4.0:
-            </p>
-            <ul>
-              <li>
-                <p>
-                  Removed all usage of inline "TODO" and "[comment...]" text that rendered for readers.
-                  Some were converted to HTML comments so the text does not render for readers.
-                  Some TODO comments were copied to the appendix describing a backlog of future work.
-                  
-                  The resulting zcap-spec is more readable because the text now focuses on explaining zcap's normative behavior as defined today,
-                  deferring for the reader any discussion of planning how the spec may change tomorrow,
-                  so new readers can understand the basics quickly.
-
-                  Instead, discussion of future work is moved from parentheticals to a <a href="#backlog">section</a> where the future work can be prioritized into a plan. 
-                </p>
-              </li>
-              <li>
-                Clarified delegation proof requires `capabilityChain`,
-                add `capabilityChain` to examples 3 & 4.
-
-                See
-                <a href="decision/20260807-clarify-proof-capabilityChain.md">decision record</a>
-                for more.
-              </li>
-              <li>
-                Fixed example 1 `parentCapability` and `proof.capabilityChain` to identify the parent root capability by a URN.
-                Before, the example text identified the parent capability using an HTTPS URL.
-                After, example 1 conforms to the requirement that delegations identify root capabilities using a URN.
-              </li>
-              <li>
-                Removed all usage in examples of zcap proofs that use type RsaSignature2016.
-                Replace with proofs of type <a href="https://www.w3.org/TR/vc-data-integrity/#dataintegrityproof">DataIntegrityProof</a>,
-                which use the property named proofValue (instead of the formerly used signatureValue) for the output of cryptosuite.
-              </li>
-
-              <li>
-                Added <a href="#invocation-http-request">Invocation HTTP Request</a>.
-                This establishes a clearly-named section in the Table of Contents offering accesses a reference description of how an invocation may be represented as an HTTP Request.
-              </li>
-
-              <li>
-                Added <a href="#invocation-json">Invocation JSON</a> and <a href="#invocation-http-request">Invocation HTTP Request</a>,
-                This establishes a clearly-named section in the Table of Contents offering accesses for reference description of how an invocation may be represented as JSON.
-              </li>
-
-              <li>
-                Added <a href="#invocation-http-example">Example Invocation HTTP Requests</a> and
-                <a href="#invocation-json-example">Example Invocation JSON</a>.
-                Previously, there were no examples of how an invocation is expressed as an HTTP request.
-                The new example illustrates the general form of the invocation request much more quickly and clearly than the previous text-only description.
-              </li>
-
-              <li>
-                Fixed <a href="#invocation-json-example">Example Invocation JSON</a> so the
-                invocation proof conforms to <a href="#invocation-json-proof">Invocation JSON `proof`</a>.
-                Before, `proof.capability` was an HTTPS URL string identifying a delegated capability,
-                and the proof omitted `invocationTarget` and `capabilityAction`.
-                After, `proof.capability` expresses the full delegated zcap, as required when invoking a
-                delegated capability using a DI proof,
-                and the proof includes the required `invocationTarget` and `capabilityAction`.
-              </li>
-
-              <li>
-                Renamed the verification method used by example 1's capability delegation proof
-                from `https://example.com/i/alice/keys/1` to `https://example.com/i/alyssa/keys/1`.
-                The key belongs to Alyssa, so it did not make sense for its URL to name Alice.
-              </li>
-
-              <li>
-                Added an example of the document that the target
-                `https://whatacar.example/a-fancy-car` dereferences to,
-                including its `capabilityDelegation` property value.
-                Previously, example 1's delegation proof was created with a verification method
-                that the document never showed to be authorized by the car.
-                After, the reader can follow the initial source of authority from the target's
-                `capabilityDelegation` property to the key that signs the first delegation.
-              </li>
-
-              <li>
-                Moved
-                <a href="#root-capability">Root Capability</a>,
-                <a href="#delegated-capability">Delegated Capability</a>,
-                and
-                <a href="#capabilities-vs-ACLs">Capabilities vs. Access Control Lists</a>
-                sections
-                from <a href="#introduction">Introduction</a>
-                to
-                <a href="#capabilities">Capabilities</a>.
-                This keeps <a href="#introduction">Introduction</a> focused on introductory material
-                and centralizes normative details in a more specific section.
-              </li>
-
-            </ul>
-        </section>
-
-        <section id="milestone-v0.5.0">
-            <h3>v0.5.0</h3>
-            <p>
-                This milestone is not yet planned. Once <a href="#milestone-v0.4.0">v0.4</a> is done, it will be planned from issues in the <a href="#backlog">backlog</a> and issue tracker.
-            </p>
-        </section>
+    <section class="appendix informative" id="changelog"
+             data-include="CHANGELOG.md"
+             data-include-format="markdown">
+      <!--
+        This section's content comes from CHANGELOG.md, the canonical record of
+        changes that have already been made to this document.
+        ReSpec fetches it over HTTP, so this section is empty when index.html is
+        opened via a file:// URL instead of a web server.
+      -->
     </section>
 
-    <section class="appendix informative" id="backlog">
-      <h2>Backlog</h2>
+    <section class="appendix informative" id="work-plan">
+      <h2>Work Plan</h2>
       <p>
-          These issues may be added to <a href="#milestones">milestones</a>.
-          They may also be removed from the backlog.
-          Generally, they are listed in priority order.
+        This is a non-binding plan of how the authors intend this document to develop.
+        Changes that have already been made are recorded in the
+        <a href="#changelog">Change Log</a>.
       </p>
 
-      <section>
-        <h3>
-          Clarify delegated capability `proof` property
-        </h3>
-
-        <p>Acceptance Criteria:</p>
-        <ul>
-          <li>
-            <div>
-              Answer questions about these requirements
-              <blockquote>
-                A delegated zcap MUST have a proof field that is an object or an array of objects that each express a DI proof.
-                At least one of these proofs MUST be a zcap capability delegation proof.
-              </blockquote>
-            </div>
-            <ul>
-              <li>What is meant by "each express a DI proof"? Clarify or remove that clause.</li>
-              <li>Are non-DataIntegrityProof values allowed?</li>
-              <li>What is meant by "MUST be a zcap capability delegation proof"?</li>
-            </ul>
-          </li>
-          <li>
-            Add a normative reference to
-            <a href="https://www.w3.org/TR/vc-data-integrity-1.1/">
-              vc-data-integrity-1.1
-            </a>.
-          </li>
-        </ul>
-      </section>
-
-      <section>
-        <h3>Specify algorithms for delegation proof</h3>
-        <p>Acceptance Criteria:</p>
-        <ul>
-          <li>
-            Specify an algorithm to add a `capabilityDelegation` proof to a delegated capability.
-            This should be similar to
-            <a href="https://www.w3.org/TR/vc-data-integrity/#add-proof">
-              Add Proof in VC Data Integrity.
-            </a>
-          </li>
-          <li>
-            Specify an algorithm to verify a `capabilityDelegation` proof on a delegated capability.
-            This should be similar to
-            <a href="https://www.w3.org/TR/vc-data-integrity/#verify-proof">
-              Verify Proof in VC Data Integrity
-            </a>
-            (but for zcap delegations).
-          </li>
-        </ul>
-      </section>
-
-      <section>
-        <h3>Specify algorithms for invocation HTTP proof</h3>
-        <p>Acceptance Criteria:</p>
-        <ul>
-          <li>
-            Specify algorithm to create an Invocation HTTP Request from a delegated capability.
-          </li>
-          <li>
-            Specify an algorithm to add a proof of invocation to a
-            <a href="#invocation-http-request">invocation HTTP request</a>.
-            This should be similar to
-            <a href="https://www.w3.org/TR/vc-data-integrity/#add-proof">
-              Add Proof in VC Data Integrity.
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      <section>
-        <h3>Specify algorithms for invocation JSON proof</h3>
-        <p>Acceptance Criteria:</p>
-        <ul>
-          <li>
-            Specify an algorithm to add a `capabilityInvocation` proof to
-            <a href="#invocation-json">invocation JSON</a>.
-            This should be similar to
-            <a href="https://www.w3.org/TR/vc-data-integrity/#add-proof">
-              Add Proof in VC Data Integrity.
-            </a>
-          </li>
-          <li>
-            Specify an algorithm to verify a `capabilityInvocation` proof on an invocation JSON.
-            <a href="#invocation-json">invocation JSON</a>.
-            This should be similar to
-            <a href="https://www.w3.org/TR/vc-data-integrity/#verify-proof">
-              Verify Proof in VC Data Integrity.
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      <section>
-        <h3>Other Issues</h3>
-
-        <div class="issue">
-            v0.3 was published in 2022. Since then, some implementors have made changes to their implementations based on their experience in production, which may be incorporated into this spec. If this experience can be described, and the changes articulated, they may be incorporated into this document.
-        </div>
-
-        <div class="issue"
-            title="Detail validation algorithm"
-          >
+      <section id="milestones">
+          <h3>Milestones</h3>
           <p>
-            Detail algorithm for validation process:
-            https://github.com/digitalbazaar/zcapld/blob/4386185f784f552d6eaeb2c3c82959cb2e09762e/lib/CapabilityProofPurpose.js#L85
-          </p>              
-        </div>
-
-        <div class="issue"
-            title="Add Revocation Section"
-        >
-          <p>
-            Explain revocation behavior in a new section.
+              These are the releases the authors intend to work on next.
           </p>
-          <p>
-            Wishlist
-          </p>
+
+          <section id="milestone-v0.4.0">
+              <h4>v0.4.0: Improve Readability, Update Examples</h4>
+
+              <p>
+                The goals of the release are
+                to ship some low cost high impact readability improvements,
+                ensure examples conform to specified behaviors,
+                move quickly and safely by prioritizing only non-normative changes,
+                and to begin planning more substantial normative changes in the <a href="#backlog">backlog</a>
+                for v0.5.0 and beyond.
+              </p>
+
+              <p>
+                The changes made for this milestone are listed in the
+                <a href="#changelog">Change Log</a>.
+              </p>
+          </section>
+
+          <section id="milestone-v0.5.0">
+              <h4>v0.5.0</h4>
+              <p>
+                  This milestone is not yet planned. Once <a href="#milestone-v0.4.0">v0.4</a> is done, it will be planned from issues in the <a href="#backlog">backlog</a> and issue tracker.
+              </p>
+          </section>
+      </section>
+
+      <section id="backlog">
+        <h3>Backlog</h3>
+        <p>
+            These issues may be added to <a href="#milestones">milestones</a>.
+            They may also be removed from the backlog.
+            Generally, they are listed in priority order.
+        </p>
+
+        <section>
+          <h4>
+            Clarify delegated capability `proof` property
+          </h4>
+
+          <p>Acceptance Criteria:</p>
           <ul>
             <li>
-              Add a named section for other sections to link to for an overview of revocation.
+              <div>
+                Answer questions about these requirements
+                <blockquote>
+                  A delegated zcap MUST have a proof field that is an object or an array of objects that each express a DI proof.
+                  At least one of these proofs MUST be a zcap capability delegation proof.
+                </blockquote>
+              </div>
+              <ul>
+                <li>What is meant by "each express a DI proof"? Clarify or remove that clause.</li>
+                <li>Are non-DataIntegrityProof values allowed?</li>
+                <li>What is meant by "MUST be a zcap capability delegation proof"?</li>
+              </ul>
             </li>
             <li>
-              Detail what verifiers MUST/SHOULD do to provide revocation endpoints for zcaps.
-            </li>
-            <li>
-              A root invocation
-              target SHOULD have a `/zcaps/revocations` subpath, where a root zcap of
-              `urn:zcap:root:{the revocations path/the zcap ID to revoke}` can be
-                invoked. The verifier SHOULD set the controllers for that root
-                zcap to all controllers in the (to be revoked) zcap's chain so
-                that any controller in the chain can revoke the zcap.
-            </li>
-            <li>
-              Any controller in the chain of a
-              delegated zcap may post that zcap to:
-              `{rootInvocationTarget}/zcaps/revocations/{zcapToRevokeId}`
-              using the
-              root zcap: `urn:zcap:root:encodeURIComponent("{rootInvocationTarget}/zcaps/revocations/{zcapToRevokeId}")`
-              to revoke.
-              Example: https://github.com/digitalbazaar/ezcap-express/blob/main/lib/revoke.js
-            </li>
-            <li>
-              Link to example server-side revocation implementations like
-              <a href="https://github.com/digitalbazaar/ezcap-express/blob/main/lib/revoke.js">
-                digitalbazaar's ezcap-express
-              </a>
-              .
+              Add a normative reference to
+              <a href="https://www.w3.org/TR/vc-data-integrity-1.1/">
+                vc-data-integrity-1.1
+              </a>.
             </li>
           </ul>
-        </div>
+        </section>
 
-        <div
-          class="issue"
-          data-title="Long Examples are Hard to Read"
+        <section>
+          <h4>Specify algorithms for delegation proof</h4>
+          <p>Acceptance Criteria:</p>
+          <ul>
+            <li>
+              Specify an algorithm to add a `capabilityDelegation` proof to a delegated capability.
+              This should be similar to
+              <a href="https://www.w3.org/TR/vc-data-integrity/#add-proof">
+                Add Proof in VC Data Integrity.
+              </a>
+            </li>
+            <li>
+              Specify an algorithm to verify a `capabilityDelegation` proof on a delegated capability.
+              This should be similar to
+              <a href="https://www.w3.org/TR/vc-data-integrity/#verify-proof">
+                Verify Proof in VC Data Integrity
+              </a>
+              (but for zcap delegations).
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h4>Specify algorithms for invocation HTTP proof</h4>
+          <p>Acceptance Criteria:</p>
+          <ul>
+            <li>
+              Specify algorithm to create an Invocation HTTP Request from a delegated capability.
+            </li>
+            <li>
+              Specify an algorithm to add a proof of invocation to a
+              <a href="#invocation-http-request">invocation HTTP request</a>.
+              This should be similar to
+              <a href="https://www.w3.org/TR/vc-data-integrity/#add-proof">
+                Add Proof in VC Data Integrity.
+              </a>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h4>Specify algorithms for invocation JSON proof</h4>
+          <p>Acceptance Criteria:</p>
+          <ul>
+            <li>
+              Specify an algorithm to add a `capabilityInvocation` proof to
+              <a href="#invocation-json">invocation JSON</a>.
+              This should be similar to
+              <a href="https://www.w3.org/TR/vc-data-integrity/#add-proof">
+                Add Proof in VC Data Integrity.
+              </a>
+            </li>
+            <li>
+              Specify an algorithm to verify a `capabilityInvocation` proof on an invocation JSON.
+              <a href="#invocation-json">invocation JSON</a>.
+              This should be similar to
+              <a href="https://www.w3.org/TR/vc-data-integrity/#verify-proof">
+                Verify Proof in VC Data Integrity.
+              </a>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h4>Other Issues</h4>
+
+          <div class="issue">
+              v0.3 was published in 2022. Since then, some implementors have made changes to their implementations based on their experience in production, which may be incorporated into this spec. If this experience can be described, and the changes articulated, they may be incorporated into this document.
+          </div>
+
+          <div class="issue"
+              title="Detail validation algorithm"
+            >
+            <p>
+              Detail algorithm for validation process:
+              https://github.com/digitalbazaar/zcapld/blob/4386185f784f552d6eaeb2c3c82959cb2e09762e/lib/CapabilityProofPurpose.js#L85
+            </p>              
+          </div>
+
+          <div class="issue"
+              title="Add Revocation Section"
           >
-          <p>
-            Examples with long `capabilityChain` values can get very long.
-            It's nice for authors to maintain complete, conformant examples in one place,
-            but some readers might not like having to scroll so much to scroll past each example.
-          </p>
-          <p>
-            We should consider mitigating this by using a respec plugin that renders JSON examples so the initial render doesn't take up as much vertical space as the full JSON value serialized with newlines.
-            For example, the plugin could collapse or minimize some values unless the end-user clicks to expand and show a fuller example that takes up more space.
-          </p>
-        </div>
+            <p>
+              Explain revocation behavior in a new section.
+            </p>
+            <p>
+              Wishlist
+            </p>
+            <ul>
+              <li>
+                Add a named section for other sections to link to for an overview of revocation.
+              </li>
+              <li>
+                Detail what verifiers MUST/SHOULD do to provide revocation endpoints for zcaps.
+              </li>
+              <li>
+                A root invocation
+                target SHOULD have a `/zcaps/revocations` subpath, where a root zcap of
+                `urn:zcap:root:{the revocations path/the zcap ID to revoke}` can be
+                  invoked. The verifier SHOULD set the controllers for that root
+                  zcap to all controllers in the (to be revoked) zcap's chain so
+                  that any controller in the chain can revoke the zcap.
+              </li>
+              <li>
+                Any controller in the chain of a
+                delegated zcap may post that zcap to:
+                `{rootInvocationTarget}/zcaps/revocations/{zcapToRevokeId}`
+                using the
+                root zcap: `urn:zcap:root:encodeURIComponent("{rootInvocationTarget}/zcaps/revocations/{zcapToRevokeId}")`
+                to revoke.
+                Example: https://github.com/digitalbazaar/ezcap-express/blob/main/lib/revoke.js
+              </li>
+              <li>
+                Link to example server-side revocation implementations like
+                <a href="https://github.com/digitalbazaar/ezcap-express/blob/main/lib/revoke.js">
+                  digitalbazaar's ezcap-express
+                </a>
+                .
+              </li>
+            </ul>
+          </div>
+
+          <div
+            class="issue"
+            data-title="Long Examples are Hard to Read"
+            >
+            <p>
+              Examples with long `capabilityChain` values can get very long.
+              It's nice for authors to maintain complete, conformant examples in one place,
+              but some readers might not like having to scroll so much to scroll past each example.
+            </p>
+            <p>
+              We should consider mitigating this by using a respec plugin that renders JSON examples so the initial render doesn't take up as much vertical space as the full JSON value serialized with newlines.
+              For example, the plugin could collapse or minimize some values unless the end-user clicks to expand and show a fuller example that takes up more space.
+            </p>
+          </div>
+        </section>
       </section>
     </section>
   </body>
