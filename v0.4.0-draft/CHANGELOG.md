@@ -20,6 +20,12 @@ Non-normative
   After, example 1 conforms to the requirement that delegations identify root capabilities using a URN.
   * Pull Request: <https://github.com/w3c-ccg/zcap-spec/pull/66>
 
+* Fix example 10 (Capability Invocation JSON) invocation `proof` to conform to the Invocation JSON `proof` requirements.
+  Before, `proof.capability` was an HTTPS URL string identifying a delegated capability,
+  and the proof omitted `invocationTarget` and `capabilityAction`.
+  After, `proof.capability` expresses the full delegated zcap, as required when invoking a delegated capability using a DI proof,
+  and the proof includes the required `invocationTarget` and `capabilityAction`.
+
 * Fix example 6 root capability `@context` value to be a string, as required. Previously it was an array.
   * Pull Request: <https://github.com/w3c-ccg/zcap-spec/pull/60>
 

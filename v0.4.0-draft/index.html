@@ -1351,7 +1351,30 @@ Signature: zcap=:m28+dfHk1Pq6VvKxFxX9Q9zNz98bX5cKldP1M0zNzM3NzUzNzdXNzr1PzM3NzUz
     "type": "DataIntegrityProof",
     "proofPurpose": "capabilityInvocation",
     "cryptosuite": "eddsa-jcs-2022",
-    "capability": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
+    "invocationTarget": "https://whatacar.example/a-fancy-car",
+    "capabilityAction": "Drive",
+    "capability": {
+      "id": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
+      "parentCapability": "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car",
+      "controller": "https://social.example/alyssa#key-for-car",
+      "invocationTarget": "https://whatacar.example/a-fancy-car",
+      "proof": {
+        "type": "DataIntegrityProof",
+        "created": "2018-02-13T21:26:08Z",
+        "cryptosuite": "eddsa-jcs-2022",
+        "capabilityChain": [
+          "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car"
+        ],
+        "proofPurpose": "capabilityDelegation",
+        "proofValue": "z2YwC8z3ap7yx1nZYCg4L3j3ApHsF8kgPdSb5xoS1VR7vPG3F561B52hYnQF9iseabecm3ijx4K1FBTQsCZahKZme",
+        "verificationMethod": "https://example.com/i/alice/keys/1"
+      },
+      "@context": [
+        "https://w3id.org/zcap/v1",
+        "https://w3id.org/security/data-integrity/v2",
+        "https://autopower.example/"
+      ],
+    },
     "created": "2016-02-08T17:13:48Z",
     "verificationMethod": "https://social.example/alyssa/#key-for-car",
     "proofValue": "..."
@@ -1607,6 +1630,16 @@ Signature: zcap=:m28+dfHk1Pq6VvKxFxX9Q9zNz98bX5cKldP1M0zNzM3NzUzNzdXNzr1PzM3NzUz
                 <a href="#invocation-json-example">Example Invocation JSON</a>.
                 Previously, there were no examples of how an invocation is expressed as an HTTP request.
                 The new example illustrates the general form of the invocation request much more quickly and clearly than the previous text-only description.
+              </li>
+
+              <li>
+                Fixed <a href="#invocation-json-example">Example Invocation JSON</a> so the
+                invocation proof conforms to <a href="#invocation-json-proof">Invocation JSON `proof`</a>.
+                Before, `proof.capability` was an HTTPS URL string identifying a delegated capability,
+                and the proof omitted `invocationTarget` and `capabilityAction`.
+                After, `proof.capability` expresses the full delegated zcap, as required when invoking a
+                delegated capability using a DI proof,
+                and the proof includes the required `invocationTarget` and `capabilityAction`.
               </li>
 
               <li>
