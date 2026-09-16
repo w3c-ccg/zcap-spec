@@ -205,7 +205,7 @@
         <!-- TODO: Should we include the full embedded key?  That's better
              practice in general (outside of DIDs) but will make the example
              noisier -->
-        <pre class="example highlight javascript">
+        <pre class="example highlight javascript zcap">
 {
   "@context": [
     "https://w3id.org/zcap/v1",
@@ -253,7 +253,7 @@
           invoking the capability to do so:
         </p>
 
-        <pre class="example highlight javascript">
+        <pre class="example highlight javascript zcap">
 {
   "@context": [
     "https://w3id.org/zcap/v1",
@@ -323,7 +323,7 @@
           capability she has, adding the caveat:
         </p>
 
-        <pre class="example highlight javascript">
+        <pre class="example highlight javascript zcap">
 {
   "@context": [
     "https://w3id.org/zcap/v1",
@@ -417,7 +417,7 @@
           to 5 kilometers, but no more:
         </p>
 
-        <pre class="example highlight javascript">
+        <pre class="example highlight javascript zcap">
 {
   "@context": [
     "https://w3id.org/zcap/v1",
@@ -764,7 +764,7 @@
           A root zcap looks like this:
         </p>
 
-        <pre class="example highlight javascript">
+        <pre class="example highlight javascript zcap">
 {
   "@context": "https://w3id.org/zcap/v1",
   "id": "urn:zcap:root:https%3A%2F%2Fexample.com%2Ffoo",
@@ -894,7 +894,7 @@ urn:zcap:root:${encodeURIComponent(invocationTarget)}
             and dynamically converts that (after looking up its controller) into:
           </p>
 
-          <pre class="example highlight javascript">
+          <pre class="example highlight javascript zcap">
 {
   "@context": "https://w3id.org/zcap/v1",
   "id": "urn:zcap:root:https%3A%2F%2Ffoo.example%2Fcollections%2F123",
@@ -914,7 +914,7 @@ urn:zcap:root:${encodeURIComponent(invocationTarget)}
           A delegated zcap looks like this:
         </p>
 
-        <pre class="example highlight javascript">
+        <pre class="example highlight javascript zcap">
 {
   "@context": [
     "https://w3id.org/zcap/v1",
@@ -1423,7 +1423,7 @@ Signature: zcap=:m28+dfHk1Pq6VvKxFxX9Q9zNz98bX5cKldP1M0zNzM3NzUzNzdXNzr1PzM3NzUz
               An example of how a capability invocation may be serialized as application/json.
             </figcaption>
             <pre
-              class="example json"
+              class="example json zcap"
               title="Capability Invocation JSON"
               >
 {
