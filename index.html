@@ -225,6 +225,12 @@
   // key metaphor!)
   "controller": "https://social.example/alyssa#key-for-car",
 
+  // The delegated zcap operates against the same target as its parent
+  "invocationTarget": "https://whatacar.example/a-fancy-car",
+
+  // Delegated zcaps must expire
+  "expires": "2021-11-03T18:33:51Z",
+
   // Finally we sign this object with cryptographic material from
   // Alyssa's Car's capabilityDelegation field, and using the
   // capabilityDelegation proofPurpose.
@@ -260,28 +266,34 @@
     "type": "DataIntegrityProof",
     "cryptosuite": "eddsa-jcs-2022",
     // A linked data document can be an invocation if it has a
-    // proofPurpose of capabilityInvocation and links to the capability
-    // chain it is invoking
+    // proofPurpose of capabilityInvocation and embeds the capability
+    // it is invoking
     "proofPurpose": "capabilityInvocation",
+    "invocationTarget": "https://whatacar.example/a-fancy-car",
+    "capabilityAction": "Drive",
+    // The full expression of the invoked capability (i.e. Example 2)
     "capability": {
-      "@context": "https://w3id.org/zcap/v1",
-      "id": "urn:uuid:d2c83c43-878a-4c01-984f-b2f57932ce5f",
-      "parentCapability": "urn:uuid:f7412b9a-854b-47ab-806b-3ac736cc7cda",
-      "controller": "did:key:dummy",
-      "expires": "2026-01-31T00:00:00Z",
-      "allowedAction": [
-        "https://example.com/storage/method/UploadFile"
+      "@context": [
+        "https://w3id.org/zcap/v1",
+        "https://w3id.org/security/data-integrity/v2",
+        "https://autopower.example/"
       ],
-      "proof": [
-        {
-          "type": "DataIntegrityProof",
-          "cryptosuite": "eddsa-jcs-2022",
-          "created": "2026-01-01T00:00:00Z",
-          "verificationMethod": "did:key:bob#bob",
-          "proofPurpose": "capabilityDelegation",
-          "proofValue": "zQeVbY4oey5q2M3XKaxup3tmzN4DRFTLVqpLMweBrSxMY2xHX5XTYV8nQApmEcqaqA3Q1gVHMrXFkXJeV6doDwLWx"
-        }
-      ]
+      "id": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
+      "parentCapability": "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car",
+      "controller": "https://social.example/alyssa#key-for-car",
+      "invocationTarget": "https://whatacar.example/a-fancy-car",
+      "expires": "2021-11-03T18:33:51Z",
+      "proof": {
+        "type": "DataIntegrityProof",
+        "created": "2018-02-13T21:26:08Z",
+        "cryptosuite": "eddsa-jcs-2022",
+        "capabilityChain": [
+          "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car"
+        ],
+        "proofPurpose": "capabilityDelegation",
+        "proofValue": "z2YwC8z3ap7yx1nZYCg4L3j3ApHsF8kgPdSb5xoS1VR7vPG3F561B52hYnQF9iseabecm3ijx4K1FBTQsCZahKZme",
+        "verificationMethod": "https://example.com/i/alyssa/keys/1"
+      }
     },
     "created": "2016-02-08T17:13:48Z",
     "verificationMethod": "https://social.example/alyssa/#key-for-car",
@@ -327,6 +339,7 @@
   // Alyssa grants authority specifically to one of Ben's
   // cryptographic keys
   "controller": "https://chatty.example/ben/#key-33",
+  "invocationTarget": "https://whatacar.example/a-fancy-car",
 
   // Alyssa adds a caveat: Ben can drive her car, unless she flips
   // the bit at this url
@@ -350,7 +363,7 @@
     "proofValue": "...",
     "capabilityChain": [
       "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car",
-      // This should be the full expression of the parentCapability (i.e. Example 1)
+      // This is the full expression of the parentCapability (i.e. Example 2)
       {
         "@context": [
           "https://w3id.org/zcap/v1",
@@ -360,16 +373,17 @@
         "id": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
         "parentCapability": "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car",
         "controller": "https://social.example/alyssa#key-for-car",
+        "invocationTarget": "https://whatacar.example/a-fancy-car",
         "expires": "2021-11-03T18:33:51Z",
         "proof": {
           "type": "DataIntegrityProof",
-          "cryptosuite": "eddsa-jcs-2022",
           "created": "2018-02-13T21:26:08Z",
+          "cryptosuite": "eddsa-jcs-2022",
           "capabilityChain": [
             "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car"
           ],
-          "proofValue": "eyJhbGciOiJFZERTQSIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19lfAFjrWE-4RxhL0gtzSMRX72NR9SRDgaMmkjPA4if0ERbw4R2bnts5sAs8OyhAlbFzBAKOqrFk57AYqwSR2vCw",
           "proofPurpose": "capabilityDelegation",
+          "proofValue": "z2YwC8z3ap7yx1nZYCg4L3j3ApHsF8kgPdSb5xoS1VR7vPG3F561B52hYnQF9iseabecm3ijx4K1FBTQsCZahKZme",
           "verificationMethod": "https://example.com/i/alyssa/keys/1"
         }
       }
@@ -413,6 +427,7 @@
   "id": "https://chatty.example/ben/caps#2cdea8c1",
   "parentCapability": "https://social.example/alyssa/caps#79795d78",
   "controller": "https://lem.example/#key-bf36",
+  "invocationTarget": "https://whatacar.example/a-fancy-car",
   "expires": "2021-11-03T18:33:51Z",
 
   // Ben adds this caveat: this capability can be used to drive the
@@ -438,15 +453,17 @@
     "capabilityChain": [
       "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car",
       "https://whatacar.example/a-fancy-car/proc/7a397d7b",
-      // This is the full expression of the parentCapability (i.e. Example 3)
+      // This is the full expression of the parentCapability (i.e. Example 4)
       {
         "@context": [
           "https://w3id.org/zcap/v1",
+          "https://w3id.org/security/data-integrity/v2",
           "https://autopower.example/"
         ],
         "id": "https://social.example/alyssa/caps#79795d78",
         "parentCapability": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
         "controller": "https://chatty.example/ben/#key-33",
+        "invocationTarget": "https://whatacar.example/a-fancy-car",
         "caveat": [
           {
             "type": "ValidWhileTrue",
@@ -463,26 +480,27 @@
           "proofValue": "...",
           "capabilityChain": [
             "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car",
-            // This is the full expression of the parentCapability (i.e. Example 1)
+            // This is the full expression of the parentCapability (i.e. Example 2)
             {
               "@context": [
                 "https://w3id.org/zcap/v1",
-                "https://w3id.org/security/suites/ed25519-2020/v1",
+                "https://w3id.org/security/data-integrity/v2",
                 "https://autopower.example/"
               ],
               "id": "https://whatacar.example/a-fancy-car/proc/7a397d7b",
               "parentCapability": "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car",
               "controller": "https://social.example/alyssa#key-for-car",
+              "invocationTarget": "https://whatacar.example/a-fancy-car",
               "expires": "2021-11-03T18:33:51Z",
               "proof": {
                 "type": "DataIntegrityProof",
-                "cryptosuite": "eddsa-jcs-2022",
                 "created": "2018-02-13T21:26:08Z",
+                "cryptosuite": "eddsa-jcs-2022",
                 "capabilityChain": [
                   "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car"
                 ],
                 "proofPurpose": "capabilityDelegation",
-                "proofValue": "z4oey5q2M3XKaxup3tmzN4DRFTLVqpLMweBrSxMY2xHX5XTYVQeVbY8nQAVHMrXFkXJpmEcqdoDwLWxaqA3Q1geV6",
+                "proofValue": "z2YwC8z3ap7yx1nZYCg4L3j3ApHsF8kgPdSb5xoS1VR7vPG3F561B52hYnQF9iseabecm3ijx4K1FBTQsCZahKZme",
                 "verificationMethod": "https://example.com/i/alyssa/keys/1"
               }
             }
@@ -1421,6 +1439,7 @@ Signature: zcap=:m28+dfHk1Pq6VvKxFxX9Q9zNz98bX5cKldP1M0zNzM3NzUzNzdXNzr1PzM3NzUz
       "parentCapability": "urn:zcap:root:https%3A%2F%2Fwhatacar.example%2Fa-fancy-car",
       "controller": "https://social.example/alyssa#key-for-car",
       "invocationTarget": "https://whatacar.example/a-fancy-car",
+      "expires": "2021-11-03T18:33:51Z",
       "proof": {
         "type": "DataIntegrityProof",
         "created": "2018-02-13T21:26:08Z",
@@ -1430,7 +1449,7 @@ Signature: zcap=:m28+dfHk1Pq6VvKxFxX9Q9zNz98bX5cKldP1M0zNzM3NzUzNzdXNzr1PzM3NzUz
         ],
         "proofPurpose": "capabilityDelegation",
         "proofValue": "z2YwC8z3ap7yx1nZYCg4L3j3ApHsF8kgPdSb5xoS1VR7vPG3F561B52hYnQF9iseabecm3ijx4K1FBTQsCZahKZme",
-        "verificationMethod": "https://example.com/i/alice/keys/1"
+        "verificationMethod": "https://example.com/i/alyssa/keys/1"
       },
       "@context": [
         "https://w3id.org/zcap/v1",

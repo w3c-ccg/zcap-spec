@@ -103,6 +103,34 @@ Examples
   Previously it was an array.
   * Pull Request: <https://github.com/w3c-ccg/zcap-spec/pull/60>
 
+* Added `expires` to every delegated capability in [Zcap by Example](index.html#zcap-by-example):
+  the car's delegation to Alyssa, Alyssa's delegation to Ben, Ben's delegation to Lem,
+  and each copy of those delegations embedded in a `capabilityChain` or invocation `proof`.
+  Before, these delegated capabilities had no `expires`.
+  After, they conform to the requirement that a delegated zcap MUST have an `expires` field.
+
+* Added `invocationTarget` to every delegated capability in [Zcap by Example](index.html#zcap-by-example),
+  with the same value as the root capability's invocation target, `https://whatacar.example/a-fancy-car`.
+  Before, these delegated capabilities had no `invocationTarget`, so a verifier could not
+  ensure that a delegated capability's `invocationTarget` matches that of its parent capability,
+  as [Delegated Capability](index.html#delegated-capability) requires.
+
+* Fixed the invocation of the car's delegation to Alyssa in [Zcap by Example](index.html#zcap-by-example)
+  (the one that turns on the car) to conform to [Invocation JSON `proof`](index.html#invocation-json-proof).
+  Before, the proof omitted `invocationTarget` and `capabilityAction`,
+  and `proof.capability` was not the delegated capability being invoked.
+  After, the proof includes the required `invocationTarget` and `capabilityAction`,
+  and `proof.capability` expresses the full delegated zcap being invoked,
+  as required when invoking a delegated capability using a DI proof.
+
+* Fixed the embedded parent capabilities in the `proof.capabilityChain` of Alyssa's delegation to Ben
+  and Ben's delegation to Lem in [Zcap by Example](index.html#zcap-by-example).
+  Before, the embedded copies differed from the parent capabilities they stood for
+  (e.g. in `@context`, `proofValue`, `expires`, and `invocationTarget`).
+  After, each embedded capability is identical to its parent capability,
+  conforming to the requirement that the parent delegated zcap MUST be fully embedded
+  in the capability ancestors array.
+
 Other
 
 * Added `contexts/zcap-v1.jsonld`, a representation of the JSON-LD Context that the zcap-spec
