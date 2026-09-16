@@ -108,3 +108,12 @@ Other
 * Added `contexts/zcap-v1.jsonld`, a representation of the JSON-LD Context that the zcap-spec
   assumes is resolvable at <https://w3id.org/zcap/v1>,
   the location required in zcap JSON-LD `@context` property values.
+
+* Added [The zcap v1 JSON-LD Context](index.html#zcap-v1-context),
+  which publishes the hexadecimal encoded SHA2-256 digest value of the context file served at
+  <https://w3id.org/zcap/v1>, namely
+  `4c0bd364bf3a5215779c0b636e14bcdf1d6818dae002bc7580237bcf8d2a72e0`,
+  along with a command a reader can run to confirm it.
+  Before, no digest was published, so a reader had no way to tell whether a context file they
+  retrieved was the one this document assumes.
+  * Issue: <https://github.com/w3c-ccg/zcap-spec/issues/101>

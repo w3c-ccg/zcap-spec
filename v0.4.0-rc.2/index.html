@@ -1445,6 +1445,33 @@ Signature: zcap=:m28+dfHk1Pq6VvKxFxX9Q9zNz98bX5cKldP1M0zNzM3NzUzNzdXNzr1PzM3NzUz
       </section>
     </section>
 
+    <section class="informative" id="zcap-v1-context">
+      <h2>The zcap v1 JSON-LD Context</h2>
+
+      <p>
+        Every zcap has an <code>@context</code> property whose value is, or
+        begins with, the URL <code>https://w3id.org/zcap/v1</code>, as required
+        by <a href="#root-capability">Root Capability</a> and
+        <a href="#delegated-capability">Delegated Capability</a>.
+        That URL identifies the zcap v1 JSON-LD Context.
+      </p>
+
+      <p>
+        The hexadecimal encoded SHA2-256 digest value of the zcap v1 context
+        file is
+        <code>4c0bd364bf3a5215779c0b636e14bcdf1d6818dae002bc7580237bcf8d2a72e0</code>.
+        It is possible to confirm the cryptographic digest above by running the
+        following command from a modern Unix command line interface:
+        <code>curl -sL https://w3id.org/zcap/v1 | openssl dgst -sha256</code>.
+      </p>
+
+      <p>
+        A copy of the zcap v1 context file having the digest value above is
+        published alongside this document at
+        <a href="contexts/zcap-v1.jsonld">contexts/zcap-v1.jsonld</a>.
+      </p>
+    </section>
+
     <section id="conformance">
         <!--
         ReSpec will insert here something like:
