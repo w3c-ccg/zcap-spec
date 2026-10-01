@@ -5,6 +5,205 @@ This change log records changes that have been made since earlier versions of th
 Planned changes are described in [Milestones](index.html#milestones)
 Unscheduled possible changes are documented in [Backlog](index.html#backlog) until they are understood enough to schedule into Milestones.
 
+<h2 id="changelog-v0.5.0">v0.5.0</h2>
+
+This release contains normative changes.
+
+* Clarified the `proof` property of a delegated zcap, resolving the backlog
+  item [Clarify delegated capability `proof` property](index.html#clarify-delegated-capability-proof-property).
+  The item is kept, with each of its questions annotated with how it was
+  resolved and what was deliberately left to
+  [Specify algorithms for delegation proof](index.html#specify-algorithms-for-delegation-proof).
+
+  [capability delegation proof](index.html#dfn-capability-delegation-proof) is
+  now a defined term. It was used normatively in four places and defined in
+  none of them: a proof is one if its `proofPurpose` is `capabilityDelegation`
+  and it establishes that the delegated zcap was created by a controller of its
+  `parentCapability`.
+
+  The requirement that every proof in the `proof` property "express a DI proof"
+  is removed. It was stronger than anything a verifier needs and silent about
+  the one proof that matters. This document now states no requirement about a
+  proof that is not a capability delegation proof, and states that a verifier
+  MUST NOT rely on one.
+
+  The `type` of a capability delegation proof is not constrained. A
+  `DataIntegrityProof` is stated to satisfy the requirements, and is the type
+  every example uses, rather than being the only permitted type. The other
+  requirements in [Delegated Capability](index.html#delegated-capability) bind
+  whatever the type is, including `capabilityChain`.
+
+  For that type, the delegated zcap's `@context` SHOULD define the terms the
+  proof uses, and SHOULD NOT include the Data Integrity context
+  `https://w3id.org/security/data-integrity/v2` in order to obtain them.
+  [Delegated Capability](index.html#delegated-capability) gives definitions
+  that are sufficient: `DataIntegrityProof`, `cryptosuite`, `created`,
+  `proofPurpose`, `proofValue` and `verificationMethod`, each as the Data
+  Integrity context defines it. The zcap v1 context already defines the rest of
+  what a delegation proof uses, including `proof`, `expires` and
+  `capabilityChain`.
+
+  The existing requirement on `@context` already asks for the contexts that
+  define the terms the delegation proof uses, but the zcap v1 context defines
+  none of those six, so it was possible to satisfy the requirement as written
+  while leaving them undefined.
+
+  The reason to prefer the definitions to the context URL is not size — the
+  object is larger on the wire. It is that what a zcap means should not depend
+  on a document this specification neither pins nor publishes. The zcap v1
+  context is pinned by its SHA2-256 digest and published alongside this
+  document; the Data Integrity context is neither, and defines more proof terms
+  than a zcap uses.
+
+  `proofPurpose` needs no nested context, because its `@type` of `@vocab`
+  expands its value against the active context, in which the zcap v1 context
+  already defines `capabilityDelegation` and `capabilityInvocation` as the same
+  IRIs the Data Integrity context's nested context does.
+
+  The example in [Delegated Capability](index.html#delegated-capability) is
+  updated to follow this. The figures in
+  [Zcap by Example](index.html#zcap-by-example) and
+  [Invocation](index.html#invocation) are not, and are noted in the backlog
+  item as remaining editorial work.
+
+* Added [Proofs](index.html#proofs) and, within it,
+  [Proof Mechanism](index.html#proof-mechanism), placed after
+  [Capabilities](index.html#capabilities) and
+  [Invocation](index.html#invocation) so that a reader meets delegation and
+  invocation before the abstraction over how either is secured.
+
+  [capability proof](index.html#dfn-capability-proof) names what a
+  [capability delegation proof](index.html#dfn-capability-delegation-proof) and
+  a [capability invocation proof](index.html#dfn-capability-invocation-proof)
+  have in common, and
+  [proof mechanism](index.html#dfn-proof-mechanism) names the thing that
+  produces and verifies one: a specification that defines how a document is
+  secured for a proof purpose. A mechanism specification must define an add and
+  a verify operation, must state the media types it secures and the proof
+  purposes it defines proofs for, and must guarantee integrity, purpose
+  binding, prover authorization, and local verifiability.
+
+  Delegation and invocation are secured by the same kind of mechanism; they
+  differ in the proof purpose and in what the mechanism must establish for it.
+  The document secured need not be a capability, and need not be JSON.
+
+  This lets the requirements this document already states about delegation —
+  which properties may be attenuated, and which `controller` must have
+  authorized a proof — be stated once rather than per proof format, and lets
+  future algorithms be specified against a mechanism selected by media type and
+  proof purpose rather than against a proof `type`. It also leaves room for a
+  mechanism that establishes prover authorization without disclosing a
+  delegated zcap's ancestry to the verifier, which a mechanism built on
+  `capabilityChain` cannot do.
+
+* Added [Capability Delegation Proofs with Data Integrity](index.html#capability-delegation-proofs-data-integrity),
+  a normative appendix that binds `DataIntegrityProof` to the abstraction above:
+  it states the mechanism's media types and proof purposes, the proof format,
+  that a proof is added and verified by the Add Proof and Verify Proof
+  algorithms of [[VC-DATA-INTEGRITY-1.1]], and how the mechanism establishes
+  each guarantee.
+
+  Conformance to this document does not require this mechanism. The appendix
+  exists so that the mechanism every example uses is specified rather than
+  merely described, while the rest of the document stays written against any
+  mechanism providing the same guarantees. It is a separate markdown file
+  included with `data-include`, as the [Change Log](index.html#changelog) is.
+
+  It defines no capability invocation proof. Binding the description in
+  [Invocation JSON `proof`](index.html#invocation-json-proof) to this
+  abstraction is left to the existing backlog items for invocation proofs.
+
+* Added [Creating a Capability Delegation Proof](index.html#creating-a-capability-delegation-proof),
+  which states who may create one and what it must cover.
+
+  Nothing previously said that a capability delegation proof must cover the
+  properties a verifier reads from the delegated zcap. Without that, the
+  attenuation requirements stated elsewhere in
+  [Delegated Capability](index.html#delegated-capability) are forgeable: a proof
+  could be valid over a document whose `expires` or `allowedAction` had been
+  changed after it was added.
+
+  The requirements a delegator must satisfy previously appeared only as
+  requirements upon a verifier. This gives them a counterpart a delegator can
+  follow, without specifying an algorithm.
+
+* Added [Delegate](index.html#delegate), the first algorithm this document
+  specifies. It applies the requirements already stated in
+  [Delegated Capability](index.html#delegated-capability) and
+  [Creating a Capability Delegation Proof](index.html#creating-a-capability-delegation-proof)
+  in an order in which they can be applied, and secures the result by adding a
+  proof with a [proof mechanism](index.html#dfn-proof-mechanism) rather than by
+  naming a proof format.
+
+  `capability ancestry` is defined, and `fail` states once how an algorithm
+  fails, so each step names an error rather than spelling out what to return.
+  `Delegate` can fail with `CHAIN_LENGTH_EXCEEDED`, `INVALID_ALLOWED_ACTION`,
+  `INVALID_DELEGATOR`, `INVALID_EXPIRES`, `INVALID_INVOCATION_TARGET` or
+  `INVALID_ROOT_CAPABILITY`. Each is specified by the step that raises it.
+
+  `Delegate` accepts a root zcap's `id` in place of a root zcap expressed in
+  full. A root zcap is never expressed in a delegated zcap or in its proof —
+  only its `id` is — so requiring a delegator to supply one was asking for a
+  document that exists nowhere in the protocol. The `INVALID_DELEGATOR` check
+  is not performed in that case, because a root zcap's `controller` is only
+  available by dereferencing it on the verifier's system, and a delegator that
+  supplied the value would be checking itself.
+
+  Step 4 compares the delegated zcap against its parent alone. That is sound
+  for a delegator, because each ancestor was itself checked against its own
+  parent when it was delegated. A verifier cannot rely on that and must apply
+  the requirements across the whole chain, which is the subject of
+  [Specify algorithms for delegation proof](index.html#specify-algorithms-for-delegation-proof).
+
+  In the backlog item
+  [Specify algorithms for delegation proof](index.html#specify-algorithms-for-delegation-proof),
+  the criterion asking for an algorithm that adds a `capabilityDelegation`
+  proof is annotated as resolved by `Delegate`, whose final step adds that
+  proof and whose earlier steps are the checks that must pass for it to be
+  worth adding. The criterion asking for a verification algorithm is not
+  resolved.
+
+  Two diagrams accompany it, rendered from mermaid sources by the
+  [respec-mermaid](https://github.com/w3c/respec-mermaid) plugin: a flow chart
+  of the course the steps take and the error each failing check raises, and a
+  class diagram of the algorithm's signature and the things it relates. This is
+  the document's first use of that plugin.
+
+* Added `proof mechanism`, `capability delegation proof` and
+  `capability invocation proof` to
+  [Terminology](index.html#terminology), each with the sections that state what
+  it must be, how it is created, and what it must establish. All three terms
+  were used throughout the document without appearing there.
+
+* Every entry in [Terminology](index.html#terminology) can now be linked to.
+  Each term carries an `id` of the form `term-{term}`, so
+  [#term-caveat](index.html#term-caveat) addresses that entry, and the six
+  entries that this document did not already define elsewhere — `capability`,
+  `target`, `capability chain`, `caveat`, `invocation` and `action` — plus
+  `parentCapability` and `capabilityDelegation` are now definitions, so they
+  can be cross-referenced from prose as well.
+
+  `proof mechanism`, `capability delegation proof` and
+  `capability invocation proof` are not defined in Terminology, because each is
+  defined where the requirements that constrain it are stated; their
+  Terminology entries describe them and link there. A second definition of the
+  same term would be an error rather than a second place to link to.
+
+  Each new definition is referenced from prose, so that adding them does not
+  leave the document with definitions nothing points at.
+
+* Added [Algorithms](index.html#algorithms), an index. It names each algorithm
+  this document defines, with its signature and a one-sentence description, and
+  links to the section that defines it. Each algorithm is defined alongside the
+  data model it operates on rather than collected there, and each error is
+  specified by the step that raises it, so there is no unified list of error
+  definitions.
+
+* Added a normative reference to
+  [Verifiable Credential Data Integrity 1.1](https://www.w3.org/TR/vc-data-integrity-1.1/),
+  cited where a `DataIntegrityProof` is mentioned. This is the document's first
+  bibliography citation, so it also gains a References section.
+
 <h2 id="changelog-v0.4.0">v0.4.0</h2>
 
 The goals of this release are
