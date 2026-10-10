@@ -674,27 +674,6 @@
         Any caveat applied by a parent in the chain applies to its descendants.
       </p>
 
-      <div class="note">
-        <p>
-          The target's json-ld document is a kind of "special" capability document
-          implicitly granting authority to itself.
-          But why?
-          Surely in most protocols, such as when objects are sending
-          invocations over HTTP POST requests, any target that wants to
-          self-modify could do so internally without an explicit invocation
-          process.
-          But in some systems such as blockchains, there is no "internal" state,
-          so explicitly doing an invocation to change behavior is still useful.
-        </p>
-        <p>
-          Another reason is that it simplifies the invocation algorithm: as we
-          delegate authority to the first non-target entity, we do so using the
-          target's cryptographic authority.
-          If this authority can be used to grant capabilities, it may as well
-          be able to be used to invoke them as well.
-        </p>
-      </div>
-
       <p>
         Every capability document, except for the target, MUST have:
       </p>
